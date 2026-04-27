@@ -28,6 +28,12 @@ void GUI_Button::draw(Adafruit_GFX *display)
     if (is_hidden())
         return;
 
+    if (is_selected())
+    {
+        bg_c = get_active_background_colour();
+        trim_c = get_active_trim_colour();
+    }
+
     switch (button_style)
     {
     case BUTTON_ROUND_STYLE:

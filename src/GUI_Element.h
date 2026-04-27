@@ -16,6 +16,8 @@ private:
     uint16_t max_width_px;
     uint16_t background_colour;
     uint16_t trim_colour;
+    uint16_t active_background_colour;
+    uint16_t active_trim_colour;
     uint16_t text_colour;
     uint8_t text_size;
     bool hidden;
@@ -59,6 +61,8 @@ public:
     bool get_refresh();
     uint16_t get_background_colour();
     uint16_t get_trim_colour();
+    uint16_t get_active_background_colour();
+    uint16_t get_active_trim_colour();
     uint16_t get_text_colour();
     uint8_t get_text_size();
     void set_x(int16_t _x);
@@ -74,6 +78,8 @@ public:
     void set_height_auto_sizeable(bool auto_sizeable);
     void set_background_colour(uint16_t _background_colour);
     void set_trim_colour(uint16_t _trim_colour);
+    void set_active_background_colour(uint16_t _background_colour);
+    void set_active_trim_colour(uint16_t _trim_colour);
     void set_text_colour(uint16_t _text_colour);
     void set_text_size(uint8_t _text_size);
     void select();

@@ -8,6 +8,8 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     text_colour = BLACK;
     background_colour = WHITE;
     trim_colour = BLACK;
+    active_trim_colour = BLACK;
+    active_background_colour = WHITE;
     container_x_offset = 0;
     container_y_offset = 0;
     max_width_px = 0;
@@ -82,6 +84,16 @@ uint16_t GUI_Element::get_background_colour()
 uint16_t GUI_Element::get_trim_colour()
 {
     return trim_colour;
+}
+
+uint16_t GUI_Element::get_active_background_colour()
+{
+    return active_background_colour;
+}
+
+uint16_t GUI_Element::get_active_trim_colour()
+{
+    return active_trim_colour;
 }
 
 uint16_t GUI_Element::get_text_colour()
@@ -160,6 +172,16 @@ void GUI_Element::set_background_colour(uint16_t _background_colour)
 void GUI_Element::set_trim_colour(uint16_t _trim_colour)
 {
     trim_colour = _trim_colour;
+}
+
+void GUI_Element::set_active_background_colour(uint16_t _background_colour)
+{
+    active_background_colour = _background_colour;
+}
+
+void GUI_Element::set_active_trim_colour(uint16_t _trim_colour)
+{
+    active_trim_colour = _trim_colour;
 }
 
 void GUI_Element::set_text_colour(uint16_t _text_colour)
