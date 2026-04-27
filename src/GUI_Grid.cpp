@@ -31,6 +31,11 @@ void GUI_Grid::draw(Adafruit_GFX *display)
         }
     }
 
+#ifdef ELEMENT_DEBUG
+    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
+    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+#endif /* ELEMENT_DEBUG */
+
     refresh = false;
 }
 
