@@ -4,6 +4,9 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
 {
     hidden = false;
     selected = false;
+    text_size = 1;
+    text_colour = WHITE;
+    background_colour = WHITE;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
@@ -28,6 +31,21 @@ uint16_t GUI_Element::get_width()
 uint16_t GUI_Element::get_height()
 {
     return height;
+}
+
+uint16_t GUI_Element::get_background_colour()
+{
+    return background_colour;
+}
+
+uint16_t GUI_Element::get_text_colour()
+{
+    return text_colour;
+}
+
+uint8_t GUI_Element::get_text_size()
+{
+    return text_size;
 }
 
 void GUI_Element::set_x(int16_t _x)
@@ -56,6 +74,21 @@ void GUI_Element::set_dimensions(int16_t _x, int16_t _y, uint16_t _width, uint16
     set_y(_y);
     set_width(_width);
     set_height(_height);
+}
+
+void GUI_Element::set_background_colour(uint16_t _background_colour)
+{
+    background_colour = _background_colour;
+}
+
+void GUI_Element::set_text_colour(uint16_t _text_colour)
+{
+    text_colour = _text_colour;
+}
+
+void GUI_Element::set_text_size(uint8_t _text_size)
+{
+    text_size = _text_size;
 }
 
 void GUI_Element::select()

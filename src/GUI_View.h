@@ -7,12 +7,10 @@ class GUI_View : public GUI_Element
 {
 private:
     Adafruit_GFX *display;
-    uint16_t text_colour;
-    uint8_t text_size;
     std::stack<GUI_Menu *> menu_stack;
 
 public:
-    GUI_View(Adafruit_GFX *_display, uint8_t _text_size, uint16_t _text_colour);
+    GUI_View(Adafruit_GFX *_display);
     ~GUI_View();
 
     void draw(Adafruit_GFX *display) override;

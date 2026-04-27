@@ -6,7 +6,6 @@
 class GUI_Menu : public GUI_Element
 {
 private:
-    uint16_t background_colour;
     char *menu_name[32];
     std::vector<GUI_Element *> elements;
 
