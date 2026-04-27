@@ -13,6 +13,8 @@ typedef enum
     ALIGN_RIGHT,
 } TEXT_ALIGN;
 
+typedef bool (*click_cb_fun)(void *user_data);
+
 inline uint16_t center_text_vertical(char *str, uint16_t container_h, uint16_t container_y, Adafruit_GFX *display)
 {
     int16_t x_bound, y_bound;

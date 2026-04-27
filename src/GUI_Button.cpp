@@ -1,10 +1,12 @@
 #include "GUI.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, TEXT_ALIGN _align) : GUI_Element()
+GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, void *_user_data, TEXT_ALIGN _align) : GUI_Element()
 {
     button_style = style;
     border_radius = 10;
     align_value = _align;
+    user_data = _user_data;
+    click_cb = _click_cb;
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -58,4 +60,14 @@ void GUI_Button::draw(Adafruit_GFX *display)
     display->setCursor(text_x, text_y);
     display->setTextColor(font_c);
     display->println((char *)text);
+}
+
+bool GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
+{
+    if (click_cb != NULL)
+    {
+        return click_cb(user_data);
+    }
+
+    return false;
 }

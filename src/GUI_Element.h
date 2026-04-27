@@ -25,6 +25,7 @@ public:
     virtual ~GUI_Element() = default;
 
     virtual void draw(Adafruit_GFX *display) = 0;
+    virtual bool navigate(int16_t x_pos, int16_t y_pos) = 0;
 
     int16_t get_x();
     int16_t get_y();

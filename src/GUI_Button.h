@@ -17,12 +17,15 @@ private:
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     TEXT_ALIGN align_value;
+    click_cb_fun click_cb;
+    void *user_data;
 
 public:
-    GUI_Button(BUTTON_STYLE style, const char *button_str, TEXT_ALIGN _align = ALIGN_CENTER);
+    GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, void *_user_data = NULL, TEXT_ALIGN _align = ALIGN_CENTER);
     ~GUI_Button();
 
     void draw(Adafruit_GFX *display) override;
+    bool navigate(int16_t x_pos, int16_t y_pos) override;
 };
 
 #endif /* _GUI_Button_H_ */
