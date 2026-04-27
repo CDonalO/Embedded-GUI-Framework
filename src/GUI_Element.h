@@ -12,6 +12,8 @@ private:
     uint16_t width;
     uint16_t container_x_offset;
     uint16_t container_y_offset;
+    uint16_t max_height_px;
+    uint16_t max_width_px;
     uint16_t background_colour;
     uint16_t trim_colour;
     uint16_t text_colour;
@@ -46,6 +48,8 @@ public:
     uint16_t get_y_offset();
     uint16_t get_width();
     uint16_t get_height();
+    uint16_t get_max_width_px();
+    uint16_t get_max_height_px();
     bool get_width_auto_sizeable();
     bool get_height_auto_sizeable();
     uint16_t get_background_colour();
@@ -58,6 +62,8 @@ public:
     void set_y_offset(uint16_t offset);
     void set_width(uint16_t _width);
     void set_height(uint16_t _height);
+    void set_max_width_px(uint16_t max_width);
+    void set_max_height_px(uint16_t max_height);
     void set_dimensions(int16_t _x, int16_t _y, uint16_t _w, uint16_t _h);
     void set_width_auto_sizeable(bool auto_sizeable);
     void set_height_auto_sizeable(bool auto_sizeable);

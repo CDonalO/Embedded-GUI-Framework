@@ -57,6 +57,16 @@ void GUI_Grid::adjust_elements()
 
         if (attributes & GRID_ATTRIBUTE_FLEX)
         {
+            if (elements[0]->get_max_height_px() != 0 && new_height > elements[0]->get_max_height_px())
+            {
+                new_height = elements[0]->get_max_height_px();
+            }
+
+            if (elements[0]->get_max_width_px() != 0 && new_width > elements[0]->get_max_width_px())
+            {
+                new_width = elements[0]->get_max_width_px();
+            }
+
             elements[0]->set_width(new_width);
             elements[0]->set_height(new_height);
         }
@@ -104,6 +114,9 @@ void GUI_Grid::adjust_elements()
 
         if (auto_sizeable_elements > 0)
         {
+            uint16_t new_element_height = new_height;
+            uint16_t new_element_width = new_width;
+
             if (grid_type == GRID_TYPE_VERTICAL)
             {
                 new_height /= (auto_sizeable_elements);
@@ -112,18 +125,62 @@ void GUI_Grid::adjust_elements()
             {
                 new_width /= (auto_sizeable_elements);
             }
+
+            for (int x = 0; x < elements.size(); x++)
+            {
+                if (grid_type == GRID_TYPE_VERTICAL && elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
+                {
+                    auto_sizeable_elements--;
+                    new_element_height -= elements[x]->get_max_height_px();
+                    if (auto_sizeable_elements > 0)
+                    {
+                        new_height = new_element_height / auto_sizeable_elements;
+                    }
+                    else
+                    {
+                        new_height = new_element_height;
+                    }
+                }
+                else if (grid_type == GRID_TYPE_HORIZONTAL && elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
+                {
+                    auto_sizeable_elements--;
+                    new_element_width -= elements[x]->get_max_width_px();
+                    if (auto_sizeable_elements > 0)
+                    {
+                        new_width = new_element_width / auto_sizeable_elements;
+                    }
+                    else
+                    {
+                        new_width = new_element_width;
+                    }
+                }
+            }
         }
 
         for (int x = 0; x < elements.size(); x++)
         {
             if (elements[x]->get_height_auto_sizeable())
             {
-                elements[x]->set_height(new_height);
+                if (elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
+                {
+                    elements[x]->set_height(elements[x]->get_max_height_px());
+                }
+                else
+                {
+                    elements[x]->set_height(new_height);
+                }
             }
 
             if (elements[x]->get_width_auto_sizeable())
             {
-                elements[x]->set_width(new_width);
+                if (elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
+                {
+                    elements[x]->set_width(elements[x]->get_max_width_px());
+                }
+                else
+                {
+                    elements[x]->set_width(new_width);
+                }
             }
         }
     }

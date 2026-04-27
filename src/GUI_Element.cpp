@@ -10,6 +10,8 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     trim_colour = BLACK;
     container_x_offset = 0;
     container_y_offset = 0;
+    max_width_px = 0;
+    max_height_px = 0;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
@@ -44,6 +46,16 @@ uint16_t GUI_Element::get_width()
 uint16_t GUI_Element::get_height()
 {
     return height;
+}
+
+uint16_t GUI_Element::get_max_width_px()
+{
+    return max_width_px;
+}
+
+uint16_t GUI_Element::get_max_height_px()
+{
+    return max_height_px;
 }
 
 bool GUI_Element::get_width_auto_sizeable()
@@ -104,6 +116,16 @@ void GUI_Element::set_width(uint16_t _width)
 void GUI_Element::set_height(uint16_t _height)
 {
     height = _height;
+}
+
+void GUI_Element::set_max_width_px(uint16_t max_width)
+{
+    max_width_px = max_width;
+}
+
+void GUI_Element::set_max_height_px(uint16_t max_height)
+{
+    max_height_px = max_height;
 }
 
 void GUI_Element::set_dimensions(int16_t _x, int16_t _y, uint16_t _width, uint16_t _height)
