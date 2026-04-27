@@ -184,6 +184,26 @@ void GUI_Element::set_active_trim_colour(uint16_t _trim_colour)
     active_trim_colour = _trim_colour;
 }
 
+void GUI_Element::set_colours(uint16_t _background_colour, uint16_t _active_background_colour, uint16_t _trim_colour, uint16_t _active_trim_colour)
+{
+    set_background_colour(_background_colour);
+    set_active_background_colour(_active_background_colour);
+    set_trim_colour(_trim_colour);
+    set_active_trim_colour(_active_trim_colour);
+}
+
+void GUI_Element::set_base_colours(uint16_t _background_colour, uint16_t _trim_colour)
+{
+    set_background_colour(_background_colour);
+    set_trim_colour(_trim_colour);
+}
+
+void GUI_Element::set_active_colours(uint16_t _active_background_colour, uint16_t _active_trim_colour)
+{
+    set_active_background_colour(_active_background_colour);
+    set_active_trim_colour(_active_trim_colour);
+}
+
 void GUI_Element::set_text_colour(uint16_t _text_colour)
 {
     text_colour = _text_colour;

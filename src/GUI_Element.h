@@ -80,6 +80,9 @@ public:
     void set_trim_colour(uint16_t _trim_colour);
     void set_active_background_colour(uint16_t _background_colour);
     void set_active_trim_colour(uint16_t _trim_colour);
+    void set_base_colours(uint16_t _background_colour, uint16_t _trim_colour);
+    void set_active_colours(uint16_t _active_background_colour, uint16_t _active_trim_colour);
+    void set_colours(uint16_t _background_colour, uint16_t _active_background_colour, uint16_t _trim_colour, uint16_t _active_trim_colour);
     void set_text_colour(uint16_t _text_colour);
     void set_text_size(uint8_t _text_size);
     void select();
