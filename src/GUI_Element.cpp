@@ -71,11 +71,6 @@ bool GUI_Element::get_height_auto_sizeable()
     return height_auto_size;
 }
 
-bool GUI_Element::get_refresh()
-{
-    return refresh;
-}
-
 uint16_t GUI_Element::get_background_colour()
 {
     return background_colour;

@@ -17,6 +17,12 @@ void GUI_Label::draw(Adafruit_GFX *display)
 {
     int text_x, text_y;
 
+    if (!refresh)
+        return;
+
+    if (is_hidden())
+        return;
+
     display->setTextSize(get_text_size());
     display->setTextColor(get_text_colour());
 

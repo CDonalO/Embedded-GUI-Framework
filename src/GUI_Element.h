@@ -59,7 +59,6 @@ public:
     uint16_t get_max_height_px();
     bool get_width_auto_sizeable();
     bool get_height_auto_sizeable();
-    bool get_refresh();
     uint16_t get_background_colour();
     uint16_t get_trim_colour();
     uint16_t get_active_background_colour();

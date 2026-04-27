@@ -231,6 +231,9 @@ GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *butt
 
 void GUI_Toggle_Button::draw(Adafruit_GFX *display)
 {
+    if (!refresh)
+        return;
+
     if (is_hidden())
         return;
 

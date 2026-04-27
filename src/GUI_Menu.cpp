@@ -16,15 +16,12 @@ void GUI_Menu::draw(Adafruit_GFX *display)
 
     for (int x = 0; x < elements.size(); x++)
     {
-        if (elements[x]->get_refresh())
-        {
-            display->setTextColor(get_text_colour());
-            display->setTextSize(get_text_size());
-            elements[x]->set_x_offset(get_x());
-            elements[x]->set_y_offset(get_y());
-            elements[x]->draw(display);
-            elements[x]->set_refresh(false);
-        }
+        display->setTextColor(get_text_colour());
+        display->setTextSize(get_text_size());
+        elements[x]->set_x_offset(get_x());
+        elements[x]->set_y_offset(get_y());
+        elements[x]->draw(display);
+        elements[x]->set_refresh(false);
     }
 
     refresh = false;

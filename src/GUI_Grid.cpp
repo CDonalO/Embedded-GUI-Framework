@@ -17,26 +17,18 @@ GUI_Grid::~GUI_Grid()
 
 void GUI_Grid::draw(Adafruit_GFX *display)
 {
-    if (!refresh)
-        return;
-
     for (int x = 0; x < elements.size(); x++)
     {
-        if (elements[x]->get_refresh())
-        {
-            elements[x]->set_x_offset(get_x());
-            elements[x]->set_y_offset(get_y());
-            elements[x]->draw(display);
-            elements[x]->set_refresh(false);
-        }
+        elements[x]->set_x_offset(get_x());
+        elements[x]->set_y_offset(get_y());
+        elements[x]->draw(display);
+        elements[x]->set_refresh(false);
     }
 
 #ifdef ELEMENT_DEBUG
     display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
     display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
 #endif /* ELEMENT_DEBUG */
-
-    refresh = false;
 }
 
 void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
@@ -46,14 +38,13 @@ void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
         if (elements[x]->within_bounds(x_pos, y_pos))
         {
             elements[x]->navigate(x_pos, y_pos);
-            refresh = elements[x]->get_refresh();
         }
     }
 }
 
 void GUI_Grid::set_refresh(bool r)
 {
-    refresh = r;
+    refresh = true;
 
     for (int x = 0; x < elements.size(); x++)
     {

@@ -107,6 +107,7 @@ void GUI_View::reverse_menus(void)
 {
     if (menu_stack.size() > 1)
     {
+        menu_stack.top()->set_refresh(true);
         menu_stack.pop();
     }
 
