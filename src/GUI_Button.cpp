@@ -11,6 +11,9 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun 
     icon_bitmap = NULL;
     icon_width = 0;
     icon_height = 0;
+    disabled_bg_colour = BLACK;
+    disabled_trim_colour = BLACK;
+    disabled_text_colour = WHITE;
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -32,11 +35,18 @@ void GUI_Button::draw(Adafruit_GFX *display)
     if (is_hidden())
         return;
 
-    if (is_selected() || is_disabled())
+    if (is_selected())
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
         font_c = get_active_text_colour();
+    }
+
+    if (is_disabled())
+    {
+        bg_c = disabled_bg_colour;
+        trim_c = disabled_trim_colour;
+        font_c = disabled_text_colour;
     }
 
     switch (button_style)
@@ -234,6 +244,13 @@ void GUI_Button::set_disabled(bool disable)
 bool GUI_Button::is_disabled()
 {
     return disabled;
+}
+
+void GUI_Button::set_disabled_colours(uint16_t _disabled_bg_colour, uint16_t _disabled_trim_colour, uint16_t _disabled_text_colour)
+{
+    disabled_bg_colour = _disabled_bg_colour;
+    disabled_trim_colour = _disabled_trim_colour;
+    disabled_text_colour = _disabled_text_colour;
 }
 
 GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, bool default_value, TEXT_ALIGN _align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, _click_cb, NULL, _align)

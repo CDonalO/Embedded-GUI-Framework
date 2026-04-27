@@ -32,6 +32,9 @@ private:
     uint8_t icon_width;
     uint8_t icon_height;
     uint16_t icon_bg_colour;
+    uint16_t disabled_bg_colour;
+    uint16_t disabled_trim_colour;
+    uint16_t disabled_text_colour;
 
 protected:
     click_cb_fun click_cb;
@@ -55,6 +58,7 @@ public:
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();
+    void set_disabled_colours(uint16_t _disabled_bg_colour, uint16_t _disabled_trim_colour, uint16_t _disabled_text_colour);
 };
 
 typedef void (*linked_button_update_fun)(GUI_Element *linked_element, bool toggle_value);
