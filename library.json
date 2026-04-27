@@ -1,0 +1,23 @@
+{
+  "name": "Embedded GUI Framework",
+  "version": "1.0.0",
+  "description": "A simple framework to create GUIs with Adafruit GFX displays",
+  "keywords": "GUI, adafruit, arduino",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CDonalO/Embedded-GUI-Framework.git"
+  },
+  "authors": [
+    {
+      "name": "Cordell O'Leary",
+      "url": "https://github.com/CDonalO",
+      "maintainer": true
+    }
+  ],
+  "license": "GPLv3",
+  "dependencies": {
+    "adafruit/Adafruit GFX Library": "1.12.1"
+  },
+  "frameworks": "arduino",
+  "platforms": "*"
+}
