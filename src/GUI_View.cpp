@@ -18,6 +18,8 @@ void GUI_View::draw()
 
     if (menu_stack.size() > 0)
     {
+        menu_stack.top()->set_x_offset(get_x());
+        menu_stack.top()->set_y_offset(get_y());
         menu_stack.top()->draw(display);
     }
 

@@ -19,6 +19,8 @@ void GUI_Menu::draw(Adafruit_GFX *display)
         {
             display->setTextColor(get_text_colour());
             display->setTextSize(get_text_size());
+            elements[x]->set_x_offset(get_x());
+            elements[x]->set_y_offset(get_y());
             elements[x]->draw(display);
         }
     }
@@ -39,6 +41,18 @@ bool GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
 
 void GUI_Menu::add_element(GUI_Element *element)
 {
+    if (element->get_type() == GUI_Element::Element_Type::GRID)
+    {
+        if (element->get_width() == 0)
+        {
+            element->set_width(get_width());
+        }
+
+        if (element->get_height() == 0)
+        {
+            element->set_height(get_height());
+        }
+    }
     elements.push_back(element);
 }
 

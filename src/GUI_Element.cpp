@@ -8,6 +8,8 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     text_colour = BLACK;
     background_colour = WHITE;
     trim_colour = BLACK;
+    container_x_offset = 0;
+    container_y_offset = 0;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
@@ -16,12 +18,22 @@ GUI_Element::GUI_Element() : GUI_Element(0, 0) {}
 
 int16_t GUI_Element::get_x()
 {
-    return x;
+    return x + container_x_offset;
 }
 
 int16_t GUI_Element::get_y()
 {
-    return y;
+    return y + container_y_offset;
+}
+
+uint16_t GUI_Element::get_x_offset()
+{
+    return container_x_offset;
+}
+
+uint16_t GUI_Element::get_y_offset()
+{
+    return container_y_offset;
 }
 
 uint16_t GUI_Element::get_width()
@@ -62,6 +74,16 @@ void GUI_Element::set_x(int16_t _x)
 void GUI_Element::set_y(int16_t _y)
 {
     y = _y;
+}
+
+void GUI_Element::set_x_offset(uint16_t offset)
+{
+    container_x_offset = offset;
+}
+
+void GUI_Element::set_y_offset(uint16_t offset)
+{
+    container_y_offset = offset;
 }
 
 void GUI_Element::set_width(uint16_t _width)

@@ -60,5 +60,6 @@ static const uint16_t BLUE = RGB(0, 0, 255);
 #include "GUI_Menu.h"
 #include "GUI_View.h"
 #include "GUI_Button.h"
+#include "GUI_Grid.h"
 
 #endif /* _GUI_H_ */
