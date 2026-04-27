@@ -120,8 +120,6 @@ bool set_menu_cb(void *user_data)
 
     event->v->set_menu(event->m);
 
-    free(event);
-
     return false;
 }
 
