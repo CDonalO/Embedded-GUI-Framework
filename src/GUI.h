@@ -47,5 +47,6 @@ static const uint16_t BLACK = RGB(0, 0, 0);
 #include "GUI_Element.h"
 #include "GUI_Menu.h"
 #include "GUI_View.h"
+#include "GUI_Button.h"
 
 #endif /* _GUI_H_ */
