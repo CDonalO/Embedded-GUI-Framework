@@ -77,3 +77,98 @@ void GUI_Button::set_refresh(bool r)
 {
     refresh = r;
 }
+
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, bool default_value, TEXT_ALIGN _align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, _click_cb, NULL, _align)
+{
+    button_style = style;
+    value = default_value;
+    toggled_colour = GREEN;
+    non_toggled_colour = BLACK;
+    toggle_element_colour = WHITE;
+}
+
+void GUI_Toggle_Button::draw(Adafruit_GFX *display)
+{
+    if (is_hidden())
+        return;
+
+    if (button_style == TOGGLE_BUTTON_NO_STYLE)
+    {
+        if (value)
+        {
+            GUI_Button::select();
+        }
+        else
+        {
+            GUI_Button::deselect();
+        }
+    }
+
+    GUI_Button::draw(display);
+
+    switch (button_style)
+    {
+    case TOGGLE_BUTTON_ROUND_STYLE:
+    {
+        // TODO Make this scale nicely, currently looks bad when button is tall
+        int container_radius = 50;
+        int container_w = 70;
+        int container_h = get_height() - 12;
+        int container_x = get_x() + get_width() - container_w - 6;
+        int container_y = get_y() + 6;
+
+        int circle_padding = 3;
+        int circle_r = container_h - (circle_padding * 2);
+        int circle_y = container_y + (circle_r / 2) + circle_padding;
+        int circle_x = container_x;
+
+        if (value)
+        {
+            circle_x += container_w - (circle_r / 2) - circle_padding;
+        }
+        else
+        {
+            circle_x += circle_padding + (circle_r / 2);
+        }
+
+        display->fillRoundRect(container_x, container_y, container_w, container_h, container_radius, value ? toggled_colour : non_toggled_colour);
+        display->fillCircle(circle_x, circle_y, circle_r / 2, toggle_element_colour);
+    }
+    break;
+    }
+}
+
+void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
+{
+    toggle();
+
+    if (click_cb != NULL)
+    {
+        if (user_data)
+        {
+            refresh = click_cb(user_data);
+        }
+        else
+        {
+            refresh = click_cb(&value);
+        }
+    }
+}
+
+void GUI_Toggle_Button::toggle()
+{
+    value = !value;
+    refresh = true;
+}
+
+bool GUI_Toggle_Button::get_toggled()
+{
+    return value;
+}
+
+void GUI_Toggle_Button::set_toggled_colours(uint16_t _toggled_colour, uint16_t _non_toggled_colour, uint16_t _toggle_element_colour)
+{
+    toggled_colour = _toggled_colour;
+    non_toggled_colour = _non_toggled_colour;
+    toggle_element_colour = _toggle_element_colour;
+}

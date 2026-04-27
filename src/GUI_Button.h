@@ -10,6 +10,12 @@ typedef enum
     BUTTON_SQUARE_STYLE,
 } BUTTON_STYLE;
 
+typedef enum
+{
+    TOGGLE_BUTTON_NO_STYLE,
+    TOGGLE_BUTTON_ROUND_STYLE,
+} TOGGLE_BUTTON_STYLE;
+
 class GUI_Button : public GUI_Element
 {
 private:
@@ -17,6 +23,8 @@ private:
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     TEXT_ALIGN align_value;
+
+protected:
     click_cb_fun click_cb;
     void *user_data;
 
@@ -28,6 +36,25 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
+};
+
+class GUI_Toggle_Button : public GUI_Button
+{
+private:
+    TOGGLE_BUTTON_STYLE button_style;
+    bool value;
+    uint16_t toggled_colour;
+    uint16_t non_toggled_colour;
+    uint16_t toggle_element_colour;
+
+public:
+    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, bool default_value = false, TEXT_ALIGN _align = ALIGN_CENTER);
+
+    void draw(Adafruit_GFX *display) override;
+    void navigate(int16_t x_pos, int16_t y_pos) override;
+    void toggle();
+    bool get_toggled();
+    void set_toggled_colours(uint16_t _toggled_colour, uint16_t _non_toggled_colour, uint16_t _toggle_element_colour);
 };
 
 #endif /* _GUI_Button_H_ */
