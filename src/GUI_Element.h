@@ -39,6 +39,7 @@ public:
         MENU,
         VIEW,
         GRID,
+        LABEL,
     };
 
     virtual ~GUI_Element() = default;
