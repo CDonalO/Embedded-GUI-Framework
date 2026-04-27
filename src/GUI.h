@@ -55,6 +55,8 @@ static const uint16_t BLACK = RGB(0, 0, 0);
 static const uint16_t RED = RGB(255, 0, 0);
 static const uint16_t GREEN = RGB(0, 255, 0);
 static const uint16_t BLUE = RGB(0, 0, 255);
+static const uint16_t NAVY_BLUE = RGB(31, 58, 90);
+static const uint16_t LIGHT_BLUE = RGB(144, 194, 250);
 
 #include "GUI_Element.h"
 #include "GUI_Menu.h"
