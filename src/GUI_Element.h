@@ -23,6 +23,9 @@ private:
     bool width_auto_size;
     bool height_auto_size;
 
+protected:
+    bool refresh;
+
 public:
     GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w);
     GUI_Element(int16_t _x, int16_t _y);
@@ -39,7 +42,8 @@ public:
     virtual ~GUI_Element() = default;
 
     virtual void draw(Adafruit_GFX *display) = 0;
-    virtual bool navigate(int16_t x_pos, int16_t y_pos) = 0;
+    virtual void navigate(int16_t x_pos, int16_t y_pos) = 0;
+    virtual void set_refresh(bool r) = 0;
     virtual Element_Type get_type() = 0;
 
     int16_t get_x();
@@ -52,6 +56,7 @@ public:
     uint16_t get_max_height_px();
     bool get_width_auto_sizeable();
     bool get_height_auto_sizeable();
+    bool get_refresh();
     uint16_t get_background_colour();
     uint16_t get_trim_colour();
     uint16_t get_text_colour();

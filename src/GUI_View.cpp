@@ -31,9 +31,14 @@ void GUI_View::draw(Adafruit_GFX *display)
 {
 }
 
-bool GUI_View::navigate(int16_t x_pos, int16_t y_pos)
+void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
 {
-    return menu_stack.top()->navigate(x_pos, y_pos);
+    menu_stack.top()->navigate(x_pos, y_pos);
+}
+
+void GUI_View::set_refresh(bool r)
+{
+    refresh = r;
 }
 
 void GUI_View::set_menu(GUI_Menu *menu)
@@ -43,10 +48,21 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_width(get_width());
     menu->set_height(get_height());
 
+    if (menu_stack.size() > 0)
+    {
+        menu_stack.top()->set_refresh(true);
+    }
+
+    menu->set_refresh(true);
     menu_stack.push(menu);
 }
 
 void GUI_View::reverse_menus(void)
 {
-    menu_stack.pop();
+    if (menu_stack.size() > 1)
+    {
+        menu_stack.pop();
+    }
+
+    menu_stack.top()->set_refresh(true);
 }

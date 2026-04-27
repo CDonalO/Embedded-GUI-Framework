@@ -22,6 +22,9 @@ void GUI_Button::draw(Adafruit_GFX *display)
     uint16_t font_c = get_text_colour();
     uint16_t text_x, text_y;
 
+    if (!refresh)
+        return;
+
     if (is_hidden())
         return;
 
@@ -62,12 +65,15 @@ void GUI_Button::draw(Adafruit_GFX *display)
     display->println((char *)text);
 }
 
-bool GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
+void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
 {
     if (click_cb != NULL)
     {
-        return click_cb(user_data);
+        refresh = click_cb(user_data);
     }
+}
 
-    return false;
+void GUI_Button::set_refresh(bool r)
+{
+    refresh = r;
 }

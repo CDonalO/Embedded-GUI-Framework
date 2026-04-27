@@ -11,32 +11,44 @@ GUI_Menu::~GUI_Menu()
 
 void GUI_Menu::draw(Adafruit_GFX *display)
 {
-    display->fillRect(get_x(), get_y(), get_width(), get_height(), get_background_colour());
+    if (refresh)
+        display->fillRect(get_x(), get_y(), get_width(), get_height(), get_background_colour());
 
     for (int x = 0; x < elements.size(); x++)
     {
-        if (elements[x] != NULL)
+        if (elements[x]->get_refresh())
         {
             display->setTextColor(get_text_colour());
             display->setTextSize(get_text_size());
             elements[x]->set_x_offset(get_x());
             elements[x]->set_y_offset(get_y());
             elements[x]->draw(display);
+            elements[x]->set_refresh(false);
         }
     }
+
+    refresh = false;
 }
 
-bool GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
+void GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
 {
     for (int x = 0; x < elements.size(); x++)
     {
         if (elements[x]->within_bounds(x_pos, y_pos))
         {
-            return elements[x]->navigate(x_pos, y_pos);
+            elements[x]->navigate(x_pos, y_pos);
         }
     }
+}
 
-    return false;
+void GUI_Menu::set_refresh(bool r)
+{
+    refresh = r;
+
+    for (int x = 0; x < elements.size(); x++)
+    {
+        elements[x]->set_refresh(r);
+    }
 }
 
 void GUI_Menu::add_element(GUI_Element *element)
@@ -58,7 +70,7 @@ void GUI_Menu::add_element(GUI_Element *element)
     elements.push_back(element);
 }
 
-char *GUI_Menu::get_menu_name()
+const char *GUI_Menu::get_menu_name()
 {
     return (char *)menu_name;
 }

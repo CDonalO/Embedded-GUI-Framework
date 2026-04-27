@@ -17,25 +17,43 @@ GUI_Grid::~GUI_Grid()
 
 void GUI_Grid::draw(Adafruit_GFX *display)
 {
+    if (!refresh)
+        return;
+
     for (int x = 0; x < elements.size(); x++)
     {
-        elements[x]->set_x_offset(get_x());
-        elements[x]->set_y_offset(get_y());
-        elements[x]->draw(display);
+        if (elements[x]->get_refresh())
+        {
+            elements[x]->set_x_offset(get_x());
+            elements[x]->set_y_offset(get_y());
+            elements[x]->draw(display);
+            elements[x]->set_refresh(false);
+        }
     }
+
+    refresh = false;
 }
 
-bool GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
+void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
 {
     for (int x = 0; x < elements.size(); x++)
     {
         if (elements[x]->within_bounds(x_pos, y_pos))
         {
-            return elements[x]->navigate(x_pos, y_pos);
+            elements[x]->navigate(x_pos, y_pos);
+            refresh = elements[x]->get_refresh();
         }
     }
+}
 
-    return false;
+void GUI_Grid::set_refresh(bool r)
+{
+    refresh = r;
+
+    for (int x = 0; x < elements.size(); x++)
+    {
+        elements[x]->set_refresh(r);
+    }
 }
 
 void GUI_Grid::adjust_elements()
@@ -69,6 +87,7 @@ void GUI_Grid::adjust_elements()
 
             elements[0]->set_width(new_width);
             elements[0]->set_height(new_height);
+            elements[0]->set_refresh(true);
         }
         return;
     }
@@ -209,6 +228,11 @@ void GUI_Grid::adjust_elements()
         elements[x]->set_x(new_x);
         elements[x]->set_y(new_y);
     }
+
+    for (int x = 0; x < elements.size(); x++)
+    {
+        elements[x]->set_refresh(true);
+    }
 }
 
 void GUI_Grid::add_element(GUI_Element *element)
@@ -226,6 +250,8 @@ void GUI_Grid::add_element(GUI_Element *element)
     elements.push_back(element);
 
     adjust_elements();
+
+    refresh = true;
 }
 
 void GUI_Grid::set_top_border_padding(uint16_t border_padding)

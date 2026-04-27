@@ -12,6 +12,7 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     container_y_offset = 0;
     max_width_px = 0;
     max_height_px = 0;
+    refresh = true;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
@@ -66,6 +67,11 @@ bool GUI_Element::get_width_auto_sizeable()
 bool GUI_Element::get_height_auto_sizeable()
 {
     return height_auto_size;
+}
+
+bool GUI_Element::get_refresh()
+{
+    return refresh;
 }
 
 uint16_t GUI_Element::get_background_colour()
