@@ -96,6 +96,11 @@ uint16_t GUI_Element::get_text_colour()
     return text_colour;
 }
 
+uint16_t GUI_Element::get_active_text_colour()
+{
+    return active_text_colour;
+}
+
 uint8_t GUI_Element::get_text_size()
 {
     return text_size;
@@ -202,6 +207,17 @@ void GUI_Element::set_active_colours(uint16_t _active_background_colour, uint16_
 void GUI_Element::set_text_colour(uint16_t _text_colour)
 {
     text_colour = _text_colour;
+}
+
+void GUI_Element::set_active_text_colour(uint16_t _active_text_colour)
+{
+    active_text_colour = _active_text_colour;
+}
+
+void GUI_Element::set_text_colours(uint16_t _text_colour, uint16_t _active_text_colour)
+{
+    set_text_colour(_text_colour);
+    set_active_text_colour(_active_text_colour);
 }
 
 void GUI_Element::set_text_size(uint8_t _text_size)

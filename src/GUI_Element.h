@@ -19,6 +19,7 @@ private:
     uint16_t active_background_colour;
     uint16_t active_trim_colour;
     uint16_t text_colour;
+    uint16_t active_text_colour;
     uint8_t text_size;
     bool hidden;
     bool selected;
@@ -64,6 +65,7 @@ public:
     uint16_t get_active_background_colour();
     uint16_t get_active_trim_colour();
     uint16_t get_text_colour();
+    uint16_t get_active_text_colour();
     uint8_t get_text_size();
     void set_x(int16_t _x);
     void set_y(int16_t _y);
@@ -84,6 +86,8 @@ public:
     void set_active_colours(uint16_t _active_background_colour, uint16_t _active_trim_colour);
     void set_colours(uint16_t _background_colour, uint16_t _active_background_colour, uint16_t _trim_colour, uint16_t _active_trim_colour);
     void set_text_colour(uint16_t _text_colour);
+    void set_active_text_colour(uint16_t _active_text_colour);
+    void set_text_colours(uint16_t _text_colour, uint16_t _active_text_colour);
     void set_text_size(uint8_t _text_size);
     void select();
     void deselect();

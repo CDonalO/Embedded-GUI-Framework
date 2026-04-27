@@ -36,6 +36,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
+        font_c = get_active_text_colour();
     }
 
     switch (button_style)
