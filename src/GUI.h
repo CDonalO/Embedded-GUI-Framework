@@ -43,6 +43,9 @@ inline uint16_t RGB(uint8_t r, uint8_t g, uint8_t b)
 
 static const uint16_t WHITE = RGB(255, 255, 255);
 static const uint16_t BLACK = RGB(0, 0, 0);
+static const uint16_t RED = RGB(255, 0, 0);
+static const uint16_t GREEN = RGB(0, 255, 0);
+static const uint16_t BLUE = RGB(0, 0, 255);
 
 #include "GUI_Element.h"
 #include "GUI_Menu.h"

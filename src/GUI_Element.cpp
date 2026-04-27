@@ -5,8 +5,9 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     hidden = false;
     selected = false;
     text_size = 1;
-    text_colour = WHITE;
+    text_colour = BLACK;
     background_colour = WHITE;
+    trim_colour = BLACK;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
@@ -36,6 +37,11 @@ uint16_t GUI_Element::get_height()
 uint16_t GUI_Element::get_background_colour()
 {
     return background_colour;
+}
+
+uint16_t GUI_Element::get_trim_colour()
+{
+    return trim_colour;
 }
 
 uint16_t GUI_Element::get_text_colour()
@@ -79,6 +85,11 @@ void GUI_Element::set_dimensions(int16_t _x, int16_t _y, uint16_t _width, uint16
 void GUI_Element::set_background_colour(uint16_t _background_colour)
 {
     background_colour = _background_colour;
+}
+
+void GUI_Element::set_trim_colour(uint16_t _trim_colour)
+{
+    trim_colour = _trim_colour;
 }
 
 void GUI_Element::set_text_colour(uint16_t _text_colour)
