@@ -5,11 +5,40 @@
 
 class GUI_Form : public GUI_Element
 {
+public:
+    class Form_Number_Data
+    {
+    private:
+        uint32_t id;
+        int min;
+        int max;
+        int value;
+        std::vector<GUI_Button *> modifying_buttons;
+
+    public:
+        Form_Number_Data(uint32_t _id);
+        ~Form_Number_Data();
+
+        uint32_t get_id();
+        void set_min(int _min);
+        void set_max(int _max);
+        void set_value(int _value);
+        int get_min();
+        int get_max();
+        int get_value();
+        void create_value_modify_buttons();
+        void create_toggle_modify_button();
+        GUI_Button *get_modify_button(uint16_t n);
+    };
+
+    typedef bool (*form_value_update_fun)(std::vector<Form_Number_Data *> *data_stack, char *form_value);
+
 private:
-    form_data data;
+    std::vector<Form_Number_Data *> data_stack;
     form_value_update_fun value_update_cb;
-    form_number_data *get_data_by_id(uint16_t id);
+    Form_Number_Data *get_data_by_id(uint16_t id);
     char *label[32];
+    char *form_value[32];
 
 public:
     GUI_Form(const char *_label, form_value_update_fun value_cb);
@@ -19,6 +48,9 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::FORM; }
+
+    static Form_Number_Data *get_form_data_by_id(std::vector<Form_Number_Data *> *data_stack, uint32_t id);
+    Form_Number_Data *get_data_by_id(uint32_t id);
 
     void create_number_form_data(uint32_t id, int min, int max, int default_value);
     GUI_Button *get_number_form_button(uint32_t id, bool increase);
