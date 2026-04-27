@@ -98,6 +98,7 @@ void GUI_View::set_menu(GUI_Menu *menu)
     }
 
     menu->set_refresh(true);
+    menu->adjust_grids();
     menu_stack.push(menu);
 
     refresh = true;

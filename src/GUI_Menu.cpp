@@ -50,6 +50,7 @@ void GUI_Menu::set_refresh(bool r)
 
 void GUI_Menu::add_element(GUI_Element *element)
 {
+    // TODO Improve this
     if (element->get_type() == GUI_Element::Element_Type::GRID)
     {
         if (element->get_width() == 0)
@@ -65,6 +66,29 @@ void GUI_Menu::add_element(GUI_Element *element)
         grid_element->adjust_elements();
     }
     elements.push_back(element);
+}
+
+void GUI_Menu::adjust_grids()
+{
+    for (int x = 0; x < elements.size(); x++)
+    {
+        // TODO Improve this
+        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+            if (grid_element->get_width() == 0)
+            {
+                grid_element->set_width(get_width());
+            }
+
+            if (grid_element->get_height() == 0)
+            {
+                grid_element->set_height(get_height());
+            }
+
+            grid_element->adjust_elements();
+        }
+    }
 }
 
 const char *GUI_Menu::get_menu_name()
