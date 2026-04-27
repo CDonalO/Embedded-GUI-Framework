@@ -243,6 +243,23 @@ void GUI_Grid::adjust_elements()
     for (int x = 0; x < elements.size(); x++)
     {
         elements[x]->set_refresh(true);
+        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+
+            if (grid_type == GRID_TYPE_VERTICAL)
+            {
+                grid_element->set_top_border_padding(0);
+                grid_element->set_bottom_border_padding(0);
+            }
+            else if (grid_type == GRID_TYPE_HORIZONTAL)
+            {
+                grid_element->set_left_border_padding(0);
+                grid_element->set_right_border_padding(0);
+            }
+
+            grid_element->adjust_elements();
+        }
     }
 }
 
