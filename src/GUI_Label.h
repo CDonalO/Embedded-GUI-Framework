@@ -15,7 +15,10 @@ public:
 
     void draw(Adafruit_GFX *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
-    void set_refresh(bool r) override;
+    void set_refresh(bool r, bool p) override;
+
+    GUI_Element *clone() const { return new GUI_Label(*this); }
+
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::LABEL; }
 };
 

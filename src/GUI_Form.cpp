@@ -74,9 +74,14 @@ void GUI_Form::navigate(int16_t x_pos, int16_t y_pos)
 {
 }
 
-void GUI_Form::set_refresh(bool r)
+void GUI_Form::set_refresh(bool r, bool p)
 {
     refresh = r;
+
+    if (p && parent != NULL)
+    {
+        parent->set_refresh(r, p);
+    }
 }
 
 bool increment_value(void *user_data)

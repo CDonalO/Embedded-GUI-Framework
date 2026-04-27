@@ -33,6 +33,7 @@ public:
     GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w);
     GUI_Element(int16_t _x, int16_t _y);
     GUI_Element();
+    GUI_Element *parent;
 
     enum class Element_Type
     {
@@ -49,8 +50,11 @@ public:
 
     virtual void draw(Adafruit_GFX *display) = 0;
     virtual void navigate(int16_t x_pos, int16_t y_pos) = 0;
-    virtual void set_refresh(bool r) = 0;
+    virtual void set_refresh(bool r, bool p) = 0;
     virtual Element_Type get_type() = 0;
+    virtual GUI_Element *clone() const = 0;
+
+    bool operator==(const GUI_Element &element) const;
 
     int16_t get_x();
     int16_t get_y();

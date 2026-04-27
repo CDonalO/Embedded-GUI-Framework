@@ -21,7 +21,7 @@ void GUI_Menu::draw(Adafruit_GFX *display)
         elements[x]->set_x_offset(get_x());
         elements[x]->set_y_offset(get_y());
         elements[x]->draw(display);
-        elements[x]->set_refresh(false);
+        elements[x]->set_refresh(false, false);
     }
 
     refresh = false;
@@ -38,13 +38,16 @@ void GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Menu::set_refresh(bool r)
+void GUI_Menu::set_refresh(bool r, bool p)
 {
     refresh = r;
 
-    for (int x = 0; x < elements.size(); x++)
+    if (!p)
     {
-        elements[x]->set_refresh(r);
+        for (int x = 0; x < elements.size(); x++)
+        {
+            elements[x]->set_refresh(r, false);
+        }
     }
 }
 
@@ -65,6 +68,7 @@ void GUI_Menu::add_element(GUI_Element *element)
         GUI_Grid *grid_element = static_cast<GUI_Grid *>(element);
         grid_element->adjust_elements();
     }
+    element->parent = this;
     elements.push_back(element);
 }
 

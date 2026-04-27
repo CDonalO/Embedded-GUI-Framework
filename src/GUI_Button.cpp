@@ -32,7 +32,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
     if (is_hidden())
         return;
 
-    if (is_selected())
+    if (is_selected() || is_disabled())
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
@@ -192,9 +192,14 @@ void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Button::set_refresh(bool r)
+void GUI_Button::set_refresh(bool r, bool p)
 {
     refresh = r;
+
+    if (p && parent != NULL)
+    {
+        parent->set_refresh(r, true);
+    }
 }
 
 void GUI_Button::set_button_style(BUTTON_STYLE style)
@@ -314,6 +319,18 @@ void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+void GUI_Toggle_Button::link_button_state(GUI_Element *element, linked_button_update_fun linked_function)
+{
+    if (element->get_type() == GUI_Element::Element_Type::VIEW || element->get_type() == GUI_Element::Element_Type::MENU)
+    {
+        return;
+    }
+
+    links.add_button_link(element, linked_function);
+    linked_function(element, value);
+    element->set_refresh(true, true);
+}
+
 void GUI_Toggle_Button::set_toggle_button_style(TOGGLE_BUTTON_STYLE style)
 {
     button_style = style;
@@ -322,6 +339,7 @@ void GUI_Toggle_Button::set_toggle_button_style(TOGGLE_BUTTON_STYLE style)
 void GUI_Toggle_Button::toggle()
 {
     value = !value;
+    links.trigger_links(value);
     refresh = true;
 }
 

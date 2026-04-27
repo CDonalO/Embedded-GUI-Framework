@@ -10,7 +10,6 @@ GUI_Label::GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, uint16_t
 
 GUI_Label::~GUI_Label()
 {
-    free(text);
 }
 
 void GUI_Label::draw(Adafruit_GFX *display)
@@ -57,6 +56,12 @@ void GUI_Label::navigate(int16_t x_pos, int16_t y_pos)
 {
 }
 
-void GUI_Label::set_refresh(bool r)
+void GUI_Label::set_refresh(bool r, bool p)
 {
+    refresh = r;
+
+    if (p && parent != NULL)
+    {
+        parent->set_refresh(r, p);
+    }
 }

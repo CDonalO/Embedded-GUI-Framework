@@ -22,7 +22,7 @@ void GUI_Grid::draw(Adafruit_GFX *display)
         elements[x]->set_x_offset(get_x());
         elements[x]->set_y_offset(get_y());
         elements[x]->draw(display);
-        elements[x]->set_refresh(false);
+        elements[x]->set_refresh(false, false);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -42,13 +42,22 @@ void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Grid::set_refresh(bool r)
+void GUI_Grid::set_refresh(bool r, bool p)
 {
     refresh = true;
 
-    for (int x = 0; x < elements.size(); x++)
+    if (p && parent != NULL)
     {
-        elements[x]->set_refresh(r);
+        adjust_elements();
+        parent->set_refresh(r, p);
+    }
+
+    if (!p)
+    {
+        for (int x = 0; x < elements.size(); x++)
+        {
+            elements[x]->set_refresh(r, false);
+        }
     }
 }
 
@@ -89,7 +98,7 @@ void GUI_Grid::adjust_elements()
                 elements[0]->set_width(new_width);
             }
 
-            elements[0]->set_refresh(true);
+            elements[0]->set_refresh(true, false);
         }
         return;
     }
@@ -247,7 +256,7 @@ void GUI_Grid::adjust_elements()
 
     for (int x = 0; x < elements.size(); x++)
     {
-        elements[x]->set_refresh(true);
+        elements[x]->set_refresh(true, false);
         if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
         {
             GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
@@ -280,6 +289,7 @@ void GUI_Grid::add_element(GUI_Element *element)
         element->set_height_auto_sizeable(true);
     }
 
+    element->parent = this;
     elements.push_back(element);
 
     adjust_elements();

@@ -80,7 +80,7 @@ void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
     menu_stack.top()->navigate(x_pos, y_pos);
 }
 
-void GUI_View::set_refresh(bool r)
+void GUI_View::set_refresh(bool r, bool p)
 {
     refresh = r;
 }
@@ -94,10 +94,10 @@ void GUI_View::set_menu(GUI_Menu *menu)
 
     if (menu_stack.size() > 0)
     {
-        menu_stack.top()->set_refresh(true);
+        menu_stack.top()->set_refresh(true, false);
     }
 
-    menu->set_refresh(true);
+    menu->set_refresh(true, false);
     menu->adjust_grids();
     menu_stack.push(menu);
 
@@ -108,11 +108,11 @@ void GUI_View::reverse_menus(void)
 {
     if (menu_stack.size() > 1)
     {
-        menu_stack.top()->set_refresh(true);
+        menu_stack.top()->set_refresh(true, false);
         menu_stack.pop();
     }
 
-    menu_stack.top()->set_refresh(true);
+    menu_stack.top()->set_refresh(true, false);
     refresh = true;
 }
 

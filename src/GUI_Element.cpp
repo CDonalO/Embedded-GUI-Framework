@@ -18,11 +18,53 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     refresh = true;
     width_auto_size = false;
     height_auto_size = false;
+    parent = NULL;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
 
 GUI_Element::GUI_Element() : GUI_Element(0, 0) {}
+
+// Compare visible element properties
+bool GUI_Element::operator==(const GUI_Element &element) const
+{
+    if (this->x != element.x)
+    {
+        return false;
+    }
+
+    if (this->y != element.y)
+    {
+        return false;
+    }
+
+    if (this->height != element.height)
+    {
+        return false;
+    }
+
+    if (this->width != element.width)
+    {
+        return false;
+    }
+
+    if (this->max_height_px != element.max_height_px)
+    {
+        return false;
+    }
+
+    if (this->max_width_px != element.max_width_px)
+    {
+        return false;
+    }
+
+    if (this->hidden != element.hidden)
+    {
+        return false;
+    }
+
+    return true;
+}
 
 int16_t GUI_Element::get_x()
 {
