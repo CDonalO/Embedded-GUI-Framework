@@ -6,6 +6,7 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     selected = false;
     text_size = 1;
     text_colour = BLACK;
+    active_text_colour = WHITE;
     background_colour = WHITE;
     trim_colour = BLACK;
     active_trim_colour = BLACK;
