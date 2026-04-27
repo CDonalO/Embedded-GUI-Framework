@@ -71,18 +71,24 @@ void GUI_Grid::adjust_elements()
 
         if (attributes & GRID_ATTRIBUTE_FLEX)
         {
-            if (elements[0]->get_max_height_px() != 0 && new_height > elements[0]->get_max_height_px())
+            if (elements[0]->get_height_auto_sizeable())
             {
-                new_height = elements[0]->get_max_height_px();
+                if (elements[0]->get_max_height_px() != 0 && new_height > elements[0]->get_max_height_px())
+                {
+                    new_height = elements[0]->get_max_height_px();
+                }
+                elements[0]->set_height(new_height);
             }
 
-            if (elements[0]->get_max_width_px() != 0 && new_width > elements[0]->get_max_width_px())
+            if (elements[0]->get_width_auto_sizeable())
             {
-                new_width = elements[0]->get_max_width_px();
+                if (elements[0]->get_max_width_px() != 0 && new_width > elements[0]->get_max_width_px())
+                {
+                    new_width = elements[0]->get_max_width_px();
+                }
+                elements[0]->set_width(new_width);
             }
 
-            elements[0]->set_width(new_width);
-            elements[0]->set_height(new_height);
             elements[0]->set_refresh(true);
         }
         return;
