@@ -24,6 +24,7 @@ public:
 
     void set_menu(GUI_Menu *menu);
     void reverse_menus();
+    void register_menu_change_button(GUI_Button *button, GUI_Menu *menu);
     void set_menu_bar_colours(uint16_t return_bg_colour, uint16_t arrow_colour);
 };
 

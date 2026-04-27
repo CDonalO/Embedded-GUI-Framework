@@ -36,6 +36,8 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
+
+    void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
 };
 
 class GUI_Toggle_Button : public GUI_Button

@@ -59,9 +59,9 @@ static const uint16_t NAVY_BLUE = RGB(31, 58, 90);
 static const uint16_t LIGHT_BLUE = RGB(144, 194, 250);
 
 #include "GUI_Element.h"
+#include "GUI_Button.h"
 #include "GUI_Menu.h"
 #include "GUI_View.h"
-#include "GUI_Button.h"
 #include "GUI_Grid.h"
 #include "GUI_Label.h"
 

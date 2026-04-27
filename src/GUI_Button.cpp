@@ -84,6 +84,12 @@ void GUI_Button::set_refresh(bool r)
     refresh = r;
 }
 
+void GUI_Button::set_click_user_cb(click_cb_fun _click_cb, void *_user_data)
+{
+    click_cb = _click_cb;
+    user_data = _user_data;
+}
+
 GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, bool default_value, TEXT_ALIGN _align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, _click_cb, NULL, _align)
 {
     button_style = style;

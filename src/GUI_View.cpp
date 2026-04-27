@@ -1,5 +1,11 @@
 #include "GUI.h"
 
+typedef struct menu_change_event
+{
+    GUI_View *v;
+    GUI_Menu *m;
+} _menu_change_event;
+
 GUI_View::GUI_View(Adafruit_GFX *_display, uint16_t _menu_bar_size) : GUI_Element()
 {
     display = _display;
@@ -106,6 +112,28 @@ void GUI_View::reverse_menus(void)
 
     menu_stack.top()->set_refresh(true);
     refresh = true;
+}
+
+bool set_menu_cb(void *user_data)
+{
+    menu_change_event *event = (menu_change_event *)user_data;
+
+    event->v->set_menu(event->m);
+
+    free(event);
+
+    return false;
+}
+
+void GUI_View::register_menu_change_button(GUI_Button *button, GUI_Menu *menu)
+{
+    menu_change_event *user_data = (menu_change_event *)malloc(sizeof(menu_change_event));
+
+    memset(user_data, 0, sizeof(menu_change_event));
+
+    user_data->v = this;
+    user_data->m = menu;
+    button->set_click_user_cb(set_menu_cb, user_data);
 }
 
 void GUI_View::set_menu_bar_colours(uint16_t return_bg_colour, uint16_t arrow_colour)
