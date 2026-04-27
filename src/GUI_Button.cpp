@@ -174,10 +174,10 @@ void GUI_Button::draw(Adafruit_GFX *display)
         display->println((char *)text);
     }
 
-#ifdef ELEMENT_DEBUG
+#ifdef VISUAL_ELEMENT_DEBUG
     display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
     display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
-#endif /* ELEMENT_DEBUG */
+#endif /* VISUAL_ELEMENT_DEBUG */
 }
 
 void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)

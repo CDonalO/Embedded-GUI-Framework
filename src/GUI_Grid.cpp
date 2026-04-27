@@ -25,10 +25,10 @@ void GUI_Grid::draw(Adafruit_GFX *display)
         elements[x]->set_refresh(false);
     }
 
-#ifdef ELEMENT_DEBUG
+#ifdef VISUAL_ELEMENT_DEBUG
     display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
     display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
-#endif /* ELEMENT_DEBUG */
+#endif /* VISUAL_ELEMENT_DEBUG */
 }
 
 void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
@@ -212,6 +212,9 @@ void GUI_Grid::adjust_elements()
                     elements[x]->set_width(new_width);
                 }
             }
+#ifdef VERBOSE_ELEMENT_DEBUG
+            Serial.printf("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
+#endif /* VERBOSE_ELEMENT_DEBUG */
         }
     }
 
