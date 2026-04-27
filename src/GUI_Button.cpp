@@ -196,6 +196,11 @@ void GUI_Button::set_refresh(bool r)
     refresh = r;
 }
 
+void GUI_Button::set_button_style(BUTTON_STYLE style)
+{
+    button_style = style;
+}
+
 void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour)
 {
     icon_bitmap = _bitmap;
@@ -301,6 +306,11 @@ void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
             refresh = click_cb(&value);
         }
     }
+}
+
+void GUI_Toggle_Button::set_toggle_button_style(TOGGLE_BUTTON_STYLE style)
+{
+    button_style = style;
 }
 
 void GUI_Toggle_Button::toggle()

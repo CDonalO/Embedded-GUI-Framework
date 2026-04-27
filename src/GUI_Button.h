@@ -47,6 +47,7 @@ public:
     void set_refresh(bool r) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
 
+    void set_button_style(BUTTON_STYLE style);
     void set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour);
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
@@ -67,6 +68,8 @@ public:
 
     void draw(Adafruit_GFX *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
+
+    void set_toggle_button_style(TOGGLE_BUTTON_STYLE style);
     void toggle();
     bool get_toggled();
     void set_toggled_colours(uint16_t _toggled_colour, uint16_t _non_toggled_colour, uint16_t _toggle_element_colour);
