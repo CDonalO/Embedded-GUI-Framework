@@ -147,6 +147,11 @@ void GUI_Grid::adjust_elements()
 
             for (int x = 0; x < elements.size(); x++)
             {
+                if (elements[x]->is_hidden())
+                {
+                    continue;
+                }
+
                 if (grid_type == GRID_TYPE_VERTICAL && elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
                 {
                     auto_sizeable_elements--;
@@ -218,11 +223,17 @@ void GUI_Grid::adjust_elements()
     {
         if (grid_type == GRID_TYPE_VERTICAL)
         {
-            new_y += elements[x - 1]->get_height() + element_padding;
+            if (!elements[x - 1]->is_hidden())
+            {
+                new_y += elements[x - 1]->get_height() + element_padding;
+            }
         }
         else if (grid_type == GRID_TYPE_HORIZONTAL)
         {
-            new_x += elements[x - 1]->get_width() + element_padding;
+            if (!elements[x - 1]->is_hidden())
+            {
+                new_x += elements[x - 1]->get_width() + element_padding;
+            }
         }
 
         elements[x]->set_x(new_x);
