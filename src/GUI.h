@@ -65,4 +65,37 @@ static const uint16_t LIGHT_BLUE = RGB(144, 194, 250);
 #include "GUI_Grid.h"
 #include "GUI_Label.h"
 
+typedef struct form_number_data
+{
+    uint32_t id;
+    int min;
+    int max;
+    int value;
+    std::vector<GUI_Button *> modifying_buttons;
+} _form_number_data;
+
+typedef struct form_data
+{
+    char *form_value[32];
+    std::vector<form_number_data *> data_stack;
+} _form_data;
+
+inline form_number_data *get_form_data_by_id(form_data *data, uint32_t id)
+{
+    for (int i = 0; i < data->data_stack.size(); i++)
+    {
+        form_number_data *v = data->data_stack[i];
+
+        if (v->id == id)
+        {
+            return v;
+        }
+    }
+    return NULL;
+}
+
+typedef bool (*form_value_update_fun)(form_data *data);
+
+#include "GUI_Form.h"
+
 #endif /* _GUI_H_ */

@@ -37,10 +37,12 @@ public:
     enum class Element_Type
     {
         BUTTON,
+        TOGGLE_BUTTON,
         MENU,
         VIEW,
         GRID,
         LABEL,
+        FORM,
     };
 
     virtual ~GUI_Element() = default;

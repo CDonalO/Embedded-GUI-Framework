@@ -69,6 +69,7 @@ public:
 
     void draw(Adafruit_GFX *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
+    GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::TOGGLE_BUTTON; }
 
     void set_toggle_button_style(TOGGLE_BUTTON_STYLE style);
     void toggle();
