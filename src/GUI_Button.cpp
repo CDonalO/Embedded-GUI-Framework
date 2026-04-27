@@ -201,6 +201,11 @@ void GUI_Button::set_button_style(BUTTON_STYLE style)
     button_style = style;
 }
 
+void GUI_Button::set_button_str(const char *button_str)
+{
+    strncpy((char *)text, button_str, sizeof(text));
+}
+
 void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour)
 {
     icon_bitmap = _bitmap;
