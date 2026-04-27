@@ -38,8 +38,29 @@ void GUI_Button::draw(Adafruit_GFX *display)
     switch (button_style)
     {
     case BUTTON_ROUND_STYLE:
+    case BUTTON_ROUND_STYLE_UP_ARROW:
+    case BUTTON_ROUND_STYLE_DOWN_ARROW:
         display->fillRoundRect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
         display->fillRoundRect(get_x() + 2, get_y() + 2, get_width() - 4, get_height() - 4, border_radius, bg_c);
+
+        if (button_style == BUTTON_ROUND_STYLE_UP_ARROW || button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
+        {
+            // TODO make this dynamically sized
+            bool arrow_up_dir = true;
+            if (button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
+            {
+                arrow_up_dir = false;
+            }
+
+            int arrow_width = 15;
+            int arrow_height = 15;
+            int arrow_x1 = get_x() + (get_width() / 2) - (arrow_width / 2);
+            int arrow_y1 = get_y() + (get_height() / 2) - (arrow_up_dir ? -(arrow_height / 2) : (arrow_height / 2));
+            int arrow_y2 = arrow_y1 - (arrow_up_dir ? arrow_height : -arrow_height);
+
+            display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 + (arrow_width / 2), arrow_y2, arrow_x1 + arrow_width, arrow_y1, font_c);
+        }
+
         break;
     case BUTTON_SQUARE_STYLE:
         display->fillRect(get_x(), get_y(), get_width(), get_height(), trim_c);
@@ -69,7 +90,11 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
     display->setCursor(text_x, text_y);
     display->setTextColor(font_c);
-    display->println((char *)text);
+
+    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW)
+    {
+        display->println((char *)text);
+    }
 }
 
 void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
