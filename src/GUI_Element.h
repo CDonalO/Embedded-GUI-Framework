@@ -22,10 +22,18 @@ public:
     GUI_Element(int16_t _x, int16_t _y);
     GUI_Element();
 
+    enum class Element_Type
+    {
+        BUTTON,
+        MENU,
+        VIEW,
+    };
+
     virtual ~GUI_Element() = default;
 
     virtual void draw(Adafruit_GFX *display) = 0;
     virtual bool navigate(int16_t x_pos, int16_t y_pos) = 0;
+    virtual Element_Type get_type() = 0;
 
     int16_t get_x();
     int16_t get_y();
