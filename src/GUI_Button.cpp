@@ -8,6 +8,9 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun 
     user_data = _user_data;
     click_cb = _click_cb;
     disabled = false;
+    icon_bitmap = NULL;
+    icon_width = 0;
+    icon_height = 0;
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -63,8 +66,16 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
         break;
     case BUTTON_SQUARE_STYLE:
+    case BUTTON_ICON_STYLE:
         display->fillRect(get_x(), get_y(), get_width(), get_height(), trim_c);
         display->fillRect(get_x() + 4, get_y() + 4, get_width() - 8, get_height() - 8, bg_c);
+
+        if (button_style == BUTTON_ICON_STYLE && icon_bitmap != NULL)
+        {
+            int bitmap_x = get_x() + (get_width() / 2) - icon_width / 2;
+            int bitmap_y = get_y() + (get_height() / 2) - icon_height / 2;
+            display->drawBitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, icon_bg_colour);
+        }
         break;
     }
 
@@ -91,7 +102,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
     display->setCursor(text_x, text_y);
     display->setTextColor(font_c);
 
-    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW)
+    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE)
     {
         display->println((char *)text);
     }
@@ -111,6 +122,14 @@ void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
 void GUI_Button::set_refresh(bool r)
 {
     refresh = r;
+}
+
+void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour)
+{
+    icon_bitmap = _bitmap;
+    icon_width = _width;
+    icon_height = _height;
+    icon_bg_colour = _icon_bg_colour;
 }
 
 void GUI_Button::set_click_user_cb(click_cb_fun _click_cb, void *_user_data)

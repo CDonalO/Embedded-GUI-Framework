@@ -9,6 +9,7 @@ typedef enum
     BUTTON_ROUND_STYLE,
     BUTTON_ROUND_STYLE_UP_ARROW,
     BUTTON_ROUND_STYLE_DOWN_ARROW,
+    BUTTON_ICON_STYLE,
     BUTTON_SQUARE_STYLE,
 } BUTTON_STYLE;
 
@@ -25,6 +26,10 @@ private:
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     TEXT_ALIGN align_value;
+    uint8_t *icon_bitmap;
+    uint8_t icon_width;
+    uint8_t icon_height;
+    uint16_t icon_bg_colour;
 
 protected:
     click_cb_fun click_cb;
@@ -40,6 +45,7 @@ public:
     void set_refresh(bool r) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
 
+    void set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour);
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();
