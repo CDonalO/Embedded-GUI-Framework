@@ -46,7 +46,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
     case BUTTON_ROUND_STYLE_LEFT_ARROW:
     case BUTTON_ROUND_STYLE_RIGHT_ARROW:
         display->fillRoundRect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
-        display->fillRoundRect(get_x() + 2, get_y() + 2, get_width() - 4, get_height() - 4, border_radius, bg_c);
+        display->fillRoundRect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
 
         if (button_style == BUTTON_ROUND_STYLE_UP_ARROW || button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
         {
@@ -134,7 +134,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
     case BUTTON_SQUARE_STYLE:
     case BUTTON_ICON_STYLE:
         display->fillRect(get_x(), get_y(), get_width(), get_height(), trim_c);
-        display->fillRect(get_x() + 4, get_y() + 4, get_width() - 8, get_height() - 8, bg_c);
+        display->fillRect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
 
         if (button_style == BUTTON_ICON_STYLE && icon_bitmap != NULL)
         {
