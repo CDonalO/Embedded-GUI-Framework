@@ -43,6 +43,8 @@ void GUI_Button::draw(Adafruit_GFX *display)
     case BUTTON_ROUND_STYLE:
     case BUTTON_ROUND_STYLE_UP_ARROW:
     case BUTTON_ROUND_STYLE_DOWN_ARROW:
+    case BUTTON_ROUND_STYLE_LEFT_ARROW:
+    case BUTTON_ROUND_STYLE_RIGHT_ARROW:
         display->fillRoundRect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
         display->fillRoundRect(get_x() + 2, get_y() + 2, get_width() - 4, get_height() - 4, border_radius, bg_c);
 
@@ -58,10 +60,74 @@ void GUI_Button::draw(Adafruit_GFX *display)
             int arrow_width = 15;
             int arrow_height = 15;
             int arrow_x1 = get_x() + (get_width() / 2) - (arrow_width / 2);
-            int arrow_y1 = get_y() + (get_height() / 2) - (arrow_up_dir ? -(arrow_height / 2) : (arrow_height / 2));
-            int arrow_y2 = arrow_y1 - (arrow_up_dir ? arrow_height : -arrow_height);
+            int arrow_y1 = get_y() + (get_height() / 2);
 
-            display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 + (arrow_width / 2), arrow_y2, arrow_x1 + arrow_width, arrow_y1, font_c);
+            if (arrow_up_dir)
+            {
+                arrow_y1 += (arrow_height / 2);
+            }
+            else
+            {
+                arrow_y1 -= (arrow_height / 2);
+            }
+
+            int arrow_x2 = arrow_x1 + (arrow_width / 2);
+            int arrow_y2 = arrow_y1;
+
+            if (arrow_up_dir)
+            {
+                arrow_y2 -= arrow_height;
+            }
+            else
+            {
+                arrow_y2 += arrow_height;
+            }
+
+            int arrow_x3 = arrow_x1 + arrow_width;
+            int arrow_y3 = arrow_y1;
+
+            display->fillTriangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
+        }
+        else if (button_style == BUTTON_ROUND_STYLE_LEFT_ARROW || button_style == BUTTON_ROUND_STYLE_RIGHT_ARROW)
+        {
+            // TODO make this dynamically sized
+            bool arrow_left_dir = true;
+            if (button_style == BUTTON_ROUND_STYLE_RIGHT_ARROW)
+            {
+                arrow_left_dir = false;
+            }
+
+            int arrow_width = 15;
+            int arrow_height = 15;
+
+            int arrow_x1 = get_x() + (get_width() / 2);
+
+            if (arrow_left_dir)
+            {
+                arrow_x1 += (arrow_width / 2);
+            }
+            else
+            {
+                arrow_x1 -= (arrow_width / 2);
+            }
+
+            int arrow_y1 = get_y() + (get_height() / 2) - (arrow_height / 2);
+            int arrow_x2 = arrow_x1;
+
+            if (arrow_left_dir)
+            {
+                arrow_x2 -= arrow_width;
+            }
+            else
+            {
+                arrow_x2 += arrow_width;
+            }
+
+            int arrow_y2 = arrow_y1 + (arrow_height / 2);
+            int arrow_x3 = arrow_x1;
+            int arrow_y3 = arrow_y1 + arrow_height;
+
+            display->fillTriangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
         }
 
         break;
@@ -102,7 +168,8 @@ void GUI_Button::draw(Adafruit_GFX *display)
     display->setCursor(text_x, text_y);
     display->setTextColor(font_c);
 
-    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE)
+    // TODO Make this better
+    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
     {
         display->println((char *)text);
     }
