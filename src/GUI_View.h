@@ -24,7 +24,7 @@ public:
 
     void set_menu(GUI_Menu *menu);
     void reverse_menus();
-    void set_menu_bar_colours(uint16_t bg_colour, uint16_t arrow_colour);
+    void set_menu_bar_colours(uint16_t return_bg_colour, uint16_t arrow_colour);
 };
 
 #endif /* _GUI_View_H_ */

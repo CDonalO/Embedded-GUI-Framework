@@ -14,8 +14,11 @@ void GUI_View::draw()
 {
     uint16_t text_y, text_x;
 
-    display->fillRect(0, 0, get_width(), menu_bar_size, get_trim_colour());
-    display->fillRect(0, 0, get_width(), menu_bar_size - 1, get_background_colour());
+    if (refresh)
+    {
+        display->fillRect(0, 0, get_width(), menu_bar_size, get_trim_colour());
+        display->fillRect(0, 0, get_width(), menu_bar_size - 1, get_background_colour());
+    }
 
     if (menu_stack.size() > 0)
     {
@@ -23,27 +26,31 @@ void GUI_View::draw()
         menu_stack.top()->set_y_offset(menu_bar_size);
         menu_stack.top()->draw(display);
 
-        const char *menu_name = menu_stack.top()->get_menu_name();
-
-        display->setTextColor(get_text_colour());
-        display->setTextSize(get_text_size());
-
-        text_x = center_text_horizontal((char *)menu_name, get_width(), 0, display);
-        text_y = center_text_vertical((char *)menu_name, menu_bar_size, 0, display);
-
-        display->setCursor(text_x, text_y);
-        display->println(menu_name);
-
-        if (menu_stack.size() > 1)
+        if (refresh)
         {
-            // TODO Make this dynamically sized
-            int arrow_x1 = 24;
-            int arrow_y1 = 6;
-            int arrow_height = menu_bar_size / 2;
-            int arrow_width = 8;
-            display->fillRoundRect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
-            display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
-            display->fillTriangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
+            const char *menu_name = menu_stack.top()->get_menu_name();
+
+            display->setTextColor(get_text_colour());
+            display->setTextSize(get_text_size());
+
+            text_x = center_text_horizontal((char *)menu_name, get_width(), 0, display);
+            text_y = center_text_vertical((char *)menu_name, menu_bar_size, 0, display);
+
+            display->setCursor(text_x, text_y);
+            display->println(menu_name);
+
+            if (menu_stack.size() > 1)
+            {
+                // TODO Make this dynamically sized
+                int arrow_x1 = 24;
+                int arrow_y1 = 6;
+                int arrow_height = menu_bar_size / 2;
+                int arrow_width = 8;
+                display->fillRoundRect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
+                display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
+                display->fillTriangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
+            }
+            refresh = false;
         }
     }
 
@@ -86,6 +93,8 @@ void GUI_View::set_menu(GUI_Menu *menu)
 
     menu->set_refresh(true);
     menu_stack.push(menu);
+
+    refresh = true;
 }
 
 void GUI_View::reverse_menus(void)
@@ -96,10 +105,11 @@ void GUI_View::reverse_menus(void)
     }
 
     menu_stack.top()->set_refresh(true);
+    refresh = true;
 }
 
-void GUI_View::set_menu_bar_colours(uint16_t bg_colour, uint16_t arrow_colour)
+void GUI_View::set_menu_bar_colours(uint16_t return_bg_colour, uint16_t arrow_colour)
 {
-    back_button_bg_colour = bg_colour;
+    back_button_bg_colour = return_bg_colour;
     back_button_arrow_colour = arrow_colour;
 }
