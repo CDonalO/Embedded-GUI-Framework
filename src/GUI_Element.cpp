@@ -16,6 +16,8 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     max_width_px = 0;
     max_height_px = 0;
     refresh = true;
+    width_auto_size = false;
+    height_auto_size = false;
 }
 
 GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
