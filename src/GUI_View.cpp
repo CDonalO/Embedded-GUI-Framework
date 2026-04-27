@@ -70,7 +70,7 @@ void GUI_View::draw(Adafruit_GFX *display)
 
 void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
 {
-    if (menu_stack.size() > 1 && y_pos >= 0 && y_pos <= menu_bar_size)
+    if (menu_stack.size() > 1 && y_pos >= 0 && y_pos <= menu_bar_size && x_pos >= 0 && x_pos <= get_width() / 2)
     {
         // TODO Make this dynamically sized
         reverse_menus();
