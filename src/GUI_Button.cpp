@@ -7,6 +7,7 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun 
     align_value = _align;
     user_data = _user_data;
     click_cb = _click_cb;
+    disabled = false;
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -73,6 +74,9 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
 void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
 {
+    if (is_disabled())
+        return;
+
     if (click_cb != NULL)
     {
         refresh = click_cb(user_data);
@@ -88,6 +92,16 @@ void GUI_Button::set_click_user_cb(click_cb_fun _click_cb, void *_user_data)
 {
     click_cb = _click_cb;
     user_data = _user_data;
+}
+
+void GUI_Button::set_disabled(bool disable)
+{
+    disabled = disable;
+}
+
+bool GUI_Button::is_disabled()
+{
+    return disabled;
 }
 
 GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, bool default_value, TEXT_ALIGN _align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, _click_cb, NULL, _align)
@@ -152,6 +166,9 @@ void GUI_Toggle_Button::draw(Adafruit_GFX *display)
 
 void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
 {
+    if (is_disabled())
+        return;
+
     toggle();
 
     if (click_cb != NULL)

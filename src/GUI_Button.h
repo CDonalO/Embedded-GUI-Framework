@@ -27,6 +27,7 @@ private:
 protected:
     click_cb_fun click_cb;
     void *user_data;
+    bool disabled;
 
 public:
     GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, void *_user_data = NULL, TEXT_ALIGN _align = ALIGN_CENTER);
@@ -38,6 +39,8 @@ public:
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
 
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
+    void set_disabled(bool disable);
+    bool is_disabled();
 };
 
 class GUI_Toggle_Button : public GUI_Button
