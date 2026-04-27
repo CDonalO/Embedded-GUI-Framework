@@ -10,6 +10,8 @@ typedef enum
     GRID_TYPE_HORIZONTAL,
 } GRID_TYPE;
 
+#define GRID_ATTRIBUTE_NONE (1 << 0)
+#define GRID_ATTRIBUTE_FLEX (1 << 1)
 class GUI_Grid : public GUI_Element
 {
 private:
@@ -19,12 +21,11 @@ private:
     uint16_t left_border_padding;
     uint16_t right_border_padding;
     uint16_t element_padding;
+    uint8_t attributes;
     std::vector<GUI_Element *> elements;
 
-    void adjust_elements();
-
 public:
-    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t _element_padding);
+    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t _element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE);
     ~GUI_Grid();
 
     void draw(Adafruit_GFX *display) override;
@@ -32,6 +33,7 @@ public:
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::GRID; }
 
     void add_element(GUI_Element *element);
+    void adjust_elements();
     void set_top_border_padding(uint16_t border_padding);
     void set_bottom_border_padding(uint16_t border_padding);
     void set_left_border_padding(uint16_t border_padding);

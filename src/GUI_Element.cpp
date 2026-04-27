@@ -46,6 +46,16 @@ uint16_t GUI_Element::get_height()
     return height;
 }
 
+bool GUI_Element::get_width_auto_sizeable()
+{
+    return width_auto_size;
+}
+
+bool GUI_Element::get_height_auto_sizeable()
+{
+    return height_auto_size;
+}
+
 uint16_t GUI_Element::get_background_colour()
 {
     return background_colour;
@@ -102,6 +112,16 @@ void GUI_Element::set_dimensions(int16_t _x, int16_t _y, uint16_t _width, uint16
     set_y(_y);
     set_width(_width);
     set_height(_height);
+}
+
+void GUI_Element::set_width_auto_sizeable(bool auto_sizeable)
+{
+    width_auto_size = auto_sizeable;
+}
+
+void GUI_Element::set_height_auto_sizeable(bool auto_sizeable)
+{
+    height_auto_size = auto_sizeable;
 }
 
 void GUI_Element::set_background_colour(uint16_t _background_colour)

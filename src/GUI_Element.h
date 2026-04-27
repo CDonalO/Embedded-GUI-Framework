@@ -18,6 +18,8 @@ private:
     uint8_t text_size;
     bool hidden;
     bool selected;
+    bool width_auto_size;
+    bool height_auto_size;
 
 public:
     GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w);
@@ -44,6 +46,8 @@ public:
     uint16_t get_y_offset();
     uint16_t get_width();
     uint16_t get_height();
+    bool get_width_auto_sizeable();
+    bool get_height_auto_sizeable();
     uint16_t get_background_colour();
     uint16_t get_trim_colour();
     uint16_t get_text_colour();
@@ -55,6 +59,8 @@ public:
     void set_width(uint16_t _width);
     void set_height(uint16_t _height);
     void set_dimensions(int16_t _x, int16_t _y, uint16_t _w, uint16_t _h);
+    void set_width_auto_sizeable(bool auto_sizeable);
+    void set_height_auto_sizeable(bool auto_sizeable);
     void set_background_colour(uint16_t _background_colour);
     void set_trim_colour(uint16_t _trim_colour);
     void set_text_colour(uint16_t _text_colour);

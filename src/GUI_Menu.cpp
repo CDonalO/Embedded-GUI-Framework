@@ -52,6 +52,8 @@ void GUI_Menu::add_element(GUI_Element *element)
         {
             element->set_height(get_height());
         }
+        GUI_Grid *grid_element = static_cast<GUI_Grid *>(element);
+        grid_element->adjust_elements();
     }
     elements.push_back(element);
 }
