@@ -12,6 +12,7 @@ typedef enum
 
 #define GRID_ATTRIBUTE_NONE (1 << 0)
 #define GRID_ATTRIBUTE_FLEX (1 << 1)
+#define GRID_ATTRIBUTE_CENTER_FLEX (1 << 2)
 class GUI_Grid : public GUI_Element
 {
 private:
