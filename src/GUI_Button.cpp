@@ -1,9 +1,10 @@
 #include "GUI.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str) : GUI_Element()
+GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, TEXT_ALIGN _align) : GUI_Element()
 {
     button_style = style;
     border_radius = 10;
+    align_value = _align;
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -36,7 +37,22 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
     display->setTextSize(get_text_size());
 
-    text_x = center_text_horizontal((char *)text, get_width(), get_x(), display);
+    if (align_value == ALIGN_CENTER)
+    {
+        text_x = center_text_horizontal((char *)text, get_width(), get_x(), display);
+    }
+    else if (align_value == ALIGN_LEFT)
+    {
+        text_x = get_x() + 5;
+    }
+    else if (align_value == ALIGN_RIGHT)
+    {
+        int16_t x1, y1;
+        uint16_t w, h;
+        display->getTextBounds((char *)text, 0, 0, &x1, &y1, &w, &h);
+        text_x = get_x() + get_width() - w - 5;
+    }
+
     text_y = center_text_vertical((char *)text, get_height(), get_y(), display);
 
     display->setCursor(text_x, text_y);

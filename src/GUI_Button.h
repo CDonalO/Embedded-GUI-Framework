@@ -16,9 +16,10 @@ private:
     char *text[32];
     BUTTON_STYLE button_style;
     uint8_t border_radius;
+    TEXT_ALIGN align_value;
 
 public:
-    GUI_Button(BUTTON_STYLE style, const char *button_str);
+    GUI_Button(BUTTON_STYLE style, const char *button_str, TEXT_ALIGN _align = ALIGN_CENTER);
     ~GUI_Button();
 
     void draw(Adafruit_GFX *display) override;

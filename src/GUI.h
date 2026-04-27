@@ -6,6 +6,13 @@
 #include <vector>
 #include <stack>
 
+typedef enum
+{
+    ALIGN_CENTER,
+    ALIGN_LEFT,
+    ALIGN_RIGHT,
+} TEXT_ALIGN;
+
 inline uint16_t center_text_vertical(char *str, uint16_t container_h, uint16_t container_y, Adafruit_GFX *display)
 {
     int16_t x_bound, y_bound;
