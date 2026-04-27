@@ -14,7 +14,7 @@
       "maintainer": true
     }
   ],
-  "license": "GPLv3",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "adafruit/Adafruit GFX Library": "1.12.1"
   },
