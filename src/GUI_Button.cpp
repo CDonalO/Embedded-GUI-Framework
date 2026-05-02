@@ -22,11 +22,11 @@ GUI_Button::~GUI_Button()
 {
 }
 
-void GUI_Button::draw(Adafruit_GFX *display)
+void GUI_Button::draw(display_driver *display)
 {
-    uint16_t bg_c = RGB_adafruit(get_background_colour());
-    uint16_t trim_c = RGB_adafruit(get_trim_colour());
-    uint16_t font_c = RGB_adafruit(get_text_colour());
+    RGB bg_c = get_background_colour();
+    RGB trim_c = get_trim_colour();
+    RGB font_c = get_text_colour();
     uint16_t text_x, text_y;
 
     if (!refresh)
@@ -37,16 +37,16 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
     if (is_selected())
     {
-        bg_c = RGB_adafruit(get_active_background_colour());
-        trim_c = RGB_adafruit(get_active_trim_colour());
-        font_c = RGB_adafruit(get_active_text_colour());
+        bg_c = get_active_background_colour();
+        trim_c = get_active_trim_colour();
+        font_c = get_active_text_colour();
     }
 
     if (is_disabled())
     {
-        bg_c = RGB_adafruit(disabled_bg_colour);
-        trim_c = RGB_adafruit(disabled_trim_colour);
-        font_c = RGB_adafruit(disabled_text_colour);
+        bg_c = disabled_bg_colour;
+        trim_c = disabled_trim_colour;
+        font_c = disabled_text_colour;
     }
 
     switch (button_style)
@@ -56,8 +56,8 @@ void GUI_Button::draw(Adafruit_GFX *display)
     case BUTTON_ROUND_STYLE_DOWN_ARROW:
     case BUTTON_ROUND_STYLE_LEFT_ARROW:
     case BUTTON_ROUND_STYLE_RIGHT_ARROW:
-        display->fillRoundRect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
-        display->fillRoundRect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
+        display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
+        display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
 
         if (button_style == BUTTON_ROUND_STYLE_UP_ARROW || button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
         {
@@ -97,7 +97,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
             int arrow_x3 = arrow_x1 + arrow_width;
             int arrow_y3 = arrow_y1;
 
-            display->fillTriangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
+            display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
         }
         else if (button_style == BUTTON_ROUND_STYLE_LEFT_ARROW || button_style == BUTTON_ROUND_STYLE_RIGHT_ARROW)
         {
@@ -138,29 +138,29 @@ void GUI_Button::draw(Adafruit_GFX *display)
             int arrow_x3 = arrow_x1;
             int arrow_y3 = arrow_y1 + arrow_height;
 
-            display->fillTriangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
+            display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
         }
 
         break;
     case BUTTON_SQUARE_STYLE:
     case BUTTON_ICON_STYLE:
-        display->fillRect(get_x(), get_y(), get_width(), get_height(), trim_c);
-        display->fillRect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
+        display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
+        display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
 
         if (button_style == BUTTON_ICON_STYLE && icon_bitmap != NULL)
         {
             int bitmap_x = get_x() + (get_width() / 2) - icon_width / 2;
             int bitmap_y = get_y() + (get_height() / 2) - icon_height / 2;
-            display->drawBitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, RGB_adafruit(icon_bg_colour));
+            display->draw_bitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, icon_bg_colour);
         }
         break;
     }
 
-    display->setTextSize(get_text_size());
+    display->set_text_size(get_text_size());
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = center_text_horizontal((char *)text, get_width(), get_x(), display);
+        text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -170,24 +170,23 @@ void GUI_Button::draw(Adafruit_GFX *display)
     {
         int16_t x1, y1;
         uint16_t w, h;
-        display->getTextBounds((char *)text, 0, 0, &x1, &y1, &w, &h);
+        display->get_text_bounds((char *)text, 0, 0, &x1, &y1, &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = center_text_vertical((char *)text, get_height(), get_y(), display);
+    text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
-    display->setCursor(text_x, text_y);
-    display->setTextColor(font_c);
+    display->set_text_colour(font_c);
 
     // TODO Make this better
     if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
     {
-        display->println((char *)text);
+        display->draw_text(text_x, text_y, (char *)text);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RGB_adafruit(RED));
-    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RGB_adafruit(RED));
+    display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
+    display->draw_line(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 
@@ -262,7 +261,7 @@ GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *butt
     toggle_element_colour = WHITE;
 }
 
-void GUI_Toggle_Button::draw(Adafruit_GFX *display)
+void GUI_Toggle_Button::draw(display_driver *display)
 {
     if (!refresh)
         return;
@@ -309,8 +308,8 @@ void GUI_Toggle_Button::draw(Adafruit_GFX *display)
             circle_x += circle_padding + (circle_r / 2);
         }
 
-        display->fillRoundRect(container_x, container_y, container_w, container_h, container_radius, value ? RGB_adafruit(toggled_colour) : RGB_adafruit(non_toggled_colour));
-        display->fillCircle(circle_x, circle_y, circle_r / 2, RGB_adafruit(toggle_element_colour));
+        display->draw_filled_round_rect(container_x, container_y, container_w, container_h, container_radius, value ? toggled_colour : non_toggled_colour);
+        display->draw_filled_circle(circle_x, circle_y, circle_r / 2, toggle_element_colour);
     }
     break;
     }

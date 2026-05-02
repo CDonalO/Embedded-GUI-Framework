@@ -48,7 +48,7 @@ public:
 
     virtual ~GUI_Element() = default;
 
-    virtual void draw(Adafruit_GFX *display) = 0;
+    virtual void draw(display_driver *display) = 0;
     virtual void navigate(int16_t x_pos, int16_t y_pos) = 0;
     virtual void set_refresh(bool r, bool p) = 0;
     virtual Element_Type get_type() = 0;

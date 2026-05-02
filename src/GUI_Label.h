@@ -13,7 +13,7 @@ public:
     GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, RGB text_colour);
     ~GUI_Label();
 
-    void draw(Adafruit_GFX *display) override;
+    void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r, bool p) override;
 

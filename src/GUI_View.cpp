@@ -6,7 +6,7 @@ typedef struct menu_change_event
     GUI_Menu *m;
 } _menu_change_event;
 
-GUI_View::GUI_View(Adafruit_GFX *_display, uint16_t _menu_bar_size) : GUI_Element()
+GUI_View::GUI_View(display_driver *_display, uint16_t _menu_bar_size) : GUI_Element()
 {
     display = _display;
     menu_bar_size = _menu_bar_size;
@@ -22,8 +22,8 @@ void GUI_View::draw()
 
     if (refresh)
     {
-        display->fillRect(0, 0, get_width(), menu_bar_size, RGB_adafruit(get_trim_colour()));
-        display->fillRect(0, 0, get_width(), menu_bar_size - 1, RGB_adafruit(get_background_colour()));
+        display->draw_filled_rect(0, 0, get_width(), menu_bar_size, get_trim_colour());
+        display->draw_filled_rect(0, 0, get_width(), menu_bar_size - 1, get_background_colour());
     }
 
     if (menu_stack.size() > 0)
@@ -36,14 +36,13 @@ void GUI_View::draw()
         {
             const char *menu_name = menu_stack.top()->get_menu_name();
 
-            display->setTextColor(RGB_adafruit(get_text_colour()));
-            display->setTextSize(get_text_size());
+            display->set_text_colour(get_text_colour());
+            display->set_text_size(get_text_size());
 
-            text_x = center_text_horizontal((char *)menu_name, get_width(), 0, display);
-            text_y = center_text_vertical((char *)menu_name, menu_bar_size, 0, display);
+            text_x = display->center_text_horizontal((char *)menu_name, get_width(), 0);
+            text_y = display->center_text_vertical((char *)menu_name, menu_bar_size, 0);
 
-            display->setCursor(text_x, text_y);
-            display->println(menu_name);
+            display->draw_text(text_x, text_y, menu_name);
 
             if (menu_stack.size() > 1)
             {
@@ -52,19 +51,19 @@ void GUI_View::draw()
                 int arrow_y1 = 6;
                 int arrow_height = menu_bar_size / 2;
                 int arrow_width = 8;
-                display->fillRoundRect(8, 2, menu_bar_size - 4, 22, 5, RGB_adafruit(back_button_bg_colour));
-                display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, RGB_adafruit(back_button_arrow_colour));
-                display->fillTriangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, RGB_adafruit(back_button_bg_colour));
+                display->draw_filled_round_rect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
+                display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
+                display->draw_filled_triangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
             }
             refresh = false;
         }
     }
 
-    display->setTextColor(RGB_adafruit(get_text_colour()));
-    display->setTextSize(get_text_size());
+    display->set_text_colour(get_text_colour());
+    display->set_text_size(get_text_size());
 }
 
-void GUI_View::draw(Adafruit_GFX *display)
+void GUI_View::draw(display_driver *display)
 {
 }
 

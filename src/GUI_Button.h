@@ -45,7 +45,7 @@ public:
     GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, void *_user_data = NULL, TEXT_ALIGN _align = ALIGN_CENTER);
     ~GUI_Button();
 
-    void draw(Adafruit_GFX *display) override;
+    void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
@@ -206,7 +206,7 @@ private:
 public:
     GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, bool default_value = false, TEXT_ALIGN _align = ALIGN_CENTER);
 
-    void draw(Adafruit_GFX *display) override;
+    void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::TOGGLE_BUTTON; }
 

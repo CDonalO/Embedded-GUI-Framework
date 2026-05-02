@@ -29,7 +29,7 @@ public:
     GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t _element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE);
     ~GUI_Grid();
 
-    void draw(Adafruit_GFX *display) override;
+    void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::GRID; }

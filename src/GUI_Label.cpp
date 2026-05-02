@@ -12,7 +12,7 @@ GUI_Label::~GUI_Label()
 {
 }
 
-void GUI_Label::draw(Adafruit_GFX *display)
+void GUI_Label::draw(display_driver *display)
 {
     int text_x, text_y;
 
@@ -22,12 +22,12 @@ void GUI_Label::draw(Adafruit_GFX *display)
     if (is_hidden())
         return;
 
-    display->setTextSize(get_text_size());
-    display->setTextColor(RGB_adafruit(get_text_colour()));
+    display->set_text_size(get_text_size());
+    display->set_text_colour(get_text_colour());
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = center_text_horizontal((char *)text, get_width(), get_x(), display);
+        text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -37,18 +37,17 @@ void GUI_Label::draw(Adafruit_GFX *display)
     {
         int16_t x1, y1;
         uint16_t w, h;
-        display->getTextBounds((char *)text, 0, 0, &x1, &y1, &w, &h);
+        display->get_text_bounds((char *)text, 0, 0, &x1, &y1, &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = center_text_vertical((char *)text, get_height(), get_y(), display);
+    text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
-    display->setCursor(text_x, text_y);
-    display->println((char *)text);
+    display->draw_text(text_x, text_y, (char *)text);
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RGB_adafruit(RED));
-    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RGB_adafruit(RED));
+    display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
+    display->draw_line(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 

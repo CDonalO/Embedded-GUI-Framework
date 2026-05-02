@@ -2,7 +2,6 @@
 #define _GUI_H_
 
 #include <Arduino.h>
-#include <Adafruit_GFX.h>
 #include <vector>
 #include <stack>
 
@@ -15,45 +14,10 @@ typedef enum
 
 typedef bool (*click_cb_fun)(void *user_data);
 
-inline uint16_t center_text_vertical(char *str, uint16_t container_h, uint16_t container_y, Adafruit_GFX *display)
-{
-    int16_t x_bound, y_bound;
-    uint16_t text_w, text_h;
-
-    if (str == NULL)
-    {
-        return 0;
-    }
-
-    display->getTextBounds(str, 0, container_y, &x_bound, &y_bound, &text_w, &text_h);
-
-    return container_y + (container_h / 2) + (text_h / 2);
-}
-
-inline uint16_t center_text_horizontal(char *str, uint16_t container_w, uint16_t container_x, Adafruit_GFX *display)
-{
-    int16_t x_bound, y_bound;
-    uint16_t text_w, text_h;
-
-    if (str == NULL)
-    {
-        return 0;
-    }
-
-    display->getTextBounds(str, container_x, 0, &x_bound, &y_bound, &text_w, &text_h);
-
-    return container_x + (container_w / 2) - (text_w / 2);
-}
-
-#include "GUI_Colours.h"
-
-inline uint16_t RGB_adafruit(RGB c)
-{
-    uint8_t r = c.get_red();
-    uint8_t g = c.get_green();
-    uint8_t b = c.get_blue();
-    return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
-}
+#include "display_driver.h"
+#if __has_include(<Adafruit_GFX.h>)
+#include "drivers/Adafruit_GFX_driver.h"
+#endif
 
 static const RGB WHITE(255, 255, 255);
 static const RGB BLACK(0, 0, 0);
