@@ -116,32 +116,32 @@ bool GUI_Element::get_height_auto_sizeable()
     return height_auto_size;
 }
 
-uint16_t GUI_Element::get_background_colour()
+RGB GUI_Element::get_background_colour()
 {
     return background_colour;
 }
 
-uint16_t GUI_Element::get_trim_colour()
+RGB GUI_Element::get_trim_colour()
 {
     return trim_colour;
 }
 
-uint16_t GUI_Element::get_active_background_colour()
+RGB GUI_Element::get_active_background_colour()
 {
     return active_background_colour;
 }
 
-uint16_t GUI_Element::get_active_trim_colour()
+RGB GUI_Element::get_active_trim_colour()
 {
     return active_trim_colour;
 }
 
-uint16_t GUI_Element::get_text_colour()
+RGB GUI_Element::get_text_colour()
 {
     return text_colour;
 }
 
-uint16_t GUI_Element::get_active_text_colour()
+RGB GUI_Element::get_active_text_colour()
 {
     return active_text_colour;
 }
@@ -209,27 +209,27 @@ void GUI_Element::set_height_auto_sizeable(bool auto_sizeable)
     height_auto_size = auto_sizeable;
 }
 
-void GUI_Element::set_background_colour(uint16_t _background_colour)
+void GUI_Element::set_background_colour(RGB _background_colour)
 {
     background_colour = _background_colour;
 }
 
-void GUI_Element::set_trim_colour(uint16_t _trim_colour)
+void GUI_Element::set_trim_colour(RGB _trim_colour)
 {
     trim_colour = _trim_colour;
 }
 
-void GUI_Element::set_active_background_colour(uint16_t _background_colour)
+void GUI_Element::set_active_background_colour(RGB _background_colour)
 {
     active_background_colour = _background_colour;
 }
 
-void GUI_Element::set_active_trim_colour(uint16_t _trim_colour)
+void GUI_Element::set_active_trim_colour(RGB _trim_colour)
 {
     active_trim_colour = _trim_colour;
 }
 
-void GUI_Element::set_colours(uint16_t _background_colour, uint16_t _active_background_colour, uint16_t _trim_colour, uint16_t _active_trim_colour)
+void GUI_Element::set_colours(RGB _background_colour, RGB _active_background_colour, RGB _trim_colour, RGB _active_trim_colour)
 {
     set_background_colour(_background_colour);
     set_active_background_colour(_active_background_colour);
@@ -237,29 +237,29 @@ void GUI_Element::set_colours(uint16_t _background_colour, uint16_t _active_back
     set_active_trim_colour(_active_trim_colour);
 }
 
-void GUI_Element::set_base_colours(uint16_t _background_colour, uint16_t _trim_colour)
+void GUI_Element::set_base_colours(RGB _background_colour, RGB _trim_colour)
 {
     set_background_colour(_background_colour);
     set_trim_colour(_trim_colour);
 }
 
-void GUI_Element::set_active_colours(uint16_t _active_background_colour, uint16_t _active_trim_colour)
+void GUI_Element::set_active_colours(RGB _active_background_colour, RGB _active_trim_colour)
 {
     set_active_background_colour(_active_background_colour);
     set_active_trim_colour(_active_trim_colour);
 }
 
-void GUI_Element::set_text_colour(uint16_t _text_colour)
+void GUI_Element::set_text_colour(RGB _text_colour)
 {
     text_colour = _text_colour;
 }
 
-void GUI_Element::set_active_text_colour(uint16_t _active_text_colour)
+void GUI_Element::set_active_text_colour(RGB _active_text_colour)
 {
     active_text_colour = _active_text_colour;
 }
 
-void GUI_Element::set_text_colours(uint16_t _text_colour, uint16_t _active_text_colour)
+void GUI_Element::set_text_colours(RGB _text_colour, RGB _active_text_colour)
 {
     set_text_colour(_text_colour);
     set_active_text_colour(_active_text_colour);

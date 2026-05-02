@@ -10,7 +10,7 @@ private:
     TEXT_ALIGN align_value;
 
 public:
-    GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, uint16_t text_colour);
+    GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, RGB text_colour);
     ~GUI_Label();
 
     void draw(Adafruit_GFX *display) override;

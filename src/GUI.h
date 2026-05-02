@@ -45,18 +45,23 @@ inline uint16_t center_text_horizontal(char *str, uint16_t container_w, uint16_t
     return container_x + (container_w / 2) - (text_w / 2);
 }
 
-inline uint16_t RGB(uint8_t r, uint8_t g, uint8_t b)
+#include "GUI_Colours.h"
+
+inline uint16_t RGB_adafruit(RGB c)
 {
+    uint8_t r = c.get_red();
+    uint8_t g = c.get_green();
+    uint8_t b = c.get_blue();
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
-static const uint16_t WHITE = RGB(255, 255, 255);
-static const uint16_t BLACK = RGB(0, 0, 0);
-static const uint16_t RED = RGB(255, 0, 0);
-static const uint16_t GREEN = RGB(0, 255, 0);
-static const uint16_t BLUE = RGB(0, 0, 255);
-static const uint16_t NAVY_BLUE = RGB(31, 58, 90);
-static const uint16_t LIGHT_BLUE = RGB(144, 194, 250);
+static const RGB WHITE(255, 255, 255);
+static const RGB BLACK(0, 0, 0);
+static const RGB RED(255, 0, 0);
+static const RGB GREEN(0, 255, 0);
+static const RGB BLUE(0, 0, 255);
+static const RGB NAVY_BLUE(31, 58, 90);
+static const RGB LIGHT_BLUE(144, 194, 250);
 
 #include "GUI_Element.h"
 #include "GUI_Button.h"

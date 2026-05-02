@@ -20,8 +20,8 @@ GUI_Form::~GUI_Form()
 void GUI_Form::draw(Adafruit_GFX *display)
 {
     uint16_t text_y = center_text_vertical((char *)label, get_height(), get_y(), display);
-    uint16_t trim_color = get_trim_colour();
-    uint16_t bg_color = get_background_colour();
+    uint16_t trim_color = RGB_adafruit(get_trim_colour());
+    uint16_t bg_color = RGB_adafruit(get_background_colour());
     bool update_value = false;
 
     if (refresh)
@@ -46,7 +46,7 @@ void GUI_Form::draw(Adafruit_GFX *display)
         display->fillRoundRect(get_x(), get_y(), get_width(), get_height(), 10, trim_color);
         display->fillRoundRect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, 10, bg_color);
         display->setCursor(get_x() + 10, text_y);
-        display->setTextColor(get_text_colour());
+        display->setTextColor(RGB_adafruit(get_text_colour()));
         display->println((char *)label);
     }
 
@@ -60,7 +60,7 @@ void GUI_Form::draw(Adafruit_GFX *display)
             text_y = center_text_vertical((char *)form_value, get_height(), get_y(), display);
             uint16_t text_x = get_x() + get_width() - text_width - 10;
             display->setCursor(text_x, text_y);
-            display->setTextColor(get_text_colour());
+            display->setTextColor(RGB_adafruit(get_text_colour()));
             // Draw a box over the old text to prevent needing to redraw the whole element.
             display->fillRoundRect(text_x - 4, get_y() + 2, (get_x() + get_width()) - text_x, get_height() - 4, 10, bg_color);
             display->println((char *)form_value);

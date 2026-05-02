@@ -12,11 +12,11 @@ GUI_Menu::~GUI_Menu()
 void GUI_Menu::draw(Adafruit_GFX *display)
 {
     if (refresh)
-        display->fillRect(get_x(), get_y(), get_width(), get_height(), get_background_colour());
+        display->fillRect(get_x(), get_y(), get_width(), get_height(), RGB_adafruit(get_background_colour()));
 
     for (int x = 0; x < elements.size(); x++)
     {
-        display->setTextColor(get_text_colour());
+        display->setTextColor(RGB_adafruit(get_text_colour()));
         display->setTextSize(get_text_size());
         elements[x]->set_x_offset(get_x());
         elements[x]->set_y_offset(get_y());

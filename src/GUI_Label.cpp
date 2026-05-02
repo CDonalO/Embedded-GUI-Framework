@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI_Label::GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, uint16_t text_colour) : GUI_Element()
+GUI_Label::GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, RGB text_colour) : GUI_Element()
 {
     set_text_colour(text_colour);
     set_text_size(text_size);
@@ -23,7 +23,7 @@ void GUI_Label::draw(Adafruit_GFX *display)
         return;
 
     display->setTextSize(get_text_size());
-    display->setTextColor(get_text_colour());
+    display->setTextColor(RGB_adafruit(get_text_colour()));
 
     if (align_value == ALIGN_CENTER)
     {
@@ -47,8 +47,8 @@ void GUI_Label::draw(Adafruit_GFX *display)
     display->println((char *)text);
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RGB_adafruit(RED));
+    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RGB_adafruit(RED));
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 

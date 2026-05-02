@@ -26,8 +26,8 @@ void GUI_Grid::draw(Adafruit_GFX *display)
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RGB_adafruit(RED));
+    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RGB_adafruit(RED));
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 

@@ -24,9 +24,9 @@ GUI_Button::~GUI_Button()
 
 void GUI_Button::draw(Adafruit_GFX *display)
 {
-    uint16_t bg_c = get_background_colour();
-    uint16_t trim_c = get_trim_colour();
-    uint16_t font_c = get_text_colour();
+    uint16_t bg_c = RGB_adafruit(get_background_colour());
+    uint16_t trim_c = RGB_adafruit(get_trim_colour());
+    uint16_t font_c = RGB_adafruit(get_text_colour());
     uint16_t text_x, text_y;
 
     if (!refresh)
@@ -37,16 +37,16 @@ void GUI_Button::draw(Adafruit_GFX *display)
 
     if (is_selected())
     {
-        bg_c = get_active_background_colour();
-        trim_c = get_active_trim_colour();
-        font_c = get_active_text_colour();
+        bg_c = RGB_adafruit(get_active_background_colour());
+        trim_c = RGB_adafruit(get_active_trim_colour());
+        font_c = RGB_adafruit(get_active_text_colour());
     }
 
     if (is_disabled())
     {
-        bg_c = disabled_bg_colour;
-        trim_c = disabled_trim_colour;
-        font_c = disabled_text_colour;
+        bg_c = RGB_adafruit(disabled_bg_colour);
+        trim_c = RGB_adafruit(disabled_trim_colour);
+        font_c = RGB_adafruit(disabled_text_colour);
     }
 
     switch (button_style)
@@ -151,7 +151,7 @@ void GUI_Button::draw(Adafruit_GFX *display)
         {
             int bitmap_x = get_x() + (get_width() / 2) - icon_width / 2;
             int bitmap_y = get_y() + (get_height() / 2) - icon_height / 2;
-            display->drawBitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, icon_bg_colour);
+            display->drawBitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, RGB_adafruit(icon_bg_colour));
         }
         break;
     }
@@ -186,8 +186,8 @@ void GUI_Button::draw(Adafruit_GFX *display)
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->drawLine(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RGB_adafruit(RED));
+    display->drawLine(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RGB_adafruit(RED));
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 
@@ -222,7 +222,7 @@ void GUI_Button::set_button_str(const char *button_str)
     strncpy((char *)text, button_str, sizeof(text));
 }
 
-void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, uint16_t _icon_bg_colour)
+void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, RGB _icon_bg_colour)
 {
     icon_bitmap = _bitmap;
     icon_width = _width;
@@ -246,7 +246,7 @@ bool GUI_Button::is_disabled()
     return disabled;
 }
 
-void GUI_Button::set_disabled_colours(uint16_t _disabled_bg_colour, uint16_t _disabled_trim_colour, uint16_t _disabled_text_colour)
+void GUI_Button::set_disabled_colours(RGB _disabled_bg_colour, RGB _disabled_trim_colour, RGB _disabled_text_colour)
 {
     disabled_bg_colour = _disabled_bg_colour;
     disabled_trim_colour = _disabled_trim_colour;
@@ -309,8 +309,8 @@ void GUI_Toggle_Button::draw(Adafruit_GFX *display)
             circle_x += circle_padding + (circle_r / 2);
         }
 
-        display->fillRoundRect(container_x, container_y, container_w, container_h, container_radius, value ? toggled_colour : non_toggled_colour);
-        display->fillCircle(circle_x, circle_y, circle_r / 2, toggle_element_colour);
+        display->fillRoundRect(container_x, container_y, container_w, container_h, container_radius, value ? RGB_adafruit(toggled_colour) : RGB_adafruit(non_toggled_colour));
+        display->fillCircle(circle_x, circle_y, circle_r / 2, RGB_adafruit(toggle_element_colour));
     }
     break;
     }
@@ -365,7 +365,7 @@ bool GUI_Toggle_Button::get_toggled()
     return value;
 }
 
-void GUI_Toggle_Button::set_toggled_colours(uint16_t _toggled_colour, uint16_t _non_toggled_colour, uint16_t _toggle_element_colour)
+void GUI_Toggle_Button::set_toggled_colours(RGB _toggled_colour, RGB _non_toggled_colour, RGB _toggle_element_colour)
 {
     toggled_colour = _toggled_colour;
     non_toggled_colour = _non_toggled_colour;

@@ -22,8 +22,8 @@ void GUI_View::draw()
 
     if (refresh)
     {
-        display->fillRect(0, 0, get_width(), menu_bar_size, get_trim_colour());
-        display->fillRect(0, 0, get_width(), menu_bar_size - 1, get_background_colour());
+        display->fillRect(0, 0, get_width(), menu_bar_size, RGB_adafruit(get_trim_colour()));
+        display->fillRect(0, 0, get_width(), menu_bar_size - 1, RGB_adafruit(get_background_colour()));
     }
 
     if (menu_stack.size() > 0)
@@ -36,7 +36,7 @@ void GUI_View::draw()
         {
             const char *menu_name = menu_stack.top()->get_menu_name();
 
-            display->setTextColor(get_text_colour());
+            display->setTextColor(RGB_adafruit(get_text_colour()));
             display->setTextSize(get_text_size());
 
             text_x = center_text_horizontal((char *)menu_name, get_width(), 0, display);
@@ -52,15 +52,15 @@ void GUI_View::draw()
                 int arrow_y1 = 6;
                 int arrow_height = menu_bar_size / 2;
                 int arrow_width = 8;
-                display->fillRoundRect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
-                display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
-                display->fillTriangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
+                display->fillRoundRect(8, 2, menu_bar_size - 4, 22, 5, RGB_adafruit(back_button_bg_colour));
+                display->fillTriangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, RGB_adafruit(back_button_arrow_colour));
+                display->fillTriangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, RGB_adafruit(back_button_bg_colour));
             }
             refresh = false;
         }
     }
 
-    display->setTextColor(get_text_colour());
+    display->setTextColor(RGB_adafruit(get_text_colour()));
     display->setTextSize(get_text_size());
 }
 
@@ -136,7 +136,7 @@ void GUI_View::register_menu_change_button(GUI_Button *button, GUI_Menu *menu)
     button->set_click_user_cb(set_menu_cb, user_data);
 }
 
-void GUI_View::set_menu_bar_colours(uint16_t return_bg_colour, uint16_t arrow_colour)
+void GUI_View::set_menu_bar_colours(RGB return_bg_colour, RGB arrow_colour)
 {
     back_button_bg_colour = return_bg_colour;
     back_button_arrow_colour = arrow_colour;
