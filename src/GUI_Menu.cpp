@@ -9,6 +9,11 @@ GUI_Menu::~GUI_Menu()
 {
 }
 
+/**
+ * @brief Draw menu
+ *
+ * @param display Display to draw meno on
+ */
 void GUI_Menu::draw(display_driver *display)
 {
     if (refresh)
@@ -38,6 +43,12 @@ void GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+/**
+ * @brief Set menu refresh value
+ *
+ * @param r Value to decide if menu should be redrawn
+ * @param p Value to decide if need to update parents refresh
+ */
 void GUI_Menu::set_refresh(bool r, bool p)
 {
     refresh = r;
@@ -51,6 +62,11 @@ void GUI_Menu::set_refresh(bool r, bool p)
     }
 }
 
+/**
+ * @brief Add element to menu
+ *
+ * @param element Element to add to menu
+ */
 void GUI_Menu::add_element(GUI_Element *element)
 {
     // TODO Improve this
@@ -72,6 +88,9 @@ void GUI_Menu::add_element(GUI_Element *element)
     elements.push_back(element);
 }
 
+/**
+ * @brief Adjust grid elements in menu
+ */
 void GUI_Menu::adjust_grids()
 {
     for (int x = 0; x < elements.size(); x++)

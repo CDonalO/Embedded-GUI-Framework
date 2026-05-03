@@ -63,6 +63,12 @@ public:
 
 typedef void (*linked_button_update_fun)(GUI_Element *linked_element, bool toggle_value);
 
+/**
+ * @brief Disable button on toggle
+ *
+ * @param linked_element Button to be disabled on toggle
+ * @param toggle_value Toggle value to decide disabled state
+ */
 static void disable_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     GUI_Button *linked_button = NULL;
@@ -86,6 +92,12 @@ static void disable_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
+/**
+ * @brief Enable button on toggle
+ *
+ * @param linked_element Button to be enabled on toggle
+ * @param toggle_value Toggle value to decide enable state
+ */
 static void enable_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     GUI_Button *linked_button = NULL;
@@ -109,6 +121,12 @@ static void enable_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
+/**
+ * @brief Hide element on toggle
+ *
+ * @param linked_element Element to be hidden on toggle
+ * @param toggle_value Toggle value to decide hidden state
+ */
 static void hide_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     if (toggle_value)
@@ -121,6 +139,12 @@ static void hide_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
+/**
+ * @brief Show element on toggle
+ *
+ * @param linked_element Element to be shown on toggle
+ * @param toggle_value Toggle value to decide shown state
+ */
 static void show_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     if (toggle_value)
@@ -133,6 +157,12 @@ static void show_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
+/**
+ * @brief Select element on toggle
+ *
+ * @param linked_element Element to be selected on toggle
+ * @param toggle_value Toggle value to decide selected state
+ */
 static void select_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     if (toggle_value)
@@ -145,6 +175,12 @@ static void select_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
+/**
+ * @brief Deselect element on toggle
+ *
+ * @param linked_element Element to be deselected on toggle
+ * @param toggle_value Toggle value to decide deselected state
+ */
 static void deselect_on_toggle(GUI_Element *linked_element, bool toggle_value)
 {
     if (toggle_value)
@@ -210,7 +246,7 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::TOGGLE_BUTTON; }
 
-    GUI_Element *clone() const { return new GUI_Toggle_Button(*this); }
+    GUI_Element *clone() const override { return new GUI_Toggle_Button(*this); }
 
     void link_button_state(GUI_Element *element, linked_button_update_fun linked_function);
     void set_toggle_button_style(TOGGLE_BUTTON_STYLE style);

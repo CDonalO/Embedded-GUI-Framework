@@ -22,7 +22,7 @@ public:
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::VIEW; }
 
-    GUI_Element *clone() const { return new GUI_View(*this); }
+    GUI_Element *clone() const override { return new GUI_View(*this); }
 
     void set_menu(GUI_Menu *menu);
     void reverse_menus();

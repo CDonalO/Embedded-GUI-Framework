@@ -22,6 +22,11 @@ GUI_Button::~GUI_Button()
 {
 }
 
+/**
+ * @brief Draw button
+ *
+ * @param display Display to draw button on
+ */
 void GUI_Button::draw(display_driver *display)
 {
     RGB bg_c = get_background_colour();
@@ -201,6 +206,12 @@ void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+/**
+ * @brief Set buttons refresh value
+ *
+ * @param r Value to decide if button should be redrawn
+ * @param p Value to decide if need to update parents refresh
+ */
 void GUI_Button::set_refresh(bool r, bool p)
 {
     refresh = r;
@@ -211,16 +222,34 @@ void GUI_Button::set_refresh(bool r, bool p)
     }
 }
 
+/**
+ * @brief Set button style
+ *
+ * @param style Button style
+ */
 void GUI_Button::set_button_style(BUTTON_STYLE style)
 {
     button_style = style;
 }
 
+/**
+ * @brief Set button string
+ *
+ * @param button_str Button string
+ */
 void GUI_Button::set_button_str(const char *button_str)
 {
     strncpy((char *)text, button_str, sizeof(text));
 }
 
+/**
+ * @brief Set button icon bitmap
+ *
+ * @param _bitmap Pointer to bitmap
+ * @param _width Width of bitmap
+ * @param _height Height of bitmap
+ * @param _icon_bg_colour Icon background colour
+ */
 void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, RGB _icon_bg_colour)
 {
     icon_bitmap = _bitmap;
@@ -229,22 +258,45 @@ void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _heig
     icon_bg_colour = _icon_bg_colour;
 }
 
+/**
+ * @brief Set button click callback function
+ *
+ * @param _click_cb Function called when button is pressed
+ * @param _user_data Data passed to the callback function
+ */
 void GUI_Button::set_click_user_cb(click_cb_fun _click_cb, void *_user_data)
 {
     click_cb = _click_cb;
     user_data = _user_data;
 }
 
+/**
+ * @brief Disable the button
+ *
+ * @param disable Set disabled state of button
+ */
 void GUI_Button::set_disabled(bool disable)
 {
     disabled = disable;
 }
 
+/**
+ * @brief Disable the button
+ *
+ * @return True if button is disabled otherwise false
+ */
 bool GUI_Button::is_disabled()
 {
     return disabled;
 }
 
+/**
+ * @brief Set the buttons colours when disabled
+ *
+ * @param _disabled_bg_colour Background colour when disabled
+ * @param _disabled_trim_colour Trim colour when disabled
+ * @param _disabled_text_colour Text colour when disabled
+ */
 void GUI_Button::set_disabled_colours(RGB _disabled_bg_colour, RGB _disabled_trim_colour, RGB _disabled_text_colour)
 {
     disabled_bg_colour = _disabled_bg_colour;
@@ -261,6 +313,11 @@ GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *butt
     toggle_element_colour = WHITE;
 }
 
+/**
+ * @brief Draw toggle button
+ *
+ * @param display Display to draw toggle button on
+ */
 void GUI_Toggle_Button::draw(display_driver *display)
 {
     if (!refresh)
@@ -335,6 +392,12 @@ void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+/**
+ * @brief Link elements to toggle button state change
+ *
+ * @param element Element to be altered upon button being toggled
+ * @param linked_function Function to alter linked element
+ */
 void GUI_Toggle_Button::link_button_state(GUI_Element *element, linked_button_update_fun linked_function)
 {
     if (element->get_type() == GUI_Element::Element_Type::VIEW || element->get_type() == GUI_Element::Element_Type::MENU)
@@ -347,11 +410,19 @@ void GUI_Toggle_Button::link_button_state(GUI_Element *element, linked_button_up
     element->set_refresh(true, true);
 }
 
+/**
+ * @brief Set toggle button style
+ *
+ * @param style Toggle button style
+ */
 void GUI_Toggle_Button::set_toggle_button_style(TOGGLE_BUTTON_STYLE style)
 {
     button_style = style;
 }
 
+/**
+ * @brief Toggle button
+ */
 void GUI_Toggle_Button::toggle()
 {
     value = !value;
@@ -359,11 +430,23 @@ void GUI_Toggle_Button::toggle()
     refresh = true;
 }
 
+/**
+ * @brief Get toggle button value
+ *
+ * @return True if toggled otherwise false
+ */
 bool GUI_Toggle_Button::get_toggled()
 {
     return value;
 }
 
+/**
+ * @brief Set the round buttons toggle slider colours
+ *
+ * @param _toggled_colour Background colour of round slider when toggled
+ * @param _non_toggled_colour Background colour of round slider when not toggled
+ * @param _toggle_element_colour Toggle slider circle
+ */
 void GUI_Toggle_Button::set_toggled_colours(RGB _toggled_colour, RGB _non_toggled_colour, RGB _toggle_element_colour)
 {
     toggled_colour = _toggled_colour;

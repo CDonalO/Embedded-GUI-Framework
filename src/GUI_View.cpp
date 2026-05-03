@@ -16,6 +16,9 @@ GUI_View::~GUI_View()
 {
 }
 
+/**
+ * @brief Main entry to draw everything added to view/menus
+ */
 void GUI_View::draw()
 {
     uint16_t text_y, text_x;
@@ -63,6 +66,11 @@ void GUI_View::draw()
     display->set_text_size(get_text_size());
 }
 
+/**
+ * @brief Draw view (not used)
+ *
+ * @param display Display to draw button on
+ */
 void GUI_View::draw(display_driver *display)
 {
 }
@@ -79,11 +87,22 @@ void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
     menu_stack.top()->navigate(x_pos, y_pos);
 }
 
+/**
+ * @brief Set view refresh value
+ *
+ * @param r Value to decide if view should be redrawn
+ * @param p Unused
+ */
 void GUI_View::set_refresh(bool r, bool p)
 {
     refresh = r;
 }
 
+/**
+ * @brief Set view's menu
+ *
+ * @param menu Menu to be drawn
+ */
 void GUI_View::set_menu(GUI_Menu *menu)
 {
     menu->set_x(0);
@@ -103,6 +122,9 @@ void GUI_View::set_menu(GUI_Menu *menu)
     refresh = true;
 }
 
+/**
+ * @brief Returns to previous menu
+ */
 void GUI_View::reverse_menus(void)
 {
     if (menu_stack.size() > 1)
@@ -124,6 +146,12 @@ bool set_menu_cb(void *user_data)
     return false;
 }
 
+/**
+ * @brief Set menu change button
+ *
+ * @param button Button to change menu
+ * @param menu Menu to change to
+ */
 void GUI_View::register_menu_change_button(GUI_Button *button, GUI_Menu *menu)
 {
     menu_change_event *user_data = (menu_change_event *)malloc(sizeof(menu_change_event));

@@ -49,7 +49,7 @@ public:
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::FORM; }
 
-    GUI_Element *clone() const { return new GUI_Form(*this); }
+    GUI_Element *clone() const override { return new GUI_Form(*this); }
 
     static Form_Number_Data *get_form_data_by_id(std::vector<Form_Number_Data *> *data_stack, uint32_t id);
     Form_Number_Data *get_data_by_id(uint32_t id);

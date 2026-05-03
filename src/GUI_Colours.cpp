@@ -24,16 +24,31 @@ RGB RGB::operator=(const RGB &c)
     return *this;
 }
 
+/**
+ * @brief Get red value
+ *
+ * @return Red value
+ */
 uint8_t RGB::get_red()
 {
     return r;
 }
 
+/**
+ * @brief Get green value
+ *
+ * @return Green value
+ */
 uint8_t RGB::get_green()
 {
     return g;
 }
 
+/**
+ * @brief Get blue value
+ *
+ * @return Blue value
+ */
 uint8_t RGB::get_blue()
 {
     return b;

@@ -12,6 +12,11 @@ GUI_Label::~GUI_Label()
 {
 }
 
+/**
+ * @brief Draw label
+ *
+ * @param display Display to draw label on
+ */
 void GUI_Label::draw(display_driver *display)
 {
     int text_x, text_y;
@@ -55,6 +60,12 @@ void GUI_Label::navigate(int16_t x_pos, int16_t y_pos)
 {
 }
 
+/**
+ * @brief Set label refresh value
+ *
+ * @param r Value to decide if label should be redrawn
+ * @param p Value to decide if need to update parents refresh
+ */
 void GUI_Label::set_refresh(bool r, bool p)
 {
     refresh = r;

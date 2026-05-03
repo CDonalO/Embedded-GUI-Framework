@@ -17,6 +17,11 @@ GUI_Form::~GUI_Form()
     }
 }
 
+/**
+ * @brief Draw form
+ *
+ * @param display Display to draw form on
+ */
 void GUI_Form::draw(display_driver *display)
 {
     uint16_t text_y = display->center_text_vertical((char *)label, get_height(), get_y());
@@ -72,6 +77,12 @@ void GUI_Form::navigate(int16_t x_pos, int16_t y_pos)
 {
 }
 
+/**
+ * @brief Set form refresh value
+ *
+ * @param r Value to decide if form should be redrawn
+ * @param p Value to decide if need to update parents refresh
+ */
 void GUI_Form::set_refresh(bool r, bool p)
 {
     refresh = r;
@@ -140,41 +151,79 @@ GUI_Form::Form_Number_Data::~Form_Number_Data()
     }
 }
 
+/**
+ * @brief Get id of form number data
+ *
+ * @return Form number data id
+ */
 uint32_t GUI_Form::Form_Number_Data::get_id()
 {
     return id;
 }
 
+/**
+ * @brief Set form number data minimum value
+ *
+ * @param _min Form number data minimum value
+ */
 void GUI_Form::Form_Number_Data::set_min(int _min)
 {
     min = _min;
 }
 
+/**
+ * @brief Set form number data maximum value
+ *
+ * @param _max Form number data maximum value
+ */
 void GUI_Form::Form_Number_Data::set_max(int _max)
 {
     max = _max;
 }
 
+/**
+ * @brief Set form number data value
+ *
+ * @param _value Form number data value
+ */
 void GUI_Form::Form_Number_Data::set_value(int _value)
 {
     value = _value;
 }
 
+/**
+ * @brief Get form number data maximum value
+ *
+ * @return Form number data maximum value
+ */
 int GUI_Form::Form_Number_Data::get_max()
 {
     return max;
 }
 
+/**
+ * @brief Get form number data minimum value
+ *
+ * @return Form number data minimum value
+ */
 int GUI_Form::Form_Number_Data::get_min()
 {
     return min;
 }
 
+/**
+ * @brief Get form number data value
+ *
+ * @return Form number data value
+ */
 int GUI_Form::Form_Number_Data::get_value()
 {
     return value;
 }
 
+/**
+ * @brief Create buttons to modify form number value
+ */
 void GUI_Form::Form_Number_Data::create_value_modify_buttons()
 {
     if (modifying_buttons.size() == 0)
@@ -186,6 +235,9 @@ void GUI_Form::Form_Number_Data::create_value_modify_buttons()
     }
 }
 
+/**
+ * @brief Create toggle button to modify form number value
+ */
 void GUI_Form::Form_Number_Data::create_toggle_modify_button()
 {
     if (modifying_buttons.size() == 0)
@@ -196,6 +248,12 @@ void GUI_Form::Form_Number_Data::create_toggle_modify_button()
     }
 }
 
+/**
+ * @brief Get button to modify form number value
+ *
+ * @param n array position of button
+ * @return Form value modifying button
+ */
 GUI_Button *GUI_Form::Form_Number_Data::get_modify_button(uint16_t n)
 {
     if (modifying_buttons.size() - 1 < n)
@@ -208,6 +266,13 @@ GUI_Button *GUI_Form::Form_Number_Data::get_modify_button(uint16_t n)
     }
 }
 
+/**
+ * @brief Get form number data by id (External)
+ *
+ * @param data_stack Form's number data
+ * @param id Form number data id
+ * @return Form number data if id match or null
+ */
 GUI_Form::Form_Number_Data *GUI_Form::get_form_data_by_id(std::vector<Form_Number_Data *> *data_stack, uint32_t id)
 {
     for (int x = 0; x < data_stack->size(); x++)
@@ -223,6 +288,12 @@ GUI_Form::Form_Number_Data *GUI_Form::get_form_data_by_id(std::vector<Form_Numbe
     return NULL;
 }
 
+/**
+ * @brief Get form number data by id (Internal)
+ *
+ * @param id Form number data id
+ * @return Form number data if id match or null
+ */
 GUI_Form::Form_Number_Data *GUI_Form::get_data_by_id(uint32_t id)
 {
     for (int x = 0; x < data_stack.size(); x++)
@@ -241,6 +312,14 @@ GUI_Form::Form_Number_Data *GUI_Form::get_data_by_id(uint32_t id)
     return ret;
 }
 
+/**
+ * @brief Create form number data by id
+ *
+ * @param id Form number data id
+ * @param min Form number data minimum value
+ * @param max Form number data maximum value
+ * @param default_value Form number data default value
+ */
 void GUI_Form::create_number_form_data(uint32_t id, int min, int max, int default_value)
 {
     Form_Number_Data *number_data = get_data_by_id(id);
@@ -251,6 +330,13 @@ void GUI_Form::create_number_form_data(uint32_t id, int min, int max, int defaul
     number_data->create_value_modify_buttons();
 }
 
+/**
+ * @brief Get button to modify form number data by id
+ *
+ * @param id Form number data id
+ * @param increase If true get button to increase else decrease
+ * @return Button that modifies form number data
+ */
 GUI_Button *GUI_Form::get_number_form_button(uint32_t id, bool increase)
 {
     Form_Number_Data *number_data = get_data_by_id(id);
@@ -267,6 +353,12 @@ GUI_Button *GUI_Form::get_number_form_button(uint32_t id, bool increase)
     return NULL;
 }
 
+/**
+ * @brief Create toggle form number data by id
+ *
+ * @param id Form number data id
+ * @param default_value Form number data default value
+ */
 void GUI_Form::create_toggle_form_data(uint32_t id, bool default_value)
 {
     Form_Number_Data *number_data = get_data_by_id(id);
@@ -277,6 +369,12 @@ void GUI_Form::create_toggle_form_data(uint32_t id, bool default_value)
     number_data->create_toggle_modify_button();
 }
 
+/**
+ * @brief Get toggle button to modify form number data by id
+ *
+ * @param id Form number data id
+ * @return Toggle button that modifies form number data
+ */
 GUI_Toggle_Button *GUI_Form::get_toggle_form_button(uint32_t id)
 {
     Form_Number_Data *number_data = get_data_by_id(id);

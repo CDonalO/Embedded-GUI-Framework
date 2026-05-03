@@ -15,6 +15,11 @@ GUI_Grid::~GUI_Grid()
 {
 }
 
+/**
+ * @brief Draw grid
+ *
+ * @param display Display to draw grid on
+ */
 void GUI_Grid::draw(display_driver *display)
 {
     for (int x = 0; x < elements.size(); x++)
@@ -42,6 +47,12 @@ void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+/**
+ * @brief Set grid refresh value
+ *
+ * @param r Value to decide if grid should be redrawn
+ * @param p Value to decide if need to update parents refresh
+ */
 void GUI_Grid::set_refresh(bool r, bool p)
 {
     refresh = true;
@@ -61,6 +72,9 @@ void GUI_Grid::set_refresh(bool r, bool p)
     }
 }
 
+/**
+ * @brief Adjust elements in grid, will resize if applicable
+ */
 void GUI_Grid::adjust_elements()
 {
     uint16_t new_y = top_border_padding;
@@ -277,6 +291,11 @@ void GUI_Grid::adjust_elements()
     }
 }
 
+/**
+ * @brief Add element to grid
+ *
+ * @param element Element to add to grid
+ */
 void GUI_Grid::add_element(GUI_Element *element)
 {
     if (element->get_width() == 0)
@@ -297,21 +316,41 @@ void GUI_Grid::add_element(GUI_Element *element)
     refresh = true;
 }
 
+/**
+ * @brief Set grid top border padding
+ *
+ * @param border_padding Padding in px
+ */
 void GUI_Grid::set_top_border_padding(uint16_t border_padding)
 {
     top_border_padding = border_padding;
 }
 
+/**
+ * @brief Set grid bottom border padding
+ *
+ * @param border_padding Padding in px
+ */
 void GUI_Grid::set_bottom_border_padding(uint16_t border_padding)
 {
     bottom_border_padding = border_padding;
 }
 
+/**
+ * @brief Set grid left border padding
+ *
+ * @param border_padding Padding in px
+ */
 void GUI_Grid::set_left_border_padding(uint16_t border_padding)
 {
     left_border_padding = border_padding;
 }
 
+/**
+ * @brief Set grid right border padding
+ *
+ * @param border_padding Padding in px
+ */
 void GUI_Grid::set_right_border_padding(uint16_t border_padding)
 {
     right_border_padding = border_padding;

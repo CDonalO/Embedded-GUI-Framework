@@ -34,7 +34,7 @@ public:
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::GRID; }
 
-    GUI_Element *clone() const { return new GUI_Grid(*this); }
+    GUI_Element *clone() const override { return new GUI_Grid(*this); }
 
     void add_element(GUI_Element *element);
     void adjust_elements();
