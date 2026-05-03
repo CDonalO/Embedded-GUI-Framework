@@ -6,10 +6,10 @@ typedef struct menu_change_event
     GUI_Menu *m;
 } _menu_change_event;
 
-GUI_View::GUI_View(display_driver *_display, uint16_t _menu_bar_size) : GUI_Element()
+GUI_View::GUI_View(display_driver *display, uint16_t menu_bar_size) : GUI_Element()
 {
-    display = _display;
-    menu_bar_size = _menu_bar_size;
+    this->display = display;
+    this->menu_bar_size = menu_bar_size;
 }
 
 GUI_View::~GUI_View()

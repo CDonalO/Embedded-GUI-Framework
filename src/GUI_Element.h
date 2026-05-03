@@ -30,8 +30,8 @@ protected:
     bool refresh;
 
 public:
-    GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w);
-    GUI_Element(int16_t _x, int16_t _y);
+    GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width);
+    GUI_Element(int16_t x, int16_t y);
     GUI_Element();
     GUI_Element *parent;
 
@@ -73,28 +73,28 @@ public:
     RGB get_text_colour();
     RGB get_active_text_colour();
     uint8_t get_text_size();
-    void set_x(int16_t _x);
-    void set_y(int16_t _y);
+    void set_x(int16_t x);
+    void set_y(int16_t y);
     void set_x_offset(uint16_t offset);
     void set_y_offset(uint16_t offset);
-    void set_width(uint16_t _width);
-    void set_height(uint16_t _height);
+    void set_width(uint16_t width);
+    void set_height(uint16_t height);
     void set_max_width_px(uint16_t max_width);
     void set_max_height_px(uint16_t max_height);
     void set_dimensions(int16_t _x, int16_t _y, uint16_t _w, uint16_t _h);
     void set_width_auto_sizeable(bool auto_sizeable);
     void set_height_auto_sizeable(bool auto_sizeable);
-    void set_background_colour(RGB _background_colour);
-    void set_trim_colour(RGB _trim_colour);
-    void set_active_background_colour(RGB _background_colour);
-    void set_active_trim_colour(RGB _trim_colour);
+    void set_background_colour(RGB background_colour);
+    void set_trim_colour(RGB trim_colour);
+    void set_active_background_colour(RGB active_background_colour);
+    void set_active_trim_colour(RGB active_trim_colour);
     void set_base_colours(RGB _background_colour, RGB _trim_colour);
     void set_active_colours(RGB _active_background_colour, RGB _active_trim_colour);
     void set_colours(RGB _background_colour, RGB _active_background_colour, RGB _trim_colour, RGB _active_trim_colour);
-    void set_text_colour(RGB _text_colour);
-    void set_active_text_colour(RGB _active_text_colour);
+    void set_text_colour(RGB text_colour);
+    void set_active_text_colour(RGB active_text_colour);
     void set_text_colours(RGB _text_colour, RGB _active_text_colour);
-    void set_text_size(uint8_t _text_size);
+    void set_text_size(uint8_t text_size);
     void select();
     void deselect();
     void hide();

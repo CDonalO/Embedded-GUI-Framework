@@ -1,12 +1,12 @@
 #include "GUI.h"
 
-GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t _element_padding, uint8_t grid_attributes)
+GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes)
 {
+    this->element_padding = element_padding;
     top_border_padding = border_padding;
     bottom_border_padding = border_padding;
     right_border_padding = border_padding;
     left_border_padding = border_padding;
-    element_padding = _element_padding;
     grid_type = type;
     attributes = grid_attributes;
 }

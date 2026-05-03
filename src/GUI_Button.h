@@ -42,7 +42,7 @@ protected:
     bool disabled;
 
 public:
-    GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, void *_user_data = NULL, TEXT_ALIGN _align = ALIGN_CENTER);
+    GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
     ~GUI_Button();
 
     void draw(display_driver *display) override;
@@ -50,15 +50,15 @@ public:
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
 
-    GUI_Element *clone() const { return new GUI_Button(*this); }
+    GUI_Element *clone() const override { return new GUI_Button(*this); }
 
     void set_button_style(BUTTON_STYLE style);
     void set_button_str(const char *button_str);
-    void set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, RGB _icon_bg_colour);
+    void set_icon_bitmap(uint8_t *bitmap, uint8_t width, uint8_t height, RGB icon_bg_colour);
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();
-    void set_disabled_colours(RGB _disabled_bg_colour, RGB _disabled_trim_colour, RGB _disabled_text_colour);
+    void set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_text_colour);
 };
 
 typedef void (*linked_button_update_fun)(GUI_Element *linked_element, bool toggle_value);
@@ -240,7 +240,7 @@ private:
     Button_Links links;
 
 public:
-    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb = NULL, bool default_value = false, TEXT_ALIGN _align = ALIGN_CENTER);
+    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb = NULL, bool default_value = false, TEXT_ALIGN align = ALIGN_CENTER);
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
@@ -252,7 +252,7 @@ public:
     void set_toggle_button_style(TOGGLE_BUTTON_STYLE style);
     void toggle();
     bool get_toggled();
-    void set_toggled_colours(RGB _toggled_colour, RGB _non_toggled_colour, RGB _toggle_element_colour);
+    void set_toggled_colours(RGB toggled_colour, RGB non_toggled_colour, RGB toggle_element_colour);
 };
 
 #endif /* _GUI_Button_H_ */

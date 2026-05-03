@@ -12,7 +12,7 @@ private:
 
 public:
     RGB();
-    RGB(uint8_t _r, uint8_t _g, uint8_t _b);
+    RGB(uint8_t r, uint8_t g, uint8_t b);
     RGB(const RGB &c);
 
     ~RGB() {}

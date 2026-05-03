@@ -1,10 +1,10 @@
 #include "GUI.h"
 
-GUI_Label::GUI_Label(char *label, TEXT_ALIGN _align, uint8_t text_size, RGB text_colour) : GUI_Element()
+GUI_Label::GUI_Label(char *label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour) : GUI_Element()
 {
     set_text_colour(text_colour);
     set_text_size(text_size);
-    align_value = _align;
+    align_value = align;
     strncpy((char *)text, label, sizeof(text));
 }
 
@@ -19,7 +19,8 @@ GUI_Label::~GUI_Label()
  */
 void GUI_Label::draw(display_driver *display)
 {
-    int text_x, text_y;
+    int16_t text_x = 0;
+    int16_t text_y = 0;
 
     if (!refresh)
         return;

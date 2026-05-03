@@ -1,6 +1,6 @@
 #include "GUI.h"
 
-GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_x), y(_y), height(_h), width(_w)
+GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) : x(x), y(y), height(height), width(width)
 {
     hidden = false;
     selected = false;
@@ -21,7 +21,7 @@ GUI_Element::GUI_Element(int16_t _x, int16_t _y, uint16_t _h, uint16_t _w) : x(_
     parent = NULL;
 }
 
-GUI_Element::GUI_Element(int16_t _x, int16_t _y) : GUI_Element(_x, _y, 0, 0) {}
+GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
 
 GUI_Element::GUI_Element() : GUI_Element(0, 0) {}
 
@@ -239,21 +239,21 @@ uint8_t GUI_Element::get_text_size()
 /**
  * @brief Set x position of element
  *
- * @param _x The new x position
+ * @param x The new x position
  */
-void GUI_Element::set_x(int16_t _x)
+void GUI_Element::set_x(int16_t x)
 {
-    x = _x;
+    this->x = x;
 }
 
 /**
  * @brief Set y position of element
  *
- * @param _y The new y position
+ * @param y The new y position
  */
-void GUI_Element::set_y(int16_t _y)
+void GUI_Element::set_y(int16_t y)
 {
-    y = _y;
+    this->y = y;
 }
 
 /**
@@ -279,21 +279,21 @@ void GUI_Element::set_y_offset(uint16_t offset)
 /**
  * @brief Set width of element
  *
- * @param _width The new width
+ * @param width The new width
  */
-void GUI_Element::set_width(uint16_t _width)
+void GUI_Element::set_width(uint16_t width)
 {
-    width = _width;
+    this->width = width;
 }
 
 /**
  * @brief Set height of element
  *
- * @param _height The new height
+ * @param height The new height
  */
-void GUI_Element::set_height(uint16_t _height)
+void GUI_Element::set_height(uint16_t height)
 {
-    height = _height;
+    this->height = height;
 }
 
 /**
@@ -355,41 +355,41 @@ void GUI_Element::set_height_auto_sizeable(bool auto_sizeable)
 /**
  * @brief Set background colour of element
  *
- * @param _background_colour Colour of background
+ * @param background_colour Colour of background
  */
-void GUI_Element::set_background_colour(RGB _background_colour)
+void GUI_Element::set_background_colour(RGB background_colour)
 {
-    background_colour = _background_colour;
+    this->background_colour = background_colour;
 }
 
 /**
  * @brief Set trim colour of element
  *
- * @param _trim_colour Colour of background
+ * @param trim_colour Colour of background
  */
-void GUI_Element::set_trim_colour(RGB _trim_colour)
+void GUI_Element::set_trim_colour(RGB trim_colour)
 {
-    trim_colour = _trim_colour;
+    this->trim_colour = trim_colour;
 }
 
 /**
  * @brief Set active background colour of element
  *
- * @param _background_colour Colour of active background
+ * @param active_background_colour Colour of active background
  */
-void GUI_Element::set_active_background_colour(RGB _background_colour)
+void GUI_Element::set_active_background_colour(RGB active_background_colour)
 {
-    active_background_colour = _background_colour;
+    this->active_background_colour = active_background_colour;
 }
 
 /**
  * @brief Set active trim colour of element
  *
- * @param _trim_colour Colour of active trim
+ * @param active_trim_colour Colour of active trim
  */
-void GUI_Element::set_active_trim_colour(RGB _trim_colour)
+void GUI_Element::set_active_trim_colour(RGB active_trim_colour)
 {
-    active_trim_colour = _trim_colour;
+    this->active_trim_colour = active_trim_colour;
 }
 
 /**
@@ -435,21 +435,21 @@ void GUI_Element::set_active_colours(RGB _active_background_colour, RGB _active_
 /**
  * @brief Set text colour of element
  *
- * @param _text_colour Colour of text
+ * @param text_colour Colour of text
  */
-void GUI_Element::set_text_colour(RGB _text_colour)
+void GUI_Element::set_text_colour(RGB text_colour)
 {
-    text_colour = _text_colour;
+    this->text_colour = text_colour;
 }
 
 /**
  * @brief Set active text colour of element
  *
- * @param _active_text_colour Colour of active text
+ * @param active_text_colour Colour of active text
  */
-void GUI_Element::set_active_text_colour(RGB _active_text_colour)
+void GUI_Element::set_active_text_colour(RGB active_text_colour)
 {
-    active_text_colour = _active_text_colour;
+    this->active_text_colour = active_text_colour;
 }
 
 /**
@@ -467,11 +467,11 @@ void GUI_Element::set_text_colours(RGB _text_colour, RGB _active_text_colour)
 /**
  * @brief Set text size of element
  *
- * @param _text_size Size of text.
+ * @param text_size Size of text.
  */
-void GUI_Element::set_text_size(uint8_t _text_size)
+void GUI_Element::set_text_size(uint8_t text_size)
 {
-    text_size = _text_size;
+    this->text_size = text_size;
 }
 
 /**

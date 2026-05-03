@@ -26,7 +26,7 @@ private:
     std::vector<GUI_Element *> elements;
 
 public:
-    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t _element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE);
+    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE);
     ~GUI_Grid();
 
     void draw(display_driver *display) override;

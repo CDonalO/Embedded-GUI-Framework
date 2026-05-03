@@ -1,11 +1,6 @@
 #include "GUI_Colours.h"
 
-RGB::RGB(uint8_t _r, uint8_t _g, uint8_t _b)
-{
-    r = _r;
-    g = _g;
-    b = _b;
-}
+RGB::RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
 
 RGB::RGB() : RGB(0, 0, 0) {}
 

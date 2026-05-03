@@ -133,9 +133,9 @@ bool toggle_value(void *user_data)
     return true;
 }
 
-GUI_Form::Form_Number_Data::Form_Number_Data(uint32_t _id)
+GUI_Form::Form_Number_Data::Form_Number_Data(uint32_t id)
 {
-    id = _id;
+    this->id = id;
     min = 0;
     max = 0;
     value = 0;
@@ -164,31 +164,31 @@ uint32_t GUI_Form::Form_Number_Data::get_id()
 /**
  * @brief Set form number data minimum value
  *
- * @param _min Form number data minimum value
+ * @param min Form number data minimum value
  */
-void GUI_Form::Form_Number_Data::set_min(int _min)
+void GUI_Form::Form_Number_Data::set_min(int min)
 {
-    min = _min;
+    this->min = min;
 }
 
 /**
  * @brief Set form number data maximum value
  *
- * @param _max Form number data maximum value
+ * @param max Form number data maximum value
  */
-void GUI_Form::Form_Number_Data::set_max(int _max)
+void GUI_Form::Form_Number_Data::set_max(int max)
 {
-    max = _max;
+    this->max = max;
 }
 
 /**
  * @brief Set form number data value
  *
- * @param _value Form number data value
+ * @param value Form number data value
  */
-void GUI_Form::Form_Number_Data::set_value(int _value)
+void GUI_Form::Form_Number_Data::set_value(int value)
 {
-    value = _value;
+    this->value = value;
 }
 
 /**

@@ -13,7 +13,7 @@ private:
     RGB back_button_arrow_colour;
 
 public:
-    GUI_View(display_driver *_display, uint16_t _menu_bar_size);
+    GUI_View(display_driver *display, uint16_t menu_bar_size);
     ~GUI_View();
 
     void draw();

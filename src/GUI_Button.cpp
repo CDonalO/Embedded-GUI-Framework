@@ -1,12 +1,8 @@
 #include "GUI.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, void *_user_data, TEXT_ALIGN _align) : GUI_Element()
+GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align)
 {
-    button_style = style;
     border_radius = 10;
-    align_value = _align;
-    user_data = _user_data;
-    click_cb = _click_cb;
     disabled = false;
     icon_bitmap = NULL;
     icon_width = 0;
@@ -245,29 +241,29 @@ void GUI_Button::set_button_str(const char *button_str)
 /**
  * @brief Set button icon bitmap
  *
- * @param _bitmap Pointer to bitmap
- * @param _width Width of bitmap
- * @param _height Height of bitmap
- * @param _icon_bg_colour Icon background colour
+ * @param bitmap Pointer to bitmap
+ * @param width Width of bitmap
+ * @param height Height of bitmap
+ * @param icon_bg_colour Icon background colour
  */
-void GUI_Button::set_icon_bitmap(uint8_t *_bitmap, uint8_t _width, uint8_t _height, RGB _icon_bg_colour)
+void GUI_Button::set_icon_bitmap(uint8_t *bitmap, uint8_t width, uint8_t height, RGB icon_bg_colour)
 {
-    icon_bitmap = _bitmap;
-    icon_width = _width;
-    icon_height = _height;
-    icon_bg_colour = _icon_bg_colour;
+    icon_bitmap = bitmap;
+    icon_width = width;
+    icon_height = height;
+    this->icon_bg_colour = icon_bg_colour;
 }
 
 /**
  * @brief Set button click callback function
  *
- * @param _click_cb Function called when button is pressed
- * @param _user_data Data passed to the callback function
+ * @param click_cb Function called when button is pressed
+ * @param user_data Data passed to the callback function
  */
-void GUI_Button::set_click_user_cb(click_cb_fun _click_cb, void *_user_data)
+void GUI_Button::set_click_user_cb(click_cb_fun click_cb, void *user_data)
 {
-    click_cb = _click_cb;
-    user_data = _user_data;
+    this->click_cb = click_cb;
+    this->user_data = user_data;
 }
 
 /**
@@ -293,18 +289,18 @@ bool GUI_Button::is_disabled()
 /**
  * @brief Set the buttons colours when disabled
  *
- * @param _disabled_bg_colour Background colour when disabled
- * @param _disabled_trim_colour Trim colour when disabled
- * @param _disabled_text_colour Text colour when disabled
+ * @param disabled_bg_colour Background colour when disabled
+ * @param disabled_trim_colour Trim colour when disabled
+ * @param disabled_text_colour Text colour when disabled
  */
-void GUI_Button::set_disabled_colours(RGB _disabled_bg_colour, RGB _disabled_trim_colour, RGB _disabled_text_colour)
+void GUI_Button::set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_text_colour)
 {
-    disabled_bg_colour = _disabled_bg_colour;
-    disabled_trim_colour = _disabled_trim_colour;
-    disabled_text_colour = _disabled_text_colour;
+    this->disabled_bg_colour = disabled_bg_colour;
+    this->disabled_trim_colour = disabled_trim_colour;
+    this->disabled_text_colour = disabled_text_colour;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun _click_cb, bool default_value, TEXT_ALIGN _align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, _click_cb, NULL, _align)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, click_cb, NULL, align)
 {
     button_style = style;
     value = default_value;
@@ -443,13 +439,13 @@ bool GUI_Toggle_Button::get_toggled()
 /**
  * @brief Set the round buttons toggle slider colours
  *
- * @param _toggled_colour Background colour of round slider when toggled
- * @param _non_toggled_colour Background colour of round slider when not toggled
- * @param _toggle_element_colour Toggle slider circle
+ * @param toggled_colour Background colour of round slider when toggled
+ * @param non_toggled_colour Background colour of round slider when not toggled
+ * @param toggle_element_colour Toggle slider circle
  */
-void GUI_Toggle_Button::set_toggled_colours(RGB _toggled_colour, RGB _non_toggled_colour, RGB _toggle_element_colour)
+void GUI_Toggle_Button::set_toggled_colours(RGB toggled_colour, RGB non_toggled_colour, RGB toggle_element_colour)
 {
-    toggled_colour = _toggled_colour;
-    non_toggled_colour = _non_toggled_colour;
-    toggle_element_colour = _toggle_element_colour;
+    this->toggled_colour = toggled_colour;
+    this->non_toggled_colour = non_toggled_colour;
+    this->toggle_element_colour = toggle_element_colour;
 }

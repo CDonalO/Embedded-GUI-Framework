@@ -16,13 +16,13 @@ public:
         std::vector<GUI_Button *> modifying_buttons;
 
     public:
-        Form_Number_Data(uint32_t _id);
+        Form_Number_Data(uint32_t id);
         ~Form_Number_Data();
 
         uint32_t get_id();
-        void set_min(int _min);
-        void set_max(int _max);
-        void set_value(int _value);
+        void set_min(int min);
+        void set_max(int max);
+        void set_value(int value);
         int get_min();
         int get_max();
         int get_value();
