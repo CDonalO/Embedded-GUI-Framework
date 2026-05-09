@@ -1,7 +1,7 @@
 #ifndef _display_driver_H_
 #define _display_driver_H_
 
-#include "GUI_Colours.h"
+#include "../GUI_Colours.h"
 
 class display_driver
 {
