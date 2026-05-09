@@ -157,8 +157,6 @@ void GUI_Button::draw(display_driver *display)
         break;
     }
 
-    display->set_text_size(get_text_size());
-
     if (align_value == ALIGN_CENTER)
     {
         text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
@@ -169,20 +167,30 @@ void GUI_Button::draw(display_driver *display)
     }
     else if (align_value == ALIGN_RIGHT)
     {
-        int16_t x1, y1;
         uint16_t w, h;
-        display->get_text_bounds((char *)text, 0, 0, &x1, &y1, &w, &h);
+        display->get_text_bounds((char *)text, &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
     text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
-    display->set_text_colour(font_c);
-
     // TODO Make this better
     if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
     {
-        display->draw_text(text_x, text_y, (char *)text);
+        uint8_t t_size = get_text_size();
+        if (parent)
+        {
+            if (!text_size_set())
+            {
+                t_size = parent->get_text_size();
+            }
+
+            if (!text_colour_set())
+            {
+                font_c = parent->get_text_colour();
+            }
+        }
+        display->draw_text(text_x, text_y, (char *)text, t_size, font_c);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG

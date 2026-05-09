@@ -28,9 +28,6 @@ void GUI_Label::draw(display_driver *display)
     if (is_hidden())
         return;
 
-    display->set_text_size(get_text_size());
-    display->set_text_colour(get_text_colour());
-
     if (align_value == ALIGN_CENTER)
     {
         text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
@@ -41,15 +38,29 @@ void GUI_Label::draw(display_driver *display)
     }
     else if (align_value == ALIGN_RIGHT)
     {
-        int16_t x1, y1;
         uint16_t w, h;
-        display->get_text_bounds((char *)text, 0, 0, &x1, &y1, &w, &h);
+        display->get_text_bounds((char *)text, &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
     text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
-    display->draw_text(text_x, text_y, (char *)text);
+    uint8_t t_size = get_text_size();
+    RGB font_c = get_text_colour();
+    if (parent)
+    {
+        if (!text_size_set())
+        {
+            t_size = parent->get_text_size();
+        }
+
+        if (!text_colour_set())
+        {
+            font_c = parent->get_text_colour();
+        }
+    }
+
+    display->draw_text(text_x, text_y, (char *)text, t_size, font_c);
 
 #ifdef VISUAL_ELEMENT_DEBUG
     display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);

@@ -39,13 +39,25 @@ void GUI_View::draw()
         {
             const char *menu_name = menu_stack.top()->get_menu_name();
 
-            display->set_text_colour(get_text_colour());
-            display->set_text_size(get_text_size());
+            uint8_t t_size = get_text_size();
+            RGB font_c = get_text_colour();
+            if (parent)
+            {
+                if (!text_size_set())
+                {
+                    t_size = parent->get_text_size();
+                }
+
+                if (!text_colour_set())
+                {
+                    font_c = parent->get_text_colour();
+                }
+            }
 
             text_x = display->center_text_horizontal((char *)menu_name, get_width(), 0);
             text_y = display->center_text_vertical((char *)menu_name, menu_bar_size, 0);
 
-            display->draw_text(text_x, text_y, menu_name);
+            display->draw_text(text_x, text_y, menu_name, t_size, font_c);
 
             if (menu_stack.size() > 1)
             {
@@ -61,9 +73,6 @@ void GUI_View::draw()
             refresh = false;
         }
     }
-
-    display->set_text_colour(get_text_colour());
-    display->set_text_size(get_text_size());
 }
 
 /**
@@ -109,6 +118,8 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_y(0);
     menu->set_width(get_width());
     menu->set_height(get_height() - menu_bar_size);
+    menu->set_text_colour(get_text_colour());
+    menu->set_text_size(get_text_size());
 
     if (menu_stack.size() > 0)
     {

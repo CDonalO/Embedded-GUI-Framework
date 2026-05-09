@@ -20,6 +20,8 @@ private:
     RGB text_colour;
     RGB active_text_colour;
     uint8_t text_size;
+    bool is_text_size_set;
+    bool is_text_colour_set;
     bool hidden;
     bool selected;
     bool width_auto_size;
@@ -101,4 +103,6 @@ public:
     bool is_selected();
     bool is_hidden();
     bool within_bounds(int16_t x_pos, int16_t y_pos);
+    bool text_size_set();
+    bool text_colour_set();
 };

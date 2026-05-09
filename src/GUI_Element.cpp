@@ -19,6 +19,8 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     width_auto_size = false;
     height_auto_size = false;
     parent = NULL;
+    is_text_colour_set = false;
+    is_text_size_set = false;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -439,6 +441,7 @@ void GUI_Element::set_active_colours(RGB _active_background_colour, RGB _active_
  */
 void GUI_Element::set_text_colour(RGB text_colour)
 {
+    is_text_colour_set = true;
     this->text_colour = text_colour;
 }
 
@@ -471,6 +474,7 @@ void GUI_Element::set_text_colours(RGB _text_colour, RGB _active_text_colour)
  */
 void GUI_Element::set_text_size(uint8_t text_size)
 {
+    is_text_size_set = true;
     this->text_size = text_size;
 }
 
@@ -539,4 +543,24 @@ bool GUI_Element::within_bounds(int16_t x_pos, int16_t y_pos)
         ret = true;
 
     return ret;
+}
+
+/**
+ * @brief Check if text size has been manually set
+ *
+ * @return True if text size has been manually set otherwise false
+ */
+bool GUI_Element::text_size_set()
+{
+    return is_text_size_set;
+}
+
+/**
+ * @brief Check if text colour has been manually set
+ *
+ * @return True if text colour has been manually set otherwise false
+ */
+bool GUI_Element::text_colour_set()
+{
+    return is_text_colour_set;
 }

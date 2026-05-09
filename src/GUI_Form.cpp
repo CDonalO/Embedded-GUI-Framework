@@ -46,27 +46,39 @@ void GUI_Form::draw(display_driver *display)
         }
     }
 
+    uint8_t t_size = get_text_size();
+    RGB font_c = get_text_colour();
+    if (parent)
+    {
+        if (!text_size_set())
+        {
+            t_size = parent->get_text_size();
+        }
+
+        if (!text_colour_set())
+        {
+            font_c = parent->get_text_colour();
+        }
+    }
+
     if (!is_hidden() && refresh)
     {
         display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), 10, trim_color);
         display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, 10, bg_color);
-        display->set_text_colour(get_text_colour());
-        display->draw_text(get_x() + 10, text_y, (char *)label);
+        display->draw_text(get_x() + 10, text_y, (char *)label, t_size, font_c);
     }
 
     if (!is_hidden())
     {
         if (update_value)
         {
-            int16_t temp;
             uint16_t text_width, text_height;
-            display->get_text_bounds((char *)form_value, 0, 0, &temp, &temp, &text_width, &text_height);
+            display->get_text_bounds((char *)form_value, &text_width, &text_height);
             text_y = display->center_text_vertical((char *)form_value, get_height(), get_y());
             uint16_t text_x = get_x() + get_width() - text_width - 10;
-            display->set_text_colour(get_text_colour());
             // Draw a box over the old text to prevent needing to redraw the whole element.
             display->draw_filled_round_rect(text_x - 4, get_y() + 2, (get_x() + get_width()) - text_x, get_height() - 4, 10, bg_color);
-            display->draw_text(text_x, text_y, (char *)form_value);
+            display->draw_text(text_x, text_y, (char *)form_value, t_size, font_c);
         }
     }
 

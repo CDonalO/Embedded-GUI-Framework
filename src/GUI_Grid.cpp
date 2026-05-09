@@ -308,6 +308,12 @@ void GUI_Grid::add_element(GUI_Element *element)
         element->set_height_auto_sizeable(true);
     }
 
+    if (element->get_type() == GUI_Element::Element_Type::MENU || element->get_type() == GUI_Element::Element_Type::GRID)
+    {
+        element->set_text_size(get_text_size());
+        element->set_text_colour(get_text_colour());
+    }
+
     element->parent = this;
     elements.push_back(element);
 

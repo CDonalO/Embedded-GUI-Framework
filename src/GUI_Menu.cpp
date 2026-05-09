@@ -21,8 +21,6 @@ void GUI_Menu::draw(display_driver *display)
 
     for (int x = 0; x < elements.size(); x++)
     {
-        display->set_text_colour(get_text_colour());
-        display->set_text_size(get_text_size());
         elements[x]->set_x_offset(get_x());
         elements[x]->set_y_offset(get_y());
         elements[x]->draw(display);
@@ -72,6 +70,8 @@ void GUI_Menu::add_element(GUI_Element *element)
     // TODO Improve this
     if (element->get_type() == GUI_Element::Element_Type::GRID)
     {
+        element->set_text_size(get_text_size());
+        element->set_text_colour(get_text_colour());
         if (element->get_width() == 0)
         {
             element->set_width(get_width());
@@ -83,6 +83,11 @@ void GUI_Menu::add_element(GUI_Element *element)
         }
         GUI_Grid *grid_element = static_cast<GUI_Grid *>(element);
         grid_element->adjust_elements();
+    }
+    else if (element->get_type() == GUI_Element::Element_Type::MENU)
+    {
+        element->set_text_size(get_text_size());
+        element->set_text_colour(get_text_colour());
     }
     element->parent = this;
     elements.push_back(element);

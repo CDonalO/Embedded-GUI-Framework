@@ -17,9 +17,10 @@ Adafruit_GFX_driver::~Adafruit_GFX_driver()
 {
 }
 
-void Adafruit_GFX_driver::get_text_bounds(const char *text, int16_t x, int16_t y, int16_t *x1, int16_t *y1, uint16_t *width, uint16_t *height)
+void Adafruit_GFX_driver::get_text_bounds(const char *text, uint16_t *width, uint16_t *height)
 {
-    display->getTextBounds(text, x, y, x1, y1, width, height);
+    int16_t temp;
+    display->getTextBounds(text, 0, 0, &temp, &temp, width, height);
 }
 
 uint16_t Adafruit_GFX_driver::center_text_vertical(char *str, uint16_t container_h, uint16_t container_y)
@@ -62,19 +63,11 @@ int16_t Adafruit_GFX_driver::get_display_height()
     return display->height();
 }
 
-void Adafruit_GFX_driver::set_text_size(uint8_t size)
-{
-    display->setTextSize(size);
-}
-
-void Adafruit_GFX_driver::set_text_colour(RGB colour)
+void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, const char *text, uint8_t size, RGB colour)
 {
     uint16_t c = get_rgb_colour(colour);
     display->setTextColor(c);
-}
-
-void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, const char *text)
-{
+    display->setTextSize(size);
     display->setCursor(x, y);
     display->println(text);
 }
