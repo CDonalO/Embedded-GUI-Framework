@@ -1,5 +1,4 @@
-#ifndef _GUI_H_
-#define _GUI_H_
+#pragma once
 
 #include <Arduino.h>
 #include <vector>
@@ -34,5 +33,3 @@ static const RGB LIGHT_BLUE(144, 194, 250);
 #include "GUI_Grid.h"
 #include "GUI_Label.h"
 #include "GUI_Form.h"
-
-#endif /* _GUI_H_ */

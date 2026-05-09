@@ -1,5 +1,4 @@
-#ifndef _GUI_Grid_H_
-#define _GUI_Grid_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -43,5 +42,3 @@ public:
     void set_left_border_padding(uint16_t border_padding);
     void set_right_border_padding(uint16_t border_padding);
 };
-
-#endif /* _GUI_Grid_H_ */

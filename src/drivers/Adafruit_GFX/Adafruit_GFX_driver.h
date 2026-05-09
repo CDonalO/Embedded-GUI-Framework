@@ -1,5 +1,4 @@
-#ifndef _Adafruit_GFX_driver_H_
-#define _Adafruit_GFX_driver_H_
+#pragma once
 
 #include <Adafruit_GFX.h>
 
@@ -34,5 +33,3 @@ public:
 
     void draw_bitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t width, int16_t height, RGB colour) override;
 };
-
-#endif /* _Adafruit_GFX_driver_H_ */

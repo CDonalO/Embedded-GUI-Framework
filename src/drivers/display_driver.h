@@ -1,5 +1,4 @@
-#ifndef _display_driver_H_
-#define _display_driver_H_
+#pragma once
 
 #include "../GUI_Colours.h"
 
@@ -29,5 +28,3 @@ public:
 
     virtual void draw_bitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t width, int16_t height, RGB colour) = 0;
 };
-
-#endif /* _display_driver_H_ */

@@ -1,5 +1,4 @@
-#ifndef _GUI_Button_H_
-#define _GUI_Button_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -254,5 +253,3 @@ public:
     bool get_toggled();
     void set_toggled_colours(RGB toggled_colour, RGB non_toggled_colour, RGB toggle_element_colour);
 };
-
-#endif /* _GUI_Button_H_ */

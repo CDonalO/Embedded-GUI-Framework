@@ -1,5 +1,4 @@
-#ifndef _GUI_Form_H_
-#define _GUI_Form_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -60,5 +59,3 @@ public:
     void create_toggle_form_data(uint32_t id, bool default_value);
     GUI_Toggle_Button *get_toggle_form_button(uint32_t id);
 };
-
-#endif /* _GUI_Form_H_ */

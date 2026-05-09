@@ -1,5 +1,4 @@
-#ifndef _GUI_View_H_
-#define _GUI_View_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -29,5 +28,3 @@ public:
     void register_menu_change_button(GUI_Button *button, GUI_Menu *menu);
     void set_menu_bar_colours(RGB return_bg_colour, RGB arrow_colour);
 };
-
-#endif /* _GUI_View_H_ */

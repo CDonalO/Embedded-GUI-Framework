@@ -1,5 +1,4 @@
-#ifndef _GUI_Element_H_
-#define _GUI_Element_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -103,5 +102,3 @@ public:
     bool is_hidden();
     bool within_bounds(int16_t x_pos, int16_t y_pos);
 };
-
-#endif /* _GUI_Element_H_ */

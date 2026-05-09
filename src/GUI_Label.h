@@ -1,5 +1,4 @@
-#ifndef _GUI_Label_H_
-#define _GUI_Label_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -21,5 +20,3 @@ public:
 
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::LABEL; }
 };
-
-#endif /* _GUI_Label_H_ */

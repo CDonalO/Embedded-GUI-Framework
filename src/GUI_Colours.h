@@ -1,5 +1,4 @@
-#ifndef _GUI_Colours_H_
-#define _GUI_Colours_H_
+#pragma once
 
 #include <Arduino.h>
 
@@ -23,5 +22,3 @@ public:
     uint8_t get_green();
     uint8_t get_blue();
 };
-
-#endif /* _GUI_Colours_H_ */

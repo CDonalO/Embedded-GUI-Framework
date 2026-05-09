@@ -1,5 +1,4 @@
-#ifndef _GUI_Menu_H_
-#define _GUI_Menu_H_
+#pragma once
 
 #include "GUI.h"
 
@@ -24,5 +23,3 @@ public:
     void adjust_grids();
     const char *get_menu_name();
 };
-
-#endif /* _GUI_Menu_H_ */
