@@ -1,8 +1,12 @@
 #include "GUI.h"
 
-GUI_Menu::GUI_Menu(const char *_menu_name) : GUI_Element()
+GUI_Menu::GUI_Menu(const char *_menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes)
 {
     strncpy((char *)menu_name, _menu_name, sizeof(menu_name));
+}
+
+GUI_Menu::GUI_Menu(const char *_menu_name) : GUI_Menu(_menu_name, GRID_TYPE_NONE, 0, 0, 0)
+{
 }
 
 GUI_Menu::~GUI_Menu()
@@ -12,111 +16,16 @@ GUI_Menu::~GUI_Menu()
 /**
  * @brief Draw menu
  *
- * @param display Display to draw meno on
+ * @param display Display to draw menu on
  */
 void GUI_Menu::draw(display_driver *display)
 {
     if (refresh)
         display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), get_background_colour());
 
-    for (int x = 0; x < elements.size(); x++)
-    {
-        elements[x]->set_x_offset(get_x());
-        elements[x]->set_y_offset(get_y());
-        elements[x]->draw(display);
-        elements[x]->set_refresh(false, false);
-    }
+    GUI_Grid::draw(display);
 
     refresh = false;
-}
-
-void GUI_Menu::navigate(int16_t x_pos, int16_t y_pos)
-{
-    for (int x = 0; x < elements.size(); x++)
-    {
-        if (elements[x]->within_bounds(x_pos, y_pos))
-        {
-            elements[x]->navigate(x_pos, y_pos);
-        }
-    }
-}
-
-/**
- * @brief Set menu refresh value
- *
- * @param r Value to decide if menu should be redrawn
- * @param p Value to decide if need to update parents refresh
- */
-void GUI_Menu::set_refresh(bool r, bool p)
-{
-    refresh = r;
-
-    if (!p)
-    {
-        for (int x = 0; x < elements.size(); x++)
-        {
-            elements[x]->set_refresh(r, false);
-        }
-    }
-}
-
-/**
- * @brief Add element to menu
- *
- * @param element Element to add to menu
- */
-void GUI_Menu::add_element(GUI_Element *element)
-{
-    // TODO Improve this
-    if (element->get_type() == GUI_Element::Element_Type::GRID)
-    {
-        element->set_text_size(get_text_size());
-        element->set_text_colour(get_text_colour());
-        if (element->get_width() == 0)
-        {
-            element->set_width(get_width());
-        }
-
-        if (element->get_height() == 0)
-        {
-            element->set_height(get_height());
-        }
-        GUI_Grid *grid_element = static_cast<GUI_Grid *>(element);
-        grid_element->adjust_elements();
-    }
-    else if (element->get_type() == GUI_Element::Element_Type::MENU)
-    {
-        element->set_text_size(get_text_size());
-        element->set_text_colour(get_text_colour());
-    }
-    element->parent = this;
-    elements.push_back(element);
-}
-
-/**
- * @brief Adjust grid elements in menu
- */
-void GUI_Menu::adjust_grids()
-{
-    for (int x = 0; x < elements.size(); x++)
-    {
-        // TODO Improve this
-        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
-        {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
-            if (grid_element->get_width() == 0)
-            {
-                grid_element->set_width(get_width());
-            }
-
-            if (grid_element->get_height() == 0)
-            {
-                grid_element->set_height(get_height());
-            }
-
-            grid_element->adjust_elements();
-        }
-    }
 }
 
 const char *GUI_Menu::get_menu_name()

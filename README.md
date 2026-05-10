@@ -27,10 +27,6 @@ The view also has a configurable menu bar at the top of the screen which will co
 
 You can link buttons to menus for easy navigation.
 
-### GUI_Menu
-
-The menu is just a list of elements.
-
 ### GUI_Grid
 
 The grid is a versatile element, it contains a list of elements similar to a menu.
@@ -53,6 +49,10 @@ You are able to set maximum width/height of each element to prevent an element b
 You can also nest grid elements.
 
 The no ordering grid is essentially the same as the menu, and will use the defined x, y, width, height.
+
+### GUI_Menu
+
+The menu is just a grid with a name.
 
 ### GUI_Label
 

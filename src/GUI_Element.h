@@ -105,4 +105,6 @@ public:
     bool within_bounds(int16_t x_pos, int16_t y_pos);
     bool text_size_set();
     bool text_colour_set();
+
+    void print_element();
 };
