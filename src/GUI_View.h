@@ -10,6 +10,7 @@ private:
     uint16_t menu_bar_size;
     RGB back_button_bg_colour;
     RGB back_button_arrow_colour;
+    bool ignore_refresh;
 
 public:
     GUI_View(display_driver *display, uint16_t menu_bar_size);

@@ -10,6 +10,7 @@ GUI_View::GUI_View(display_driver *display, uint16_t menu_bar_size) : GUI_Elemen
 {
     this->display = display;
     this->menu_bar_size = menu_bar_size;
+    ignore_refresh = !display->get_optimize_rendering();
 }
 
 GUI_View::~GUI_View()
@@ -73,6 +74,11 @@ void GUI_View::draw()
             refresh = false;
         }
     }
+
+    if (ignore_refresh)
+    {
+        set_refresh(true, false);
+    }
 }
 
 /**
@@ -105,6 +111,11 @@ void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
 void GUI_View::set_refresh(bool r, bool p)
 {
     refresh = r;
+
+    if (ignore_refresh)
+    {
+        menu_stack.top()->set_refresh(true, false);
+    }
 }
 
 /**

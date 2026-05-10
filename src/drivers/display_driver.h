@@ -10,9 +10,14 @@ typedef enum
 
 class display_driver
 {
+protected:
+    bool optimize_rendering = true;
+
 public:
     display_driver() {}
     virtual ~display_driver() {}
+
+    bool get_optimize_rendering() { return optimize_rendering; }
 
     virtual void get_text_bounds(const char *text, uint16_t *width, uint16_t *height) = 0;
 
