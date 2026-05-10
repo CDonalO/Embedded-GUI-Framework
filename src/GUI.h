@@ -33,3 +33,4 @@ static const RGB LIGHT_BLUE(144, 194, 250);
 #include "GUI_View.h"
 #include "GUI_Label.h"
 #include "GUI_Form.h"
+#include "GUI_Bitmap.h"

@@ -45,6 +45,7 @@ public:
         GRID,
         LABEL,
         FORM,
+        BITMAP,
     };
 
     virtual ~GUI_Element() = default;

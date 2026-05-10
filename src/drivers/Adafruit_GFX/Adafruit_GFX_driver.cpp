@@ -1,5 +1,6 @@
 #include "Adafruit_GFX_driver.h"
 
+#if __has_include(<Adafruit_GFX.h>)
 static uint16_t get_rgb_colour(RGB c)
 {
     uint8_t r = c.get_red();
@@ -102,8 +103,14 @@ void Adafruit_GFX_driver::draw_filled_triangle(int16_t x1, int16_t y1, int16_t x
     display->fillTriangle(x1, y1, x2, y2, x3, y3, c);
 }
 
-void Adafruit_GFX_driver::draw_bitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t width, int16_t height, RGB colour)
+void Adafruit_GFX_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t height, void *bitmap, BITMAP_TYPE bitmap_type, RGB colour)
 {
     uint16_t c = get_rgb_colour(colour);
-    display->drawBitmap(x, y, bitmap, width, height, c);
+
+    if (bitmap_type == BITMAP_ALPHA_MAP)
+    {
+        uint8_t *data = (uint8_t *)bitmap;
+        display->drawBitmap(x, y, data, width, height, c);
+    }
 }
+#endif

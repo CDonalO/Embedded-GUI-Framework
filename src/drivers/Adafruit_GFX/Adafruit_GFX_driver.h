@@ -1,5 +1,6 @@
 #pragma once
 
+#if __has_include(<Adafruit_GFX.h>)
 #include <Adafruit_GFX.h>
 
 #include "../display_driver.h"
@@ -28,5 +29,7 @@ public:
     void draw_filled_rect(int16_t x, int16_t y, int16_t width, int16_t height, RGB colour) override;
     void draw_filled_triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, RGB colour) override;
 
-    void draw_bitmap(int16_t x, int16_t y, uint8_t *bitmap, int16_t width, int16_t height, RGB colour) override;
+    void draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t height, void *bitmap, BITMAP_TYPE bitmap_type, RGB colour) override;
 };
+
+#endif

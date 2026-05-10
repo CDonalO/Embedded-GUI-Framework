@@ -10,7 +10,6 @@ typedef enum
     BUTTON_ROUND_STYLE_DOWN_ARROW,
     BUTTON_ROUND_STYLE_LEFT_ARROW,
     BUTTON_ROUND_STYLE_RIGHT_ARROW,
-    BUTTON_ICON_STYLE,
     BUTTON_SQUARE_STYLE,
 } BUTTON_STYLE;
 
@@ -27,10 +26,6 @@ private:
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     TEXT_ALIGN align_value;
-    uint8_t *icon_bitmap;
-    uint8_t icon_width;
-    uint8_t icon_height;
-    RGB icon_bg_colour;
     RGB disabled_bg_colour;
     RGB disabled_trim_colour;
     RGB disabled_text_colour;
@@ -53,7 +48,6 @@ public:
 
     void set_button_style(BUTTON_STYLE style);
     void set_button_str(const char *button_str);
-    void set_icon_bitmap(uint8_t *bitmap, uint8_t width, uint8_t height, RGB icon_bg_colour);
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();

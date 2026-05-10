@@ -4,9 +4,6 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun 
 {
     border_radius = 10;
     disabled = false;
-    icon_bitmap = NULL;
-    icon_width = 0;
-    icon_height = 0;
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
     disabled_text_colour = WHITE;
@@ -144,16 +141,9 @@ void GUI_Button::draw(display_driver *display)
 
         break;
     case BUTTON_SQUARE_STYLE:
-    case BUTTON_ICON_STYLE:
         display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
         display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
 
-        if (button_style == BUTTON_ICON_STYLE && icon_bitmap != NULL)
-        {
-            int bitmap_x = get_x() + (get_width() / 2) - icon_width / 2;
-            int bitmap_y = get_y() + (get_height() / 2) - icon_height / 2;
-            display->draw_bitmap(bitmap_x, bitmap_y, icon_bitmap, icon_width, icon_height, icon_bg_colour);
-        }
         break;
     }
 
@@ -175,7 +165,7 @@ void GUI_Button::draw(display_driver *display)
     text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
     // TODO Make this better
-    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ICON_STYLE && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
+    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
     {
         uint8_t t_size = get_text_size();
         if (parent)
@@ -244,22 +234,6 @@ void GUI_Button::set_button_style(BUTTON_STYLE style)
 void GUI_Button::set_button_str(const char *button_str)
 {
     strncpy((char *)text, button_str, sizeof(text));
-}
-
-/**
- * @brief Set button icon bitmap
- *
- * @param bitmap Pointer to bitmap
- * @param width Width of bitmap
- * @param height Height of bitmap
- * @param icon_bg_colour Icon background colour
- */
-void GUI_Button::set_icon_bitmap(uint8_t *bitmap, uint8_t width, uint8_t height, RGB icon_bg_colour)
-{
-    icon_bitmap = bitmap;
-    icon_width = width;
-    icon_height = height;
-    this->icon_bg_colour = icon_bg_colour;
 }
 
 /**
