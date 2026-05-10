@@ -14,9 +14,13 @@ typedef enum
 typedef bool (*click_cb_fun)(void *user_data);
 
 #include "drivers/display_driver.h"
-#if __has_include(<Adafruit_GFX.h>)
+#ifdef ADAFRUIT_DRIVER
 #include "drivers/Adafruit_GFX/Adafruit_GFX_driver.h"
-#endif
+#endif /* ADAFRUIT_DRIVER */
+
+#ifdef SDL3_DRIVER
+#include "drivers/SDL3/SDL3_driver.h"
+#endif /* SDL3_DRIVER */
 
 static const RGB WHITE(255, 255, 255);
 static const RGB BLACK(0, 0, 0);

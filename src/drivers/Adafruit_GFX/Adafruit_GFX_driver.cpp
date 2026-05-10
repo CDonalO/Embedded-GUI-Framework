@@ -1,6 +1,6 @@
 #include "Adafruit_GFX_driver.h"
 
-#if __has_include(<Adafruit_GFX.h>)
+#ifdef ADAFRUIT_DRIVER
 static uint16_t get_rgb_colour(RGB c)
 {
     uint8_t r = c.get_red();
@@ -113,4 +113,4 @@ void Adafruit_GFX_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16
         display->drawBitmap(x, y, data, width, height, c);
     }
 }
-#endif
+#endif /* ADAFRUIT_DRIVER */

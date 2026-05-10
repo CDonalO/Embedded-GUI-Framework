@@ -2,17 +2,24 @@
 
 #include "../display_driver.h"
 
-#ifdef ADAFRUIT_DRIVER
-#include <Adafruit_GFX.h>
+#ifdef SDL3_DRIVER
 
-class Adafruit_GFX_driver : public display_driver
+#include <SDL3/SDL.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3_ttf/SDL_ttf.h>
+
+class SDL3_driver : public display_driver
 {
 private:
-    Adafruit_GFX *display;
+    uint16_t width;
+    uint16_t height;
+    SDL_Window *window;
+    TTF_Font *font;
+    SDL_Renderer *renderer;
 
 public:
-    Adafruit_GFX_driver(Adafruit_GFX *display);
-    ~Adafruit_GFX_driver();
+    SDL3_driver(uint16_t window_width, uint16_t window_height);
+    ~SDL3_driver();
 
     void get_text_bounds(const char *text, uint16_t *width, uint16_t *height) override;
 
@@ -32,4 +39,4 @@ public:
     void draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t height, void *bitmap, BITMAP_TYPE bitmap_type, RGB colour) override;
 };
 
-#endif /* ADAFRUIT_DRIVER */
+#endif /* SDL3_DRIVER */
