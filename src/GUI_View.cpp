@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_View.h"
 
 typedef struct menu_change_event
 {

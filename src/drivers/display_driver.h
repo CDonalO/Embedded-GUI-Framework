@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../platform.h"
 #include "../GUI_Colours.h"
 
 typedef enum

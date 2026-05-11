@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Grid.h"
 
 GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes)
 {

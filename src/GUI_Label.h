@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Element.h"
 
 class GUI_Label : public GUI_Element
 {

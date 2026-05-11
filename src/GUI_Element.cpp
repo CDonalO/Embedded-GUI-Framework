@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Element.h"
 
 GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) : x(x), y(y), height(height), width(width)
 {

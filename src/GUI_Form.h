@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Button.h"
 
 class GUI_Form : public GUI_Element
 {

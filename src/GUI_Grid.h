@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Element.h"
 
+#include <vector>
 typedef enum
 {
     GRID_TYPE_NONE,

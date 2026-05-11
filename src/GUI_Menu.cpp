@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Menu.h"
 
 GUI_Menu::GUI_Menu(const char *_menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes)
 {

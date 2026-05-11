@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Form.h"
 
 GUI_Form::GUI_Form(const char *_label, form_value_update_fun value_cb) : GUI_Element()
 {

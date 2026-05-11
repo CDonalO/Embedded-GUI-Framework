@@ -3,6 +3,9 @@
   "version": "1.0.3",
   "description": "A simple framework to create GUIs with Adafruit GFX displays",
   "keywords": "GUI, adafruit, arduino",
+  "export": {
+    "include": ["include/GUI.h"]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/CDonalO/Embedded-GUI-Framework.git"

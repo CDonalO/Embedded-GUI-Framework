@@ -1,6 +1,9 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Menu.h"
+#include "GUI_Button.h"
+
+#include <stack>
 
 class GUI_View : public GUI_Element
 {

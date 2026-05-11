@@ -1,6 +1,8 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Colours.h"
+#include "drivers/display_driver.h"
+#include "GUI_Definitions.h"
 
 class GUI_Element
 {

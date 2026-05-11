@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Label.h"
 
 GUI_Label::GUI_Label(char *label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour) : GUI_Element()
 {

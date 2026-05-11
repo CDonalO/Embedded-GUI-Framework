@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Bitmap.h"
 
 GUI_Bitmap::GUI_Bitmap(uint8_t *bitmap) : GUI_Element(), bitmap_data(bitmap), bitmap_type(BITMAP_ALPHA_MAP) {}
 

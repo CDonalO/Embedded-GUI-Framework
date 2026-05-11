@@ -1,4 +1,4 @@
-#include "GUI.h"
+#include "GUI_Button.h"
 
 GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align)
 {

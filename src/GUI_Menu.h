@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI.h"
+#include "GUI_Grid.h"
 
 class GUI_Menu : public GUI_Grid
 {
