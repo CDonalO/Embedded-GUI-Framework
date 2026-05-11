@@ -148,6 +148,30 @@ void GUI_Button::draw(display_driver *display)
         }
 
         break;
+    case BUTTON_STYLE_PLUS:
+    case BUTTON_STYLE_MINUS:
+        int bar_width = get_height() / 4;
+
+        if (get_height() > get_width())
+        {
+            bar_width = get_width() / 4;
+        }
+
+        int bar_height = bar_width / 6;
+
+        int bar_x = get_x() + (get_width() / 2) - (bar_width / 2);
+        int bar_y = get_y() + (get_height() / 2) - (bar_height / 2);
+
+        display->draw_filled_rect(bar_x, bar_y, bar_width, bar_height, font_c);
+
+        if (button_style == BUTTON_STYLE_PLUS)
+        {
+            bar_x = get_x() + (get_width() / 2) - (bar_height / 2);
+            bar_y = get_y() + (get_height() / 2) - (bar_width / 2);
+
+            display->draw_filled_rect(bar_x, bar_y, bar_height, bar_width, font_c);
+        }
+        break;
     }
 
     if (align_value == ALIGN_CENTER)
