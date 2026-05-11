@@ -28,6 +28,33 @@ void GUI_View::draw(display_driver *display)
 
     ignore_refresh = !display->get_optimize_rendering();
 
+    if (ignore_refresh)
+    {
+        set_refresh(true, false);
+        refresh = true;
+    }
+
+    if (menu_stack.size() > 0)
+    {
+        bool resize_menu = false;
+        if (menu_stack.top()->get_width() != get_width())
+        {
+            resize_menu = true;
+            menu_stack.top()->set_width(get_width());
+        }
+
+        if (menu_stack.top()->get_height() != get_height())
+        {
+            resize_menu = true;
+            menu_stack.top()->set_height(get_height() - menu_bar_size);
+        }
+
+        if (resize_menu)
+        {
+            menu_stack.top()->adjust_elements();
+        }
+    }
+
     if (refresh)
     {
         display->draw_filled_rect(0, 0, get_width(), menu_bar_size, get_trim_colour());
@@ -77,11 +104,6 @@ void GUI_View::draw(display_driver *display)
             }
             refresh = false;
         }
-    }
-
-    if (ignore_refresh)
-    {
-        set_refresh(true, false);
     }
 }
 
