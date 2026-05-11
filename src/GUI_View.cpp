@@ -6,12 +6,12 @@ typedef struct menu_change_event
     GUI_Menu *m;
 } _menu_change_event;
 
-GUI_View::GUI_View(display_driver *display, uint16_t menu_bar_size) : GUI_Element()
+GUI_View::GUI_View(uint16_t menu_bar_size) : GUI_Element()
 {
-    this->display = display;
     this->menu_bar_size = menu_bar_size;
-    ignore_refresh = !display->get_optimize_rendering();
 }
+
+GUI_View::GUI_View() : GUI_View(0) {}
 
 GUI_View::~GUI_View()
 {
@@ -19,10 +19,14 @@ GUI_View::~GUI_View()
 
 /**
  * @brief Main entry to draw everything added to view/menus
+ *
+ * @param display Display to draw button on
  */
-void GUI_View::draw()
+void GUI_View::draw(display_driver *display)
 {
     uint16_t text_y, text_x;
+
+    ignore_refresh = !display->get_optimize_rendering();
 
     if (refresh)
     {
@@ -79,15 +83,6 @@ void GUI_View::draw()
     {
         set_refresh(true, false);
     }
-}
-
-/**
- * @brief Draw view (not used)
- *
- * @param display Display to draw button on
- */
-void GUI_View::draw(display_driver *display)
-{
 }
 
 void GUI_View::navigate(int16_t x_pos, int16_t y_pos)

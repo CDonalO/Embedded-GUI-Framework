@@ -8,7 +8,6 @@
 class GUI_View : public GUI_Element
 {
 private:
-    display_driver *display;
     std::stack<GUI_Menu *> menu_stack;
     uint16_t menu_bar_size;
     RGB back_button_bg_colour;
@@ -16,10 +15,10 @@ private:
     bool ignore_refresh;
 
 public:
-    GUI_View(display_driver *display, uint16_t menu_bar_size);
+    GUI_View(uint16_t menu_bar_size);
+    GUI_View();
     ~GUI_View();
 
-    void draw();
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void set_refresh(bool r, bool p) override;

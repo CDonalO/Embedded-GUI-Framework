@@ -1,4 +1,5 @@
 #include "Adafruit_GFX_driver.h"
+#include "../../GUI_View.h"
 
 #ifdef ADAFRUIT_DRIVER
 static uint16_t get_rgb_colour(RGB c)
@@ -9,12 +10,13 @@ static uint16_t get_rgb_colour(RGB c)
     return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
 
-Adafruit_GFX_driver::Adafruit_GFX_driver(Adafruit_GFX *_display)
+Adafruit_GFX_driver::Adafruit_GFX_driver(Adafruit_GFX *_display, uint16_t menu_bar_size) : display_driver(menu_bar_size)
 {
     display = _display;
+    view = new GUI_View(menu_bar_size);
 }
 
-Adafruit_GFX_driver::~Adafruit_GFX_driver()
+Adafruit_GFX_driver::~Adafruit_GFX_driver() {}
 {
 }
 

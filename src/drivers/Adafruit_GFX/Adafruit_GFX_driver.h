@@ -11,7 +11,7 @@ private:
     Adafruit_GFX *display;
 
 public:
-    Adafruit_GFX_driver(Adafruit_GFX *display);
+    Adafruit_GFX_driver(Adafruit_GFX *display, uint16_t menu_bar_size);
     ~Adafruit_GFX_driver();
 
     void get_text_bounds(const char *text, uint16_t *width, uint16_t *height) override;

@@ -1,4 +1,5 @@
 #include "SDL3_driver.h"
+#include "../../GUI_View.h"
 
 #ifdef SDL3_DRIVER
 
@@ -9,7 +10,7 @@ SDL_Color get_colour(RGB colour)
     return c;
 }
 
-SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height)
+SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size) : display_driver(menu_bar_size)
 {
     optimize_rendering = false;
     width = window_width;
@@ -43,6 +44,8 @@ SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height)
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     SDL_SetRenderVSync(renderer, 1);
+
+    view = new GUI_View(menu_bar_size);
 }
 
 SDL3_driver::~SDL3_driver()

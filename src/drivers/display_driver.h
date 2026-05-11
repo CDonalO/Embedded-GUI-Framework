@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../platform.h"
-#include "../GUI_Colours.h"
+#include "../GUI_Definitions.h"
 
 typedef enum
 {
@@ -9,13 +8,17 @@ typedef enum
     BITMAP_RGB565,
 } BITMAP_TYPE;
 
+class GUI_View;
 class display_driver
 {
 protected:
     bool optimize_rendering = true;
 
 public:
-    display_driver() {}
+    GUI_View *view;
+    uint16_t menu_bar_size;
+
+    display_driver(uint16_t menu_bar_size) : menu_bar_size(menu_bar_size) {}
     virtual ~display_driver() {}
 
     bool get_optimize_rendering() { return optimize_rendering; }

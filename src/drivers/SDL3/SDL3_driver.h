@@ -18,7 +18,7 @@ private:
     SDL_Renderer *renderer;
 
 public:
-    SDL3_driver(uint16_t window_width, uint16_t window_height);
+    SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size);
     ~SDL3_driver();
 
     void get_text_bounds(const char *text, uint16_t *width, uint16_t *height) override;
