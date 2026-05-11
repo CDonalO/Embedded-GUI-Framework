@@ -242,7 +242,7 @@ void GUI_Grid::adjust_elements()
                 }
             }
 #ifdef VERBOSE_ELEMENT_DEBUG
-            Serial.printf("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
+            PLATFORM_PRINTF("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
 #endif /* VERBOSE_ELEMENT_DEBUG */
         }
     }

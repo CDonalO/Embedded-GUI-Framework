@@ -568,10 +568,10 @@ bool GUI_Element::text_colour_set()
 #ifdef VERBOSE_ELEMENT_DEBUG
 void GUI_Element::print_element()
 {
-    Serial.printf("Element\n");
-    Serial.printf("X: %d, X offset: %d\n", x, container_x_offset);
-    Serial.printf("Y: %d, Y offset: %d\n", y, container_y_offset);
-    Serial.printf("Width: %d, Height: %d\n", width, height);
+    PLATFORM_PRINTF("Element\n");
+    PLATFORM_PRINTF("X: %d, X offset: %d\n", x, container_x_offset);
+    PLATFORM_PRINTF("Y: %d, Y offset: %d\n", y, container_y_offset);
+    PLATFORM_PRINTF("Width: %d, Height: %d\n", width, height);
 }
 #else
 void GUI_Element::print_element() {}
