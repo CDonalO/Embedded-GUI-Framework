@@ -3,16 +3,18 @@
 #include "GUI_Element.h"
 
 #include <vector>
-
+typedef enum
+{
+    BUTTON_ATTRIBUTE_ROUNDED,
+    BUTTON_ATTRIBUTE_SQUARED,
+} BUTTON_ATTRIBUTE;
 typedef enum
 {
     BUTTON_NO_STYLE,
-    BUTTON_ROUND_STYLE,
-    BUTTON_ROUND_STYLE_UP_ARROW,
-    BUTTON_ROUND_STYLE_DOWN_ARROW,
-    BUTTON_ROUND_STYLE_LEFT_ARROW,
-    BUTTON_ROUND_STYLE_RIGHT_ARROW,
-    BUTTON_SQUARE_STYLE,
+    BUTTON_STYLE_UP_ARROW,
+    BUTTON_STYLE_DOWN_ARROW,
+    BUTTON_STYLE_LEFT_ARROW,
+    BUTTON_STYLE_RIGHT_ARROW,
 } BUTTON_STYLE;
 
 typedef enum
@@ -26,6 +28,7 @@ class GUI_Button : public GUI_Element
 private:
     char *text[32];
     BUTTON_STYLE button_style;
+    BUTTON_ATTRIBUTE button_attribute;
     uint8_t border_radius;
     TEXT_ALIGN align_value;
     RGB disabled_bg_colour;
@@ -38,7 +41,7 @@ protected:
     bool disabled;
 
 public:
-    GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
+    GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
     ~GUI_Button();
 
     void draw(display_driver *display) override;
@@ -54,6 +57,7 @@ public:
     void set_disabled(bool disable);
     bool is_disabled();
     void set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_text_colour);
+    void set_button_attributes(BUTTON_ATTRIBUTE attribute);
 };
 
 typedef void (*linked_button_update_fun)(GUI_Element *linked_element, bool toggle_value);

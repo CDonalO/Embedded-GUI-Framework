@@ -1,6 +1,6 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align)
+GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align), button_attribute(button_attribute)
 {
     border_radius = 10;
     disabled = false;
@@ -47,21 +47,29 @@ void GUI_Button::draw(display_driver *display)
         font_c = disabled_text_colour;
     }
 
-    switch (button_style)
+    if (button_attribute == BUTTON_ATTRIBUTE_ROUNDED)
     {
-    case BUTTON_ROUND_STYLE:
-    case BUTTON_ROUND_STYLE_UP_ARROW:
-    case BUTTON_ROUND_STYLE_DOWN_ARROW:
-    case BUTTON_ROUND_STYLE_LEFT_ARROW:
-    case BUTTON_ROUND_STYLE_RIGHT_ARROW:
         display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
         display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
+    }
+    else if (button_attribute == BUTTON_ATTRIBUTE_SQUARED)
+    {
+        display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
+        display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
+    }
 
-        if (button_style == BUTTON_ROUND_STYLE_UP_ARROW || button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
+    switch (button_style)
+    {
+    case BUTTON_STYLE_UP_ARROW:
+    case BUTTON_STYLE_DOWN_ARROW:
+    case BUTTON_STYLE_LEFT_ARROW:
+    case BUTTON_STYLE_RIGHT_ARROW:
+
+        if (button_style == BUTTON_STYLE_UP_ARROW || button_style == BUTTON_STYLE_DOWN_ARROW)
         {
             // TODO make this dynamically sized
             bool arrow_up_dir = true;
-            if (button_style == BUTTON_ROUND_STYLE_DOWN_ARROW)
+            if (button_style == BUTTON_STYLE_DOWN_ARROW)
             {
                 arrow_up_dir = false;
             }
@@ -97,11 +105,11 @@ void GUI_Button::draw(display_driver *display)
 
             display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
         }
-        else if (button_style == BUTTON_ROUND_STYLE_LEFT_ARROW || button_style == BUTTON_ROUND_STYLE_RIGHT_ARROW)
+        else if (button_style == BUTTON_STYLE_LEFT_ARROW || button_style == BUTTON_STYLE_RIGHT_ARROW)
         {
             // TODO make this dynamically sized
             bool arrow_left_dir = true;
-            if (button_style == BUTTON_ROUND_STYLE_RIGHT_ARROW)
+            if (button_style == BUTTON_STYLE_RIGHT_ARROW)
             {
                 arrow_left_dir = false;
             }
@@ -140,11 +148,6 @@ void GUI_Button::draw(display_driver *display)
         }
 
         break;
-    case BUTTON_SQUARE_STYLE:
-        display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
-        display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
-
-        break;
     }
 
     if (align_value == ALIGN_CENTER)
@@ -164,8 +167,7 @@ void GUI_Button::draw(display_driver *display)
 
     text_y = display->center_text_vertical((char *)text, get_height(), get_y());
 
-    // TODO Make this better
-    if (button_style != BUTTON_ROUND_STYLE_DOWN_ARROW && button_style != BUTTON_ROUND_STYLE_UP_ARROW && button_style != BUTTON_ROUND_STYLE_LEFT_ARROW && button_style != BUTTON_ROUND_STYLE_RIGHT_ARROW)
+    if (button_style == BUTTON_NO_STYLE)
     {
         uint8_t t_size = get_text_size();
         if (parent)
@@ -282,7 +284,17 @@ void GUI_Button::set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_
     this->disabled_text_colour = disabled_text_colour;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_ROUND_STYLE, button_str, click_cb, NULL, align)
+/**
+ * @brief Set the buttons attribute
+ *
+ * @param attribute Button attribute
+ */
+void GUI_Button::set_button_attributes(BUTTON_ATTRIBUTE attribute)
+{
+    button_attribute = attribute;
+}
+
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL, align)
 {
     button_style = style;
     value = default_value;
