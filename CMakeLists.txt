@@ -8,6 +8,8 @@ add_library(EmbeddedGUIFramework)
 option(EGUI_VISUAL_DEBUG        "Enable visual element debug"       OFF)
 option(EGUI_VERBOSE_DEBUG       "Enable verbose element debug"      OFF)
 
+set(GUI_IMAGE_SUPPORT FALSE)
+
 # C++ Standards
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -66,6 +68,7 @@ if(ADAFRUIT_GFX_LIB)
     target_compile_definitions(EmbeddedGUIFramework PUBLIC ADAFRUIT_DRIVER=1)
     target_link_libraries(EmbeddedGUIFramework PRIVATE Adafruit-GFX-Library::Adafruit-GFX-Library)
 elseif(SDL3_LIB)
+    set(GUI_IMAGE_SUPPORT TRUE)
     find_library(SDL3_IMAGE_LIB NAMES SDL3_image HINTS ${CMAKE_SOURCE_DIR}/libs/)
 
     if (NOT SDL3_IMAGE_LIB)
@@ -88,4 +91,9 @@ elseif(SDL3_LIB)
 
 else()
     message(WARNING "No display driver found.")
+endif()
+
+
+if (GUI_IMAGE_SUPPORT)
+    target_compile_definitions(EmbeddedGUIFramework PUBLIC GUI_IMAGE_SUPPORT=1)
 endif()

@@ -1,5 +1,7 @@
 #include "GUI_Image.h"
 
+#ifdef GUI_IMAGE_SUPPORT
+
 GUI_Image::GUI_Image(PLATFORM_STRING file_path) : GUI_Element(), file_path(file_path)
 {
 }
@@ -34,3 +36,5 @@ void GUI_Image::set_refresh(bool r, bool p)
 {
     refresh = r;
 }
+
+#endif /* GUI_IMAGE_SUPPORT */
