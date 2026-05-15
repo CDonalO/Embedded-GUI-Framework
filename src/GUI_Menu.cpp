@@ -1,11 +1,10 @@
 #include "GUI_Menu.h"
 
-GUI_Menu::GUI_Menu(const char *_menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes)
+GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes), menu_name(menu_name)
 {
-    strncpy((char *)menu_name, _menu_name, sizeof(menu_name));
 }
 
-GUI_Menu::GUI_Menu(const char *_menu_name) : GUI_Menu(_menu_name, GRID_TYPE_NONE, 0, 0, 0)
+GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name) : GUI_Menu(menu_name, GRID_TYPE_NONE, 0, 0, 0)
 {
 }
 
@@ -28,7 +27,7 @@ void GUI_Menu::draw(display_driver *display)
     refresh = false;
 }
 
-const char *GUI_Menu::get_menu_name()
+PLATFORM_STRING GUI_Menu::get_menu_name()
 {
-    return (char *)menu_name;
+    return menu_name;
 }

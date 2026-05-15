@@ -69,7 +69,7 @@ void GUI_View::draw(display_driver *display)
 
         if (refresh)
         {
-            const char *menu_name = menu_stack.top()->get_menu_name();
+            PLATFORM_STRING menu_name = menu_stack.top()->get_menu_name();
 
             uint8_t t_size = get_text_size();
             RGB font_c = get_text_colour();
@@ -86,10 +86,10 @@ void GUI_View::draw(display_driver *display)
                 }
             }
 
-            text_x = display->center_text_horizontal((char *)menu_name, get_width(), 0);
-            text_y = display->center_text_vertical((char *)menu_name, menu_bar_size, 0);
+            text_x = display->center_text_horizontal((char *)menu_name.c_str(), get_width(), 0);
+            text_y = display->center_text_vertical((char *)menu_name.c_str(), menu_bar_size, 0);
 
-            display->draw_text(text_x, text_y, menu_name, t_size, font_c);
+            display->draw_text(text_x, text_y, menu_name.c_str(), t_size, font_c);
 
             if (menu_stack.size() > 1)
             {

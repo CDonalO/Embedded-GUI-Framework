@@ -57,7 +57,7 @@ SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t
 
     if (font == NULL)
     {
-        PLATFORM_PRINTF("Failed to load font %s\n", font_path);
+        PLATFORM_PRINTF("Failed to load font %s\n", font_path.c_str());
         setup_error = true;
         return;
     }
@@ -78,26 +78,26 @@ SDL3_driver::~SDL3_driver()
     delete view;
 }
 
-void SDL3_driver::get_text_bounds(const char *text, uint16_t *width, uint16_t *height)
+void SDL3_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_t *height)
 {
     int w, h;
 
-    if (text == NULL)
+    if (text.length() == 0)
     {
         return;
     }
 
-    TTF_GetStringSize(font, text, 0, &w, &h);
+    TTF_GetStringSize(font, text.c_str(), 0, &w, &h);
 
     *width = (uint16_t)w;
     *height = (uint16_t)h;
 }
 
-uint16_t SDL3_driver::center_text_vertical(char *str, uint16_t container_h, uint16_t container_y)
+uint16_t SDL3_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y)
 {
     uint16_t text_w, text_h;
 
-    if (str == NULL)
+    if (str.length() == 0)
     {
         return 0;
     }
@@ -107,11 +107,11 @@ uint16_t SDL3_driver::center_text_vertical(char *str, uint16_t container_h, uint
     return container_y + (container_h / 2) - (text_h / 2);
 }
 
-uint16_t SDL3_driver::center_text_horizontal(char *str, uint16_t container_w, uint16_t container_x)
+uint16_t SDL3_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x)
 {
     uint16_t text_w, text_h;
 
-    if (str == NULL)
+    if (str.length() == 0)
     {
         return 0;
     }
@@ -131,8 +131,13 @@ int16_t SDL3_driver::get_display_height()
     return height;
 }
 
-void SDL3_driver::draw_text(int16_t x, int16_t y, const char *text, uint8_t size, RGB colour)
+void SDL3_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t size, RGB colour)
 {
+    if (text.length() == 0)
+    {
+        return;
+    }
+
     SDL_FRect src;
     SDL_FRect dst;
     uint16_t text_width, text_height;
@@ -146,7 +151,7 @@ void SDL3_driver::draw_text(int16_t x, int16_t y, const char *text, uint8_t size
 
     SDL_Surface *surface = TTF_RenderText_Blended(
         font,
-        text, strlen(text), text_colour);
+        text.c_str(), text.size(), text_colour);
 
     SDL_Texture *font_texture = SDL_CreateTextureFromSurface(renderer, surface);
     SDL_DestroySurface(surface);
@@ -342,6 +347,11 @@ void SDL3_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t heigh
 
 void SDL3_driver::draw_image(int16_t x, int16_t y, int16_t width, int16_t height, PLATFORM_STRING file_path)
 {
+    if (file_path.length() == 0)
+    {
+        return;
+    }
+
     SDL_FRect src;
     SDL_FRect dst;
     src.w = width;

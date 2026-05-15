@@ -5,11 +5,11 @@
 class GUI_Menu : public GUI_Grid
 {
 private:
-    char *menu_name[32];
+    PLATFORM_STRING menu_name;
 
 public:
-    GUI_Menu(const char *_menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes);
-    GUI_Menu(const char *_menu_name);
+    GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes);
+    GUI_Menu(PLATFORM_STRING menu_name);
     ~GUI_Menu();
 
     void draw(display_driver *display) override;
@@ -17,5 +17,5 @@ public:
 
     GUI_Element *clone() const override { return new GUI_Menu(*this); }
 
-    const char *get_menu_name();
+    PLATFORM_STRING get_menu_name();
 };

@@ -8,7 +8,7 @@ RGB::RGB(PLATFORM_STRING hex_string) : RGB(0, 0, 0)
 {
     PLATFORM_STRING hex_string_escaped = hex_string;
 
-    if (hex_string.size() == 0)
+    if (hex_string.length() == 0)
     {
         return;
     }
@@ -18,7 +18,7 @@ RGB::RGB(PLATFORM_STRING hex_string) : RGB(0, 0, 0)
         hex_string_escaped = PLATFORM_STRING_POP_FRONT(hex_string);
     }
 
-    if (hex_string_escaped.size() != 6)
+    if (hex_string_escaped.length() != 6)
     {
         return;
     }

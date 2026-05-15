@@ -1,9 +1,8 @@
 #include "GUI_Form.h"
 
-GUI_Form::GUI_Form(const char *_label, form_value_update_fun value_cb) : GUI_Element()
+GUI_Form::GUI_Form(PLATFORM_STRING label, form_value_update_fun value_cb) : GUI_Element(), label(label)
 {
     value_update_cb = value_cb;
-    strncpy((char *)label, _label, sizeof(label));
 }
 
 GUI_Form::~GUI_Form()
@@ -24,7 +23,7 @@ GUI_Form::~GUI_Form()
  */
 void GUI_Form::draw(display_driver *display)
 {
-    uint16_t text_y = display->center_text_vertical((char *)label, get_height(), get_y());
+    uint16_t text_y = display->center_text_vertical((char *)label.c_str(), get_height(), get_y());
     RGB trim_color = get_trim_colour();
     RGB bg_color = get_background_colour();
     bool update_value = false;
@@ -65,7 +64,7 @@ void GUI_Form::draw(display_driver *display)
     {
         display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), 10, trim_color);
         display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, 10, bg_color);
-        display->draw_text(get_x() + 10, text_y, (char *)label, t_size, font_c);
+        display->draw_text(get_x() + 10, text_y, (char *)label.c_str(), t_size, font_c);
     }
 
     if (!is_hidden())

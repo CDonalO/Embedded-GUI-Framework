@@ -36,11 +36,11 @@ private:
     std::vector<Form_Number_Data *> data_stack;
     form_value_update_fun value_update_cb;
     Form_Number_Data *get_data_by_id(uint16_t id);
-    char *label[32];
+    PLATFORM_STRING label;
     char *form_value[32];
 
 public:
-    GUI_Form(const char *_label, form_value_update_fun value_cb);
+    GUI_Form(PLATFORM_STRING label, form_value_update_fun value_cb);
     ~GUI_Form();
 
     void draw(display_driver *display) override;

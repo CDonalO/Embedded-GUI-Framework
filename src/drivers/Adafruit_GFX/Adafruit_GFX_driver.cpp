@@ -20,38 +20,44 @@ Adafruit_GFX_driver::~Adafruit_GFX_driver() {}
 {
 }
 
-void Adafruit_GFX_driver::get_text_bounds(const char *text, uint16_t *width, uint16_t *height)
+void Adafruit_GFX_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_t *height)
 {
     int16_t temp;
-    display->getTextBounds(text, 0, 0, &temp, &temp, width, height);
+
+    if (text.length() == 0)
+    {
+        *width = 0;
+        *height = 0;
+        return;
+    }
+
+    display->getTextBounds(text.c_str(), 0, 0, &temp, &temp, width, height);
 }
 
-uint16_t Adafruit_GFX_driver::center_text_vertical(char *str, uint16_t container_h, uint16_t container_y)
+uint16_t Adafruit_GFX_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y)
 {
-    int16_t x_bound, y_bound;
     uint16_t text_w, text_h;
 
-    if (str == NULL)
+    if (str.length() == 0)
     {
         return 0;
     }
 
-    display->getTextBounds(str, 0, container_y, &x_bound, &y_bound, &text_w, &text_h);
+    get_text_bounds(str, &text_w, &text_h);
 
     return container_y + (container_h / 2) + (text_h / 2);
 }
 
-uint16_t Adafruit_GFX_driver::center_text_horizontal(char *str, uint16_t container_w, uint16_t container_x)
+uint16_t Adafruit_GFX_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x)
 {
-    int16_t x_bound, y_bound;
     uint16_t text_w, text_h;
 
-    if (str == NULL)
+    if (str.length() == 0)
     {
         return 0;
     }
 
-    display->getTextBounds(str, container_x, 0, &x_bound, &y_bound, &text_w, &text_h);
+    get_text_bounds(str, &text_w, &text_h);
 
     return container_x + (container_w / 2) - (text_w / 2);
 }
@@ -66,13 +72,18 @@ int16_t Adafruit_GFX_driver::get_display_height()
     return display->height();
 }
 
-void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, const char *text, uint8_t size, RGB colour)
+void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t size, RGB colour)
 {
+    if (text.length() == 0)
+    {
+        return;
+    }
+
     uint16_t c = get_rgb_colour(colour);
     display->setTextColor(c);
     display->setTextSize(size);
     display->setCursor(x, y);
-    display->println(text);
+    display->println(text.c_str());
 }
 
 void Adafruit_GFX_driver::draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, RGB colour)

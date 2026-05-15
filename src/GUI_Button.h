@@ -28,7 +28,7 @@ typedef enum
 class GUI_Button : public GUI_Element
 {
 private:
-    char *text[32];
+    PLATFORM_STRING text;
     BUTTON_STYLE button_style;
     BUTTON_ATTRIBUTE button_attribute;
     uint8_t border_radius;
@@ -43,7 +43,7 @@ protected:
     bool disabled;
 
 public:
-    GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
+    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
     ~GUI_Button();
 
     void draw(display_driver *display) override;
@@ -55,7 +55,7 @@ public:
     GUI_Element *clone() const override { return new GUI_Button(*this); }
 
     void set_button_style(BUTTON_STYLE style);
-    void set_button_str(const char *button_str);
+    void set_button_str(PLATFORM_STRING button_str);
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();
@@ -242,7 +242,7 @@ private:
     Button_Links links;
 
 public:
-    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb = NULL, bool default_value = false, TEXT_ALIGN align = ALIGN_CENTER);
+    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb = NULL, bool default_value = false, TEXT_ALIGN align = ALIGN_CENTER);
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;

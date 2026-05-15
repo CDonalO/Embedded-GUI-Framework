@@ -1,11 +1,10 @@
 #include "GUI_Label.h"
 
-GUI_Label::GUI_Label(char *label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour) : GUI_Element()
+GUI_Label::GUI_Label(PLATFORM_STRING label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour) : GUI_Element(), label(label)
 {
     set_text_colour(text_colour);
     set_text_size(text_size);
     align_value = align;
-    strncpy((char *)text, label, sizeof(text));
 }
 
 GUI_Label::~GUI_Label()
@@ -30,7 +29,7 @@ void GUI_Label::draw(display_driver *display)
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
+        text_x = display->center_text_horizontal((char *)label.c_str(), get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -39,11 +38,11 @@ void GUI_Label::draw(display_driver *display)
     else if (align_value == ALIGN_RIGHT)
     {
         uint16_t w, h;
-        display->get_text_bounds((char *)text, &w, &h);
+        display->get_text_bounds((char *)label.c_str(), &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = display->center_text_vertical((char *)text, get_height(), get_y());
+    text_y = display->center_text_vertical((char *)label.c_str(), get_height(), get_y());
 
     uint8_t t_size = get_text_size();
     RGB font_c = get_text_colour();
@@ -60,7 +59,7 @@ void GUI_Label::draw(display_driver *display)
         }
     }
 
-    display->draw_text(text_x, text_y, (char *)text, t_size, font_c);
+    display->draw_text(text_x, text_y, (char *)label.c_str(), t_size, font_c);
 
 #ifdef VISUAL_ELEMENT_DEBUG
     display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);

@@ -1,6 +1,6 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align), button_attribute(button_attribute)
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align), button_attribute(button_attribute), text(button_str)
 {
     border_radius = 10;
     disabled = false;
@@ -8,8 +8,6 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIB
     disabled_trim_colour = BLACK;
     disabled_text_colour = WHITE;
     set_interactable(true);
-
-    strncpy((char *)text, button_str, sizeof(text));
 }
 
 GUI_Button::~GUI_Button()
@@ -177,7 +175,7 @@ void GUI_Button::draw(display_driver *display)
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = display->center_text_horizontal((char *)text, get_width(), get_x());
+        text_x = display->center_text_horizontal((char *)text.c_str(), get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -186,11 +184,11 @@ void GUI_Button::draw(display_driver *display)
     else if (align_value == ALIGN_RIGHT)
     {
         uint16_t w, h;
-        display->get_text_bounds((char *)text, &w, &h);
+        display->get_text_bounds((char *)text.c_str(), &w, &h);
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = display->center_text_vertical((char *)text, get_height(), get_y());
+    text_y = display->center_text_vertical((char *)text.c_str(), get_height(), get_y());
 
     if (button_style == BUTTON_NO_STYLE)
     {
@@ -207,7 +205,7 @@ void GUI_Button::draw(display_driver *display)
                 font_c = parent->get_text_colour();
             }
         }
-        display->draw_text(text_x, text_y, (char *)text, t_size, font_c);
+        display->draw_text(text_x, text_y, (char *)text.c_str(), t_size, font_c);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -266,9 +264,9 @@ void GUI_Button::set_button_style(BUTTON_STYLE style)
  *
  * @param button_str Button string
  */
-void GUI_Button::set_button_str(const char *button_str)
+void GUI_Button::set_button_str(PLATFORM_STRING button_str)
 {
-    strncpy((char *)text, button_str, sizeof(text));
+    text = button_str;
 }
 
 /**
@@ -327,7 +325,7 @@ void GUI_Button::set_button_attributes(BUTTON_ATTRIBUTE attribute)
     button_attribute = attribute;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, const char *button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL, align)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL, align)
 {
     button_style = style;
     value = default_value;
