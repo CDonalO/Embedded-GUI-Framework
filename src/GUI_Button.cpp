@@ -227,7 +227,7 @@ void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Button::navigate(INPUT_TYPE input)
+void GUI_Button::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 {
     if (input != INPUT_ENTER)
         return;
@@ -415,7 +415,7 @@ void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Toggle_Button::navigate(INPUT_TYPE input)
+void GUI_Toggle_Button::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 {
     if (input != INPUT_ENTER)
         return;

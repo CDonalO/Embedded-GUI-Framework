@@ -119,9 +119,15 @@ void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
     menu_stack.top()->navigate(x_pos, y_pos);
 }
 
-void GUI_View::navigate(INPUT_TYPE input)
+void GUI_View::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 {
-    menu_stack.top()->navigate(input);
+    if (menu_stack.size() > 1 && key == KEYBOARD_ESC)
+    {
+        reverse_menus();
+        return;
+    }
+
+    menu_stack.top()->navigate(input, key);
 }
 
 /**

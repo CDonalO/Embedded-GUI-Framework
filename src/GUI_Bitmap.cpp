@@ -18,7 +18,7 @@ void GUI_Bitmap::draw(display_driver *display)
 
 void GUI_Bitmap::navigate(int16_t x_pos, int16_t y_pos) {}
 
-void GUI_Bitmap::navigate(INPUT_TYPE input) {}
+void GUI_Bitmap::navigate(INPUT_TYPE input, KEYBOARD_KEY key) {}
 
 void GUI_Bitmap::set_refresh(bool r, bool p)
 {

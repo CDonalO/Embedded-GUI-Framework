@@ -70,7 +70,7 @@ void GUI_Label::draw(display_driver *display)
 
 void GUI_Label::navigate(int16_t x_pos, int16_t y_pos) {}
 
-void GUI_Label::navigate(INPUT_TYPE input) {}
+void GUI_Label::navigate(INPUT_TYPE input, KEYBOARD_KEY key) {}
 
 /**
  * @brief Set label refresh value

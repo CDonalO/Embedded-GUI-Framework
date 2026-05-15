@@ -51,7 +51,7 @@ void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
-void GUI_Grid::navigate(INPUT_TYPE input)
+void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 {
     bool in_grid = true;
 
@@ -59,7 +59,7 @@ void GUI_Grid::navigate(INPUT_TYPE input)
     {
         if (selected_element != -1)
         {
-            elements[selected_element]->navigate(input);
+            elements[selected_element]->navigate(input, key);
         }
         return;
     }
@@ -75,12 +75,12 @@ void GUI_Grid::navigate(INPUT_TYPE input)
             {
                 if (input == INPUT_UP && !grid_element->start_of_interactable_elements())
                 {
-                    elements[selected_element]->navigate(input);
+                    elements[selected_element]->navigate(input, key);
                     in_grid = false;
                 }
                 else if (input == INPUT_DOWN && !grid_element->end_of_interactable_elements())
                 {
-                    elements[selected_element]->navigate(input);
+                    elements[selected_element]->navigate(input, key);
                     in_grid = false;
                 }
             }
@@ -119,7 +119,7 @@ void GUI_Grid::navigate(INPUT_TYPE input)
             {
                 if (grid_element->selected_element != grid_element->last_interactable_element_index)
                 {
-                    elements[selected_element]->navigate(input);
+                    elements[selected_element]->navigate(input, key);
                 }
                 else
                 {
@@ -130,7 +130,7 @@ void GUI_Grid::navigate(INPUT_TYPE input)
             {
                 if (grid_element->selected_element != grid_element->first_interactable_element_index)
                 {
-                    elements[selected_element]->navigate(input);
+                    elements[selected_element]->navigate(input, key);
                 }
                 else
                 {
