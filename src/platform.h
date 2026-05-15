@@ -4,6 +4,8 @@
 #include <Arduino.h>
 #define PLATFORM_PRINTF(fmt, ...) Serial.printf(fmt, ##__VA_ARGS__)
 #define PLATFORM_STRING String
+#define PLATFORM_STRING_AT(str, index) str.charAt(index)
+#define PLATFORM_STRING_POP_FRONT(str) str.substring(0)
 #else
 using namespace std;
 #include <cstdlib>
@@ -13,4 +15,6 @@ using namespace std;
 #include <cstring>
 #define PLATFORM_PRINTF(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #define PLATFORM_STRING string
+#define PLATFORM_STRING_AT(str, index) str.at(index)
+#define PLATFORM_STRING_POP_FRONT(str) str.substr(1)
 #endif

@@ -13,6 +13,7 @@ private:
 public:
     RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
     RGB(uint8_t r, uint8_t g, uint8_t b);
+    RGB(PLATFORM_STRING hex_string);
     RGB();
     RGB(const RGB &c);
 
