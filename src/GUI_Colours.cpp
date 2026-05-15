@@ -1,6 +1,8 @@
 #include "GUI_Colours.h"
 
-RGB::RGB(uint8_t r, uint8_t g, uint8_t b) : r(r), g(g), b(b) {}
+RGB::RGB(uint8_t r, uint8_t g, uint8_t b, uint8_t a) : r(r), g(g), b(b), a(a) {}
+
+RGB::RGB(uint8_t r, uint8_t g, uint8_t b) : RGB(r, g, b, 255) {}
 
 RGB::RGB() : RGB(0, 0, 0) {}
 
@@ -9,6 +11,7 @@ RGB::RGB(const RGB &c)
     r = c.r;
     g = c.g;
     b = c.b;
+    a = c.a;
 }
 
 RGB RGB::operator=(const RGB &c)
@@ -16,6 +19,7 @@ RGB RGB::operator=(const RGB &c)
     r = c.r;
     g = c.g;
     b = c.b;
+    a = c.a;
     return *this;
 }
 
@@ -47,4 +51,14 @@ uint8_t RGB::get_green()
 uint8_t RGB::get_blue()
 {
     return b;
+}
+
+/**
+ * @brief Get alpha value
+ *
+ * @return Alpha value
+ */
+uint8_t RGB::get_alpha()
+{
+    return a;
 }
