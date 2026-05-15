@@ -511,6 +511,16 @@ void GUI_Element::show()
 }
 
 /**
+ * @brief Set element interactable
+ *
+ * @param value New interactable value
+ */
+void GUI_Element::set_interactable(bool value)
+{
+    interactable = value;
+}
+
+/**
  * @brief Check if element is selected
  *
  * @return True if selected otherwise false
@@ -528,6 +538,16 @@ bool GUI_Element::is_selected()
 bool GUI_Element::is_hidden()
 {
     return hidden;
+}
+
+/**
+ * @brief Check if element is interactable
+ *
+ * @return True if interactable otherwise false
+ */
+bool GUI_Element::is_interactable()
+{
+    return interactable;
 }
 
 /**

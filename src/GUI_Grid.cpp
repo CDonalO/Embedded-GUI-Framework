@@ -9,6 +9,10 @@ GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_pad
     left_border_padding = border_padding;
     grid_type = type;
     attributes = grid_attributes;
+    selected_element = -1;
+    first_interactable_element_index = -1;
+    last_interactable_element_index = -1;
+    set_interactable(true);
 }
 
 GUI_Grid::~GUI_Grid()
@@ -43,6 +47,100 @@ void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
         if (elements[x]->within_bounds(x_pos, y_pos))
         {
             elements[x]->navigate(x_pos, y_pos);
+        }
+    }
+}
+
+void GUI_Grid::navigate(INPUT_TYPE input)
+{
+    bool in_grid = true;
+
+    if (input == INPUT_ENTER)
+    {
+        if (selected_element != -1)
+        {
+            elements[selected_element]->navigate(input);
+        }
+        return;
+    }
+
+    int16_t new_selected_element = -1;
+    if (selected_element != -1 && elements[selected_element]->is_interactable())
+    {
+        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+
+            if (grid_element->first_interactable_element_index != -1)
+            {
+                if (input == INPUT_UP && !grid_element->start_of_interactable_elements())
+                {
+                    elements[selected_element]->navigate(input);
+                    in_grid = false;
+                }
+                else if (input == INPUT_DOWN && !grid_element->end_of_interactable_elements())
+                {
+                    elements[selected_element]->navigate(input);
+                    in_grid = false;
+                }
+            }
+            if (in_grid)
+            {
+                grid_element->deselect_elements();
+            }
+        }
+        else
+        {
+            elements[selected_element]->deselect();
+        }
+    }
+
+    if (in_grid)
+    {
+        if (input == INPUT_DOWN)
+        {
+            new_selected_element = get_next_interactable_element();
+        }
+        else if (input == INPUT_UP)
+        {
+            new_selected_element = get_prev_interactable_element();
+        }
+    }
+
+    if (new_selected_element != -1)
+    {
+        selected_element = new_selected_element;
+
+        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+
+            if (input == INPUT_UP)
+            {
+                if (grid_element->selected_element != grid_element->last_interactable_element_index)
+                {
+                    elements[selected_element]->navigate(input);
+                }
+                else
+                {
+                    grid_element->select_elements();
+                }
+            }
+            else if (input == INPUT_DOWN)
+            {
+                if (grid_element->selected_element != grid_element->first_interactable_element_index)
+                {
+                    elements[selected_element]->navigate(input);
+                }
+                else
+                {
+                    grid_element->select_elements();
+                }
+            }
+        }
+        else
+        {
+            elements[selected_element]->select();
         }
     }
 }
@@ -303,6 +401,19 @@ void GUI_Grid::add_element(GUI_Element *element)
         return;
     }
 
+    if (element->is_interactable())
+    {
+        if (first_interactable_element_index == -1)
+        {
+            first_interactable_element_index = elements.size();
+            last_interactable_element_index = first_interactable_element_index;
+        }
+        else
+        {
+            last_interactable_element_index = elements.size();
+        }
+    }
+
     if (element->get_width() == 0)
     {
         element->set_width_auto_sizeable(true);
@@ -365,4 +476,209 @@ void GUI_Grid::set_left_border_padding(uint16_t border_padding)
 void GUI_Grid::set_right_border_padding(uint16_t border_padding)
 {
     right_border_padding = border_padding;
+}
+
+/**
+ * @brief Reset selected elements
+ *
+ */
+void GUI_Grid::deselect_elements()
+{
+    for (int i = 0; i < elements.size(); i++)
+    {
+        if (elements[i]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[i]);
+
+            grid_element->deselect_elements();
+        }
+        else
+        {
+            elements[i]->deselect();
+        }
+    }
+}
+
+/**
+ * @brief Reselect selected elements
+ *
+ */
+void GUI_Grid::select_elements()
+{
+    if (selected_element == -1)
+    {
+        return;
+    }
+
+    if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+    {
+        GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+
+        grid_element->select_elements();
+    }
+    else
+    {
+        elements[selected_element]->select();
+    }
+}
+
+bool GUI_Grid::end_of_interactable_elements()
+{
+    if (selected_element == -1 || selected_element > elements.size())
+    {
+        return false;
+    }
+
+    if (last_interactable_element_index == -1)
+    {
+        return true;
+    }
+
+    if (selected_element == last_interactable_element_index)
+    {
+        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+
+            return grid_element->end_of_interactable_elements();
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool GUI_Grid::start_of_interactable_elements()
+{
+    if (selected_element == -1 || selected_element > elements.size())
+    {
+        return false;
+    }
+
+    if (first_interactable_element_index == -1)
+    {
+        return true;
+    }
+
+    if (selected_element == first_interactable_element_index)
+    {
+        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+
+            return grid_element->start_of_interactable_elements();
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+int16_t GUI_Grid::get_next_interactable_element()
+{
+    GUI_Element *e = NULL;
+    int16_t val = selected_element;
+    uint16_t count = elements.size();
+
+    if (elements.size() == 0)
+    {
+        return -1;
+    }
+
+    val++;
+    val %= elements.size();
+
+    while (count > 0)
+    {
+        e = elements[val];
+
+        if (e->is_interactable())
+        {
+            if (e->get_type() == GUI_Element::Element_Type::GRID)
+            {
+                GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
+
+                if (grid_element->first_interactable_element_index != -1)
+                {
+                    return val;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        val++;
+        val %= elements.size();
+        count--;
+    }
+
+    if (val == selected_element)
+    {
+        return -1;
+    }
+
+    return val;
+}
+
+int16_t GUI_Grid::get_prev_interactable_element()
+{
+    GUI_Element *e = NULL;
+    int16_t val = selected_element;
+    uint16_t count = elements.size();
+
+    if (elements.size() == 0)
+    {
+        return -1;
+    }
+
+    val--;
+
+    if (val < 0)
+    {
+        val = elements.size() - 1;
+    }
+
+    while (count > 0)
+    {
+        e = elements[val];
+
+        if (e->is_interactable())
+        {
+            if (e->get_type() == GUI_Element::Element_Type::GRID)
+            {
+                GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
+
+                if (grid_element->first_interactable_element_index != -1)
+                {
+                    return val;
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+
+        val--;
+        if (val < 0)
+        {
+            val = elements.size() - 1;
+        }
+        count--;
+    }
+
+    if (val == selected_element)
+    {
+        return -1;
+    }
+
+    return val;
 }

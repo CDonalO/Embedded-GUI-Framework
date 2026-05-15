@@ -7,6 +7,7 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, const char *button_str, BUTTON_ATTRIB
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
     disabled_text_colour = WHITE;
+    set_interactable(true);
 
     strncpy((char *)text, button_str, sizeof(text));
 }
@@ -226,6 +227,14 @@ void GUI_Button::navigate(int16_t x_pos, int16_t y_pos)
     }
 }
 
+void GUI_Button::navigate(INPUT_TYPE input)
+{
+    if (input != INPUT_ENTER)
+        return;
+
+    navigate(0, 0);
+}
+
 /**
  * @brief Set buttons refresh value
  *
@@ -404,6 +413,14 @@ void GUI_Toggle_Button::navigate(int16_t x_pos, int16_t y_pos)
             refresh = click_cb(&value);
         }
     }
+}
+
+void GUI_Toggle_Button::navigate(INPUT_TYPE input)
+{
+    if (input != INPUT_ENTER)
+        return;
+
+    navigate(0, 0);
 }
 
 /**

@@ -28,6 +28,7 @@ private:
     bool selected;
     bool width_auto_size;
     bool height_auto_size;
+    bool interactable = false;
 
 protected:
     bool refresh;
@@ -55,6 +56,7 @@ public:
 
     virtual void draw(display_driver *display) = 0;
     virtual void navigate(int16_t x_pos, int16_t y_pos) = 0;
+    virtual void navigate(INPUT_TYPE input) = 0;
     virtual void set_refresh(bool r, bool p) = 0;
     virtual Element_Type get_type() = 0;
     virtual GUI_Element *clone() const = 0;
@@ -104,8 +106,10 @@ public:
     void deselect();
     void hide();
     void show();
+    void set_interactable(bool value);
     bool is_selected();
     bool is_hidden();
+    bool is_interactable();
     bool within_bounds(int16_t x_pos, int16_t y_pos);
     bool text_size_set();
     bool text_colour_set();

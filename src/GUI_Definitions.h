@@ -14,6 +14,16 @@ static const RGB LIGHT_BLUE(144, 194, 250);
 
 typedef enum
 {
+    INPUT_NONE,
+    INPUT_UP,
+    INPUT_DOWN,
+    INPUT_LEFT,
+    INPUT_RIGHT,
+    INPUT_ENTER,
+} INPUT_TYPE;
+
+typedef enum
+{
     ALIGN_CENTER,
     ALIGN_LEFT,
     ALIGN_RIGHT,

@@ -26,6 +26,8 @@ void GUI_Image::draw(display_driver *display)
 
 void GUI_Image::navigate(int16_t x_pos, int16_t y_pos) {}
 
+void GUI_Image::navigate(INPUT_TYPE input) {}
+
 /**
  * @brief Set image refresh value
  *

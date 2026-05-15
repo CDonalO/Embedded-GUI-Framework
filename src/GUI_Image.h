@@ -19,6 +19,7 @@ public:
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
+    void navigate(INPUT_TYPE input) override;
     void set_refresh(bool r, bool p) override;
 };
 

@@ -16,9 +16,9 @@ void GUI_Bitmap::draw(display_driver *display)
     display->draw_bitmap(get_x(), get_y(), get_width(), get_height(), bitmap_data, bitmap_type, get_background_colour());
 }
 
-void GUI_Bitmap::navigate(int16_t x_pos, int16_t y_pos)
-{
-}
+void GUI_Bitmap::navigate(int16_t x_pos, int16_t y_pos) {}
+
+void GUI_Bitmap::navigate(INPUT_TYPE input) {}
 
 void GUI_Bitmap::set_refresh(bool r, bool p)
 {

@@ -48,6 +48,7 @@ public:
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
+    void navigate(INPUT_TYPE input) override;
     void set_refresh(bool r, bool p) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
 
@@ -245,6 +246,8 @@ public:
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
+    void navigate(INPUT_TYPE input) override;
+
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::TOGGLE_BUTTON; }
 
     GUI_Element *clone() const override { return new GUI_Toggle_Button(*this); }

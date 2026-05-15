@@ -85,9 +85,9 @@ void GUI_Form::draw(display_driver *display)
     refresh = false;
 }
 
-void GUI_Form::navigate(int16_t x_pos, int16_t y_pos)
-{
-}
+void GUI_Form::navigate(int16_t x_pos, int16_t y_pos) {}
+
+void GUI_Form::navigate(INPUT_TYPE input) {}
 
 /**
  * @brief Set form refresh value

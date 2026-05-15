@@ -68,9 +68,9 @@ void GUI_Label::draw(display_driver *display)
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 
-void GUI_Label::navigate(int16_t x_pos, int16_t y_pos)
-{
-}
+void GUI_Label::navigate(int16_t x_pos, int16_t y_pos) {}
+
+void GUI_Label::navigate(INPUT_TYPE input) {}
 
 /**
  * @brief Set label refresh value

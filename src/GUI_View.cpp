@@ -119,6 +119,11 @@ void GUI_View::navigate(int16_t x_pos, int16_t y_pos)
     menu_stack.top()->navigate(x_pos, y_pos);
 }
 
+void GUI_View::navigate(INPUT_TYPE input)
+{
+    menu_stack.top()->navigate(input);
+}
+
 /**
  * @brief Set view refresh value
  *
