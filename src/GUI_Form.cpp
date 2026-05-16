@@ -238,8 +238,8 @@ void GUI_Form::Form_Number_Data::create_value_modify_buttons()
 {
     if (modifying_buttons.size() == 0)
     {
-        GUI_Button *increase_button = new GUI_Button(BUTTON_STYLE_UP_ARROW, "", BUTTON_ATTRIBUTE_ROUNDED, increment_value, this);
-        GUI_Button *decrease_button = new GUI_Button(BUTTON_STYLE_DOWN_ARROW, "", BUTTON_ATTRIBUTE_ROUNDED, decrement_value, this);
+        GUI_Button *increase_button = new GUI_Button(BUTTON_STYLE_UP_ARROW, "", 10, increment_value, this);
+        GUI_Button *decrease_button = new GUI_Button(BUTTON_STYLE_DOWN_ARROW, "", 10, decrement_value, this);
         modifying_buttons.push_back(increase_button);
         modifying_buttons.push_back(decrease_button);
     }

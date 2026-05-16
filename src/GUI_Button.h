@@ -3,11 +3,7 @@
 #include "GUI_Label.h"
 
 #include <vector>
-typedef enum
-{
-    BUTTON_ATTRIBUTE_ROUNDED,
-    BUTTON_ATTRIBUTE_SQUARED,
-} BUTTON_ATTRIBUTE;
+
 typedef enum
 {
     BUTTON_NO_STYLE,
@@ -30,7 +26,6 @@ class GUI_Button : public GUI_Element
 private:
     GUI_Label *label;
     BUTTON_STYLE button_style;
-    BUTTON_ATTRIBUTE button_attribute;
     uint8_t border_radius;
     RGB disabled_bg_colour;
     RGB disabled_trim_colour;
@@ -42,7 +37,7 @@ protected:
     bool disabled;
 
 public:
-    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL);
+    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb = NULL, void *user_data = NULL);
     ~GUI_Button();
 
     void draw(display_driver *display) override;
@@ -59,7 +54,7 @@ public:
     void set_disabled(bool disable);
     bool is_disabled();
     void set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_font_colour);
-    void set_button_attributes(BUTTON_ATTRIBUTE attribute);
+    void set_button_border_radius(uint8_t border_radius);
 };
 
 typedef void (*linked_button_update_fun)(GUI_Element *linked_element, bool toggle_value);

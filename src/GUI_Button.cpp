@@ -1,8 +1,7 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), button_attribute(button_attribute)
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), border_radius(border_radius)
 {
-    border_radius = 10;
     disabled = false;
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
@@ -49,16 +48,8 @@ void GUI_Button::draw(display_driver *display)
         font_c = disabled_font_colour;
     }
 
-    if (button_attribute == BUTTON_ATTRIBUTE_ROUNDED)
-    {
-        display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
-        display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
-    }
-    else if (button_attribute == BUTTON_ATTRIBUTE_SQUARED)
-    {
-        display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
-        display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
-    }
+    display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
+    display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
 
     label->hide();
 
@@ -296,16 +287,16 @@ void GUI_Button::set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_
 }
 
 /**
- * @brief Set the buttons attribute
+ * @brief Set the buttons border radius
  *
- * @param attribute Button attribute
+ * @param border_radius Button border radius
  */
-void GUI_Button::set_button_attributes(BUTTON_ATTRIBUTE attribute)
+void GUI_Button::set_button_border_radius(uint8_t border_radius)
 {
-    button_attribute = attribute;
+    this->border_radius = border_radius;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, 10, click_cb, NULL)
 {
     button_style = style;
     value = default_value;
