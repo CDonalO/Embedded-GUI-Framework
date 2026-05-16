@@ -1,6 +1,6 @@
 #pragma once
 
-#include "GUI_Element.h"
+#include "GUI_Label.h"
 
 #include <vector>
 typedef enum
@@ -28,7 +28,7 @@ typedef enum
 class GUI_Button : public GUI_Element
 {
 private:
-    PLATFORM_STRING text;
+    GUI_Label *label;
     BUTTON_STYLE button_style;
     BUTTON_ATTRIBUTE button_attribute;
     uint8_t border_radius;

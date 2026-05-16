@@ -1,6 +1,6 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), button_attribute(button_attribute), text(button_str)
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), button_attribute(button_attribute)
 {
     border_radius = 10;
     disabled = false;
@@ -8,10 +8,12 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_AT
     disabled_trim_colour = BLACK;
     disabled_font_colour = WHITE;
     set_interactable(true);
+    label = new GUI_Label(button_str);
 }
 
 GUI_Button::~GUI_Button()
 {
+    delete label;
 }
 
 /**
@@ -57,6 +59,8 @@ void GUI_Button::draw(display_driver *display)
         display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), trim_c);
         display->draw_filled_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, bg_c);
     }
+
+    label->hide();
 
     switch (button_style)
     {
@@ -174,53 +178,14 @@ void GUI_Button::draw(display_driver *display)
         break;
     }
 
-    if (align_value & ALIGN_CENTER_HORIZONTAL)
-    {
-        text_x = display->center_text_horizontal(text, get_width(), get_x());
-    }
-    else
-    {
-        if (align_value & ALIGN_LEFT)
-        {
-            text_x = get_x() + 5;
-        }
-        else if (align_value & ALIGN_RIGHT)
-        {
-            uint16_t w, h;
-            display->get_text_bounds((char *)text.c_str(), &w, &h);
-            text_x = get_x() + get_width() - w - 5;
-        }
-    }
-
-    if (align_value & ALIGN_CENTER_VERTICAL)
-    {
-        text_y = display->center_text_vertical(text, get_height(), get_y());
-    }
-    else
-    {
-        if (align_value & ALIGN_TOP)
-        {
-            text_y = get_y() + 5;
-        }
-        else if (align_value & ALIGN_BOTTOM)
-        {
-            uint16_t w, h;
-            display->get_text_bounds((char *)text.c_str(), &w, &h);
-            text_y = get_y() + get_height() - h - 5;
-        }
-    }
-
     if (button_style == BUTTON_NO_STYLE)
     {
-        uint8_t t_size = get_font_size();
-        if (parent)
-        {
-            if (!is_font_size_set())
-            {
-                t_size = parent->get_font_size();
-            }
-        }
-        display->draw_text(text_x, text_y, text, t_size, font_c);
+        label->set_element_alignment(get_element_alignment());
+        label->set_dimensions(get_x(), get_y(), get_width(), get_height());
+        label->show();
+        label->set_font_colour(get_font_colour());
+        label->set_font_size(get_font_size());
+        label->draw(display);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -281,7 +246,7 @@ void GUI_Button::set_button_style(BUTTON_STYLE style)
  */
 void GUI_Button::set_button_str(PLATFORM_STRING button_str)
 {
-    text = button_str;
+    label->set_label(button_str);
 }
 
 /**
