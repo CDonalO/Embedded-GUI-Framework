@@ -311,7 +311,7 @@ void GUI_Grid::adjust_elements()
                 if (elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
                 {
                     elements[x]->set_height(elements[x]->get_max_height_px());
-                    if (grid_type == GRID_TYPE_HORIZONTAL && attributes & GRID_ATTRIBUTE_CENTER_FLEX)
+                    if (grid_type == GRID_TYPE_HORIZONTAL && get_element_alignment() & ALIGN_CENTER_VERTICAL)
                     {
                         uint16_t centered_y = top_border_padding + (get_height() / 2) - (elements[x]->get_height() / 2);
                         elements[x]->set_y(centered_y);
@@ -328,7 +328,7 @@ void GUI_Grid::adjust_elements()
                 if (elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
                 {
                     elements[x]->set_width(elements[x]->get_max_width_px());
-                    if (grid_type == GRID_TYPE_VERTICAL && attributes & GRID_ATTRIBUTE_CENTER_FLEX)
+                    if (grid_type == GRID_TYPE_VERTICAL && get_element_alignment() & ALIGN_CENTER_HORIZONTAL)
                     {
                         uint16_t centered_x = left_border_padding + (get_width() / 2) - (elements[x]->get_width() / 2);
                         elements[x]->set_x(centered_x);

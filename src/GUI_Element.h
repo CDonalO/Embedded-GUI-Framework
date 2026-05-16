@@ -15,6 +15,7 @@ private:
     uint16_t container_y_offset;
     uint16_t max_height_px;
     uint16_t max_width_px;
+    uint8_t alignment;
     GUI_Colour_Scheme colour_scheme;
     bool colour_scheme_set;
     RGB background_colour;
@@ -74,6 +75,7 @@ public:
     int16_t get_y();
     uint16_t get_x_offset();
     uint16_t get_y_offset();
+    uint8_t get_element_alignment();
     uint16_t get_width();
     uint16_t get_height();
     uint16_t get_max_width_px();
@@ -92,6 +94,7 @@ public:
     void set_y(int16_t y);
     void set_x_offset(uint16_t offset);
     void set_y_offset(uint16_t offset);
+    void set_element_alignment(uint8_t alignment);
     void set_width(uint16_t width);
     void set_height(uint16_t height);
     void set_max_width_px(uint16_t max_width);

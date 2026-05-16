@@ -1,6 +1,6 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data, TEXT_ALIGN align) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), align_value(align), button_attribute(button_attribute), text(button_str)
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), button_attribute(button_attribute), text(button_str)
 {
     border_radius = 10;
     disabled = false;
@@ -21,6 +21,7 @@ GUI_Button::~GUI_Button()
  */
 void GUI_Button::draw(display_driver *display)
 {
+    uint8_t align_value = get_element_alignment();
     RGB bg_c = get_background_colour();
     RGB trim_c = get_trim_colour();
     RGB font_c = get_font_colour();
@@ -173,22 +174,41 @@ void GUI_Button::draw(display_driver *display)
         break;
     }
 
-    if (align_value == ALIGN_CENTER)
+    if (align_value & ALIGN_CENTER_HORIZONTAL)
     {
         text_x = display->center_text_horizontal(text, get_width(), get_x());
     }
-    else if (align_value == ALIGN_LEFT)
+    else
     {
-        text_x = get_x() + 5;
-    }
-    else if (align_value == ALIGN_RIGHT)
-    {
-        uint16_t w, h;
-        display->get_text_bounds((char *)text.c_str(), &w, &h);
-        text_x = get_x() + get_width() - w - 5;
+        if (align_value & ALIGN_LEFT)
+        {
+            text_x = get_x() + 5;
+        }
+        else if (align_value & ALIGN_RIGHT)
+        {
+            uint16_t w, h;
+            display->get_text_bounds((char *)text.c_str(), &w, &h);
+            text_x = get_x() + get_width() - w - 5;
+        }
     }
 
-    text_y = display->center_text_vertical(text, get_height(), get_y());
+    if (align_value & ALIGN_CENTER_VERTICAL)
+    {
+        text_y = display->center_text_vertical(text, get_height(), get_y());
+    }
+    else
+    {
+        if (align_value & ALIGN_TOP)
+        {
+            text_y = get_y() + 5;
+        }
+        else if (align_value & ALIGN_BOTTOM)
+        {
+            uint16_t w, h;
+            display->get_text_bounds((char *)text.c_str(), &w, &h);
+            text_y = get_y() + get_height() - h - 5;
+        }
+    }
 
     if (button_style == BUTTON_NO_STYLE)
     {
@@ -320,7 +340,7 @@ void GUI_Button::set_button_attributes(BUTTON_ATTRIBUTE attribute)
     button_attribute = attribute;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value, TEXT_ALIGN align) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL, align)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, BUTTON_ATTRIBUTE_ROUNDED, click_cb, NULL)
 {
     button_style = style;
     value = default_value;
@@ -383,6 +403,11 @@ void GUI_Toggle_Button::draw(display_driver *display)
         int circle_r = (container_h / 2) - (container_padding * 2);
         int circle_y = get_y() + get_height() / 2;
         int circle_x = get_x() + get_width() - container_w - container_padding;
+
+        if (get_element_alignment() & ALIGN_LEFT)
+        {
+            circle_x = get_x() + container_padding + circle_r;
+        }
 
         int container_r = circle_r + (container_padding * 2);
         int container_y = circle_y;

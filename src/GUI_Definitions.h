@@ -147,11 +147,11 @@ inline char keyboard_to_char(KEYBOARD_KEY key)
     }
 }
 
-typedef enum
-{
-    ALIGN_CENTER,
-    ALIGN_LEFT,
-    ALIGN_RIGHT,
-} TEXT_ALIGN;
+#define ALIGN_CENTER_VERTICAL (1 << 0)
+#define ALIGN_CENTER_HORIZONTAL (1 << 1)
+#define ALIGN_LEFT (1 << 2)
+#define ALIGN_RIGHT (1 << 3)
+#define ALIGN_TOP (1 << 4)
+#define ALIGN_BOTTOM (1 << 5)
 
 typedef bool (*click_cb_fun)(void *user_data);

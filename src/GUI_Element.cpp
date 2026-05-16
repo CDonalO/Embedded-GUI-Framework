@@ -27,6 +27,7 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     font_colour_set = false;
     active_font_colour_set = false;
     font_size_set = false;
+    alignment = ALIGN_CENTER_HORIZONTAL | ALIGN_CENTER_VERTICAL;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -112,6 +113,16 @@ uint16_t GUI_Element::get_x_offset()
 uint16_t GUI_Element::get_y_offset()
 {
     return container_y_offset;
+}
+
+/**
+ * @brief Get Element alignment
+ *
+ * @return Alignment of element
+ */
+uint8_t GUI_Element::get_element_alignment()
+{
+    return alignment;
 }
 
 /**
@@ -292,6 +303,16 @@ void GUI_Element::set_x_offset(uint16_t offset)
 void GUI_Element::set_y_offset(uint16_t offset)
 {
     container_y_offset = offset;
+}
+
+/**
+ * @brief Set element alignment
+ *
+ * @param alignment Element alignment
+ */
+void GUI_Element::set_element_alignment(uint8_t alignment)
+{
+    this->alignment = alignment;
 }
 
 /**

@@ -32,7 +32,6 @@ private:
     BUTTON_STYLE button_style;
     BUTTON_ATTRIBUTE button_attribute;
     uint8_t border_radius;
-    TEXT_ALIGN align_value;
     RGB disabled_bg_colour;
     RGB disabled_trim_colour;
     RGB disabled_font_colour;
@@ -43,7 +42,7 @@ protected:
     bool disabled;
 
 public:
-    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL, TEXT_ALIGN align = ALIGN_CENTER);
+    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_ATTRIBUTE button_attribute, click_cb_fun click_cb = NULL, void *user_data = NULL);
     ~GUI_Button();
 
     void draw(display_driver *display) override;
@@ -242,7 +241,7 @@ private:
     Button_Links links;
 
 public:
-    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb = NULL, bool default_value = false, TEXT_ALIGN align = ALIGN_CENTER);
+    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb = NULL, bool default_value = false);
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;

@@ -278,7 +278,8 @@ GUI_Button *GUI_Form::Form_Number_Data::get_modify_button(uint16_t n)
 
 GUI_Form::Form_String_Data::Form_String_Data(uint16_t id) : GUI_Form::Form_Data(id)
 {
-    value = new GUI_Label("", ALIGN_LEFT, 0, WHITE);
+    value = new GUI_Label("");
+    value->set_element_alignment(ALIGN_LEFT | ALIGN_CENTER_VERTICAL);
     value->set_interactable(true);
 }
 
