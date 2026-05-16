@@ -29,7 +29,7 @@ void GUI_Label::draw(display_driver *display)
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = display->center_text_horizontal((char *)label.c_str(), get_width(), get_x());
+        text_x = display->center_text_horizontal(label, get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -42,7 +42,7 @@ void GUI_Label::draw(display_driver *display)
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = display->center_text_vertical((char *)label.c_str(), get_height(), get_y());
+    text_y = display->center_text_vertical(label, get_height(), get_y());
 
     uint8_t t_size = get_font_size();
     RGB font_c = get_font_colour();
@@ -59,7 +59,7 @@ void GUI_Label::draw(display_driver *display)
         }
     }
 
-    display->draw_text(text_x, text_y, (char *)label.c_str(), t_size, font_c);
+    display->draw_text(text_x, text_y, label, t_size, font_c);
 
 #ifdef VISUAL_ELEMENT_DEBUG
     display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);

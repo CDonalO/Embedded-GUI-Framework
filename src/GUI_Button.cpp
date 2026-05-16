@@ -175,7 +175,7 @@ void GUI_Button::draw(display_driver *display)
 
     if (align_value == ALIGN_CENTER)
     {
-        text_x = display->center_text_horizontal((char *)text.c_str(), get_width(), get_x());
+        text_x = display->center_text_horizontal(text, get_width(), get_x());
     }
     else if (align_value == ALIGN_LEFT)
     {
@@ -188,7 +188,7 @@ void GUI_Button::draw(display_driver *display)
         text_x = get_x() + get_width() - w - 5;
     }
 
-    text_y = display->center_text_vertical((char *)text.c_str(), get_height(), get_y());
+    text_y = display->center_text_vertical(text, get_height(), get_y());
 
     if (button_style == BUTTON_NO_STYLE)
     {
@@ -205,7 +205,7 @@ void GUI_Button::draw(display_driver *display)
                 font_c = parent->get_font_colour();
             }
         }
-        display->draw_text(text_x, text_y, (char *)text.c_str(), t_size, font_c);
+        display->draw_text(text_x, text_y, text, t_size, font_c);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
