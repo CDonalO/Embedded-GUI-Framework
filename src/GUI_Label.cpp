@@ -69,7 +69,44 @@ void GUI_Label::draw(display_driver *display)
 
 void GUI_Label::navigate(int16_t x_pos, int16_t y_pos) {}
 
-void GUI_Label::navigate(INPUT_TYPE input, KEYBOARD_KEY key) {}
+void GUI_Label::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
+{
+    if (input == INPUT_KEYBOARD)
+    {
+        if (key == KEYBOARD_BACKSPACE)
+        {
+            if (label.length() > 0)
+            {
+                PLATFORM_STRING_POP_BACK(label);
+            }
+        }
+        else
+        {
+            char c = keyboard_to_char(key);
+            PLATFORM_STRING_PUSH_BACK(label, c);
+        }
+    }
+}
+
+/**
+ * @brief Get label value
+ *
+ * @return Label value
+ */
+PLATFORM_STRING GUI_Label::get_label()
+{
+    return label;
+}
+
+/**
+ * @brief Set label value
+ *
+ * @param new_label New label value
+ */
+void GUI_Label::set_label(PLATFORM_STRING new_label)
+{
+    label = new_label;
+}
 
 /**
  * @brief Set label refresh value

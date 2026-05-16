@@ -63,6 +63,7 @@ typedef enum
     KEYBOARD_8,
     KEYBOARD_9,
     KEYBOARD_ESC,
+    KEYBOARD_BACKSPACE,
 } KEYBOARD_KEY;
 
 inline char keyboard_to_char(KEYBOARD_KEY key)

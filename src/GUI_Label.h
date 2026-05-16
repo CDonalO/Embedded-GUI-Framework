@@ -19,5 +19,8 @@ public:
 
     GUI_Element *clone() const override { return new GUI_Label(*this); }
 
+    PLATFORM_STRING get_label();
+    void set_label(PLATFORM_STRING new_label);
+
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::LABEL; }
 };

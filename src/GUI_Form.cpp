@@ -9,7 +9,7 @@ GUI_Form::~GUI_Form()
 {
     while (!data_stack.empty())
     {
-        Form_Number_Data *d = data_stack[data_stack.size() - 1];
+        Form_Data *d = data_stack[data_stack.size() - 1];
         data_stack.pop_back();
 
         delete d;
@@ -144,9 +144,23 @@ bool toggle_value(void *user_data)
     return true;
 }
 
-GUI_Form::Form_Number_Data::Form_Number_Data(uint32_t id)
+GUI_Form::Form_Data::Form_Data(uint16_t id)
 {
     this->id = id;
+}
+
+/**
+ * @brief Get id of form data
+ *
+ * @return Form data id
+ */
+uint16_t GUI_Form::Form_Data::get_id()
+{
+    return id;
+}
+
+GUI_Form::Form_Number_Data::Form_Number_Data(uint16_t id) : GUI_Form::Form_Data(id)
+{
     min = 0;
     max = 0;
     value = 0;
@@ -160,16 +174,6 @@ GUI_Form::Form_Number_Data::~Form_Number_Data()
         modifying_buttons.pop_back();
         delete b;
     }
-}
-
-/**
- * @brief Get id of form number data
- *
- * @return Form number data id
- */
-uint32_t GUI_Form::Form_Number_Data::get_id()
-{
-    return id;
 }
 
 /**
@@ -277,22 +281,67 @@ GUI_Button *GUI_Form::Form_Number_Data::get_modify_button(uint16_t n)
     }
 }
 
+GUI_Form::Form_String_Data::Form_String_Data(uint16_t id) : GUI_Form::Form_Data(id)
+{
+    value = new GUI_Label("", ALIGN_LEFT, 0, WHITE);
+    value->set_interactable(true);
+}
+
+GUI_Form::Form_String_Data::~Form_String_Data()
+{
+    delete value;
+}
+
+GUI_Label *GUI_Form::Form_String_Data::get_input_label()
+{
+    return value;
+}
+
+PLATFORM_STRING GUI_Form::Form_String_Data::get_value()
+{
+    return value->get_label();
+}
+
 /**
  * @brief Get form number data by id (External)
  *
- * @param data_stack Form's number data
+ * @param data_stack Form's data
  * @param id Form number data id
  * @return Form number data if id match or null
  */
-GUI_Form::Form_Number_Data *GUI_Form::get_form_data_by_id(std::vector<Form_Number_Data *> *data_stack, uint32_t id)
+GUI_Form::Form_Number_Data *GUI_Form::get_number_form_data_by_id(std::vector<Form_Data *> *data_stack, uint16_t id)
 {
     for (int x = 0; x < data_stack->size(); x++)
     {
-        Form_Number_Data *v = data_stack->at(x);
+        Form_Data *v = data_stack->at(x);
 
-        if (v->get_id() == id)
+        if (v->get_id() == id && v->get_type() == GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA)
         {
-            return v;
+            Form_Number_Data *r = static_cast<GUI_Form::Form_Number_Data *>(v);
+            return r;
+        }
+    }
+
+    return NULL;
+}
+
+/**
+ * @brief Get string number data by id (External)
+ *
+ * @param data_stack Form's data
+ * @param id Form number data id
+ * @return Form number data if id match or null
+ */
+GUI_Form::Form_String_Data *GUI_Form::get_string_form_data_by_id(std::vector<Form_Data *> *data_stack, uint16_t id)
+{
+    for (int x = 0; x < data_stack->size(); x++)
+    {
+        Form_Data *v = data_stack->at(x);
+
+        if (v->get_id() == id && v->get_type() == GUI_Form::Form_Data::Form_Data_Type::STRING_DATA)
+        {
+            Form_String_Data *r = static_cast<GUI_Form::Form_String_Data *>(v);
+            return r;
         }
     }
 
@@ -302,21 +351,34 @@ GUI_Form::Form_Number_Data *GUI_Form::get_form_data_by_id(std::vector<Form_Numbe
 /**
  * @brief Get form number data by id (Internal)
  *
- * @param id Form number data id
- * @return Form number data if id match or null
+ * @param id Form data id
+ * @param type Form data type
+ * @return Form data if id match or null
  */
-GUI_Form::Form_Number_Data *GUI_Form::get_data_by_id(uint32_t id)
+GUI_Form::Form_Data *GUI_Form::get_data_by_id(uint16_t id, GUI_Form::Form_Data::Form_Data_Type type)
 {
     for (int x = 0; x < data_stack.size(); x++)
     {
-        Form_Number_Data *v = data_stack[x];
-        if (v->get_id() == id)
+        Form_Data *v = data_stack[x];
+        if (v->get_id() == id && v->get_type() == type)
         {
             return v;
         }
     }
 
-    Form_Number_Data *ret = new Form_Number_Data(id);
+    Form_Data *ret;
+    if (type == GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA)
+    {
+        ret = new Form_Number_Data(id);
+    }
+    else if (type == GUI_Form::Form_Data::Form_Data_Type::STRING_DATA)
+    {
+        ret = new Form_String_Data(id);
+    }
+    else
+    {
+        return NULL;
+    }
 
     data_stack.push_back(ret);
 
@@ -331,9 +393,16 @@ GUI_Form::Form_Number_Data *GUI_Form::get_data_by_id(uint32_t id)
  * @param max Form number data maximum value
  * @param default_value Form number data default value
  */
-void GUI_Form::create_number_form_data(uint32_t id, int min, int max, int default_value)
+void GUI_Form::create_number_form_data(uint16_t id, int min, int max, int default_value)
 {
-    Form_Number_Data *number_data = get_data_by_id(id);
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::NUMBER_DATA)
+    {
+        return;
+    }
+
+    Form_Number_Data *number_data = static_cast<Form_Number_Data *>(form_data);
 
     number_data->set_max(max);
     number_data->set_min(min);
@@ -348,9 +417,16 @@ void GUI_Form::create_number_form_data(uint32_t id, int min, int max, int defaul
  * @param increase If true get button to increase else decrease
  * @return Button that modifies form number data
  */
-GUI_Button *GUI_Form::get_number_form_button(uint32_t id, bool increase)
+GUI_Button *GUI_Form::get_number_form_button(uint16_t id, bool increase)
 {
-    Form_Number_Data *number_data = get_data_by_id(id);
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::NUMBER_DATA)
+    {
+        return NULL;
+    }
+
+    Form_Number_Data *number_data = static_cast<Form_Number_Data *>(form_data);
 
     if (increase)
     {
@@ -370,9 +446,16 @@ GUI_Button *GUI_Form::get_number_form_button(uint32_t id, bool increase)
  * @param id Form number data id
  * @param default_value Form number data default value
  */
-void GUI_Form::create_toggle_form_data(uint32_t id, bool default_value)
+void GUI_Form::create_toggle_form_data(uint16_t id, bool default_value)
 {
-    Form_Number_Data *number_data = get_data_by_id(id);
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::NUMBER_DATA)
+    {
+        return;
+    }
+
+    Form_Number_Data *number_data = static_cast<Form_Number_Data *>(form_data);
 
     number_data->set_max(1);
     number_data->set_min(0);
@@ -386,9 +469,16 @@ void GUI_Form::create_toggle_form_data(uint32_t id, bool default_value)
  * @param id Form number data id
  * @return Toggle button that modifies form number data
  */
-GUI_Toggle_Button *GUI_Form::get_toggle_form_button(uint32_t id)
+GUI_Toggle_Button *GUI_Form::get_toggle_form_button(uint16_t id)
 {
-    Form_Number_Data *number_data = get_data_by_id(id);
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::NUMBER_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::NUMBER_DATA)
+    {
+        return NULL;
+    }
+
+    Form_Number_Data *number_data = static_cast<Form_Number_Data *>(form_data);
 
     GUI_Button *btn = number_data->get_modify_button(0);
     if (btn != NULL && btn->get_type() == GUI_Element::Element_Type::TOGGLE_BUTTON)
@@ -398,4 +488,48 @@ GUI_Toggle_Button *GUI_Form::get_toggle_form_button(uint32_t id)
     }
 
     return NULL;
+}
+
+/**
+ * @brief Create form string data by id
+ *
+ * @param id Form string data id
+ * @param default_value Form string data placeholder value
+ */
+void GUI_Form::create_string_form_data(uint16_t id, PLATFORM_STRING placeholder, uint8_t text_size, RGB text_colour)
+{
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::STRING_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::STRING_DATA)
+    {
+        return;
+    }
+
+    Form_String_Data *string_data = static_cast<Form_String_Data *>(form_data);
+
+    GUI_Label *label = string_data->get_input_label();
+
+    label->set_text_size(text_size);
+    label->set_text_colour(text_colour);
+    label->set_label(placeholder);
+}
+
+/**
+ * @brief Get label as a text input to modify form string data by id
+ *
+ * @param id Form string data id
+ * @return Label that modifies form string data
+ */
+GUI_Label *GUI_Form::get_string_form_input(uint16_t id)
+{
+    Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::STRING_DATA);
+
+    if (form_data->get_type() != Form_Data::Form_Data_Type::STRING_DATA)
+    {
+        return NULL;
+    }
+
+    Form_String_Data *string_data = static_cast<Form_String_Data *>(form_data);
+
+    return string_data->get_input_label();
 }
