@@ -28,6 +28,7 @@ public:
     GUI_Element *clone() const override { return new GUI_View(*this); }
 
     void set_menu(GUI_Menu *menu);
+    void set_global_colour_scheme(GUI_Colour_Scheme colour_scheme);
     void reverse_menus();
     void register_menu_change_button(GUI_Button *button, GUI_Menu *menu);
     void set_menu_bar_colours(RGB return_bg_colour, RGB arrow_colour);

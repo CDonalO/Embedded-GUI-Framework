@@ -15,15 +15,22 @@ private:
     uint16_t container_y_offset;
     uint16_t max_height_px;
     uint16_t max_width_px;
+    GUI_Colour_Scheme colour_scheme;
+    bool colour_scheme_set;
     RGB background_colour;
+    bool background_colour_set;
     RGB trim_colour;
+    bool trim_colour_set;
     RGB active_background_colour;
+    bool active_background_colour_set;
     RGB active_trim_colour;
+    bool active_trim_colour_set;
     RGB font_colour;
+    bool font_colour_set;
     RGB active_font_colour;
+    bool active_font_colour_set;
     uint8_t font_size;
-    bool is_font_size_set;
-    bool is_font_colour_set;
+    bool font_size_set;
     bool hidden;
     bool selected;
     bool width_auto_size;
@@ -73,6 +80,7 @@ public:
     uint16_t get_max_height_px();
     bool get_width_auto_sizeable();
     bool get_height_auto_sizeable();
+    GUI_Colour_Scheme get_colour_scheme();
     RGB get_background_colour();
     RGB get_trim_colour();
     RGB get_active_background_colour();
@@ -91,6 +99,7 @@ public:
     void set_dimensions(int16_t _x, int16_t _y, uint16_t _w, uint16_t _h);
     void set_width_auto_sizeable(bool auto_sizeable);
     void set_height_auto_sizeable(bool auto_sizeable);
+    void set_colour_scheme(GUI_Colour_Scheme scheme);
     void set_background_colour(RGB background_colour);
     void set_trim_colour(RGB trim_colour);
     void set_active_background_colour(RGB active_background_colour);
@@ -111,8 +120,16 @@ public:
     bool is_hidden();
     bool is_interactable();
     bool within_bounds(int16_t x_pos, int16_t y_pos);
-    bool font_size_set();
-    bool font_colour_set();
+    bool is_font_size_set();
+    bool is_colour_scheme_set();
 
     void print_element();
+
+private:
+    void _set_background_colour(RGB background_colour);
+    void _set_active_background_colour(RGB active_background_colour);
+    void _set_trim_colour(RGB trim_colour);
+    void _set_active_trim_colour(RGB active_trim_colour);
+    void _set_font_colour(RGB font_colour);
+    void _set_active_font_colour(RGB active_font_colour);
 };

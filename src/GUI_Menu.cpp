@@ -31,3 +31,12 @@ PLATFORM_STRING GUI_Menu::get_menu_name()
 {
     return menu_name;
 }
+
+void GUI_Menu::set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme)
+{
+    set_colour_scheme(colour_scheme);
+
+    GUI_Grid::apply_colour_scheme();
+
+    GUI_Grid::set_refresh(true, false);
+}

@@ -45,6 +45,7 @@ public:
 
     void add_element(GUI_Element *element);
     void adjust_elements();
+    void apply_colour_scheme();
     void set_top_border_padding(uint16_t border_padding);
     void set_bottom_border_padding(uint16_t border_padding);
     void set_left_border_padding(uint16_t border_padding);

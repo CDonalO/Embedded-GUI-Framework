@@ -48,14 +48,9 @@ void GUI_Label::draw(display_driver *display)
     RGB font_c = get_font_colour();
     if (parent)
     {
-        if (!font_size_set())
+        if (!is_font_size_set())
         {
             t_size = parent->get_font_size();
-        }
-
-        if (!font_colour_set())
-        {
-            font_c = parent->get_font_colour();
         }
     }
 

@@ -18,4 +18,5 @@ public:
     GUI_Element *clone() const override { return new GUI_Menu(*this); }
 
     PLATFORM_STRING get_menu_name();
+    void set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme);
 };

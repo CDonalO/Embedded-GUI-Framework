@@ -390,6 +390,20 @@ void GUI_Grid::adjust_elements()
 }
 
 /**
+ * @brief Apply colour scheme to elements.
+ */
+void GUI_Grid::apply_colour_scheme()
+{
+    if (is_colour_scheme_set())
+    {
+        for (uint16_t x = 0; x < elements.size(); x++)
+        {
+            elements[x]->set_colour_scheme(get_colour_scheme());
+        }
+    }
+}
+
+/**
  * @brief Add element to grid
  *
  * @param element Element to add to grid
@@ -399,6 +413,11 @@ void GUI_Grid::add_element(GUI_Element *element)
     if (element->get_type() == GUI_Element::Element_Type::MENU)
     {
         return;
+    }
+
+    if (is_colour_scheme_set() && !element->is_colour_scheme_set())
+    {
+        element->set_colour_scheme(get_colour_scheme());
     }
 
     if (element->is_interactable())

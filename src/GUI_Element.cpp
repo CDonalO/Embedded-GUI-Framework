@@ -19,8 +19,14 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     width_auto_size = false;
     height_auto_size = false;
     parent = NULL;
-    is_font_colour_set = false;
-    is_font_size_set = false;
+    colour_scheme_set = false;
+    background_colour_set = false;
+    active_background_colour_set = false;
+    trim_colour_set = false;
+    active_trim_colour_set = false;
+    font_colour_set = false;
+    active_font_colour_set = false;
+    font_size_set = false;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -166,6 +172,16 @@ bool GUI_Element::get_width_auto_sizeable()
 bool GUI_Element::get_height_auto_sizeable()
 {
     return height_auto_size;
+}
+
+/**
+ * @brief Get colour scheme of element
+ *
+ * @return colour scheme of element
+ */
+GUI_Colour_Scheme GUI_Element::get_colour_scheme()
+{
+    return colour_scheme;
 }
 
 /**
@@ -355,12 +371,57 @@ void GUI_Element::set_height_auto_sizeable(bool auto_sizeable)
 }
 
 /**
+ * @brief Set colour scheme of element
+ *
+ * @param scheme Colour scheme of element
+ */
+void GUI_Element::set_colour_scheme(GUI_Colour_Scheme scheme)
+{
+    if (!colour_scheme_set)
+    {
+        colour_scheme = scheme;
+        colour_scheme_set = true;
+
+        if (colour_scheme.is_background_colour_set())
+        {
+            _set_background_colour(colour_scheme.get_background_colour());
+        }
+
+        if (colour_scheme.is_active_background_colour_set())
+        {
+            _set_active_background_colour(colour_scheme.get_active_background_colour());
+        }
+
+        if (colour_scheme.is_trim_colour_set())
+        {
+            _set_trim_colour(colour_scheme.get_trim_colour());
+        }
+
+        if (colour_scheme.is_active_trim_colour_set())
+        {
+            _set_active_trim_colour(colour_scheme.get_active_trim_colour());
+        }
+
+        if (colour_scheme.is_font_colour_set())
+        {
+            _set_font_colour(colour_scheme.get_font_colour());
+        }
+
+        if (colour_scheme.is_active_font_colour_set())
+        {
+            _set_active_font_colour(colour_scheme.get_active_font_colour());
+        }
+    }
+}
+
+/**
  * @brief Set background colour of element
  *
  * @param background_colour Colour of background
  */
 void GUI_Element::set_background_colour(RGB background_colour)
 {
+    background_colour_set = true;
     this->background_colour = background_colour;
 }
 
@@ -371,6 +432,7 @@ void GUI_Element::set_background_colour(RGB background_colour)
  */
 void GUI_Element::set_trim_colour(RGB trim_colour)
 {
+    trim_colour_set = true;
     this->trim_colour = trim_colour;
 }
 
@@ -381,6 +443,7 @@ void GUI_Element::set_trim_colour(RGB trim_colour)
  */
 void GUI_Element::set_active_background_colour(RGB active_background_colour)
 {
+    active_background_colour_set = true;
     this->active_background_colour = active_background_colour;
 }
 
@@ -391,6 +454,7 @@ void GUI_Element::set_active_background_colour(RGB active_background_colour)
  */
 void GUI_Element::set_active_trim_colour(RGB active_trim_colour)
 {
+    active_trim_colour_set = true;
     this->active_trim_colour = active_trim_colour;
 }
 
@@ -441,7 +505,7 @@ void GUI_Element::set_active_colours(RGB _active_background_colour, RGB _active_
  */
 void GUI_Element::set_font_colour(RGB font_colour)
 {
-    is_font_colour_set = true;
+    font_colour_set = true;
     this->font_colour = font_colour;
 }
 
@@ -452,6 +516,7 @@ void GUI_Element::set_font_colour(RGB font_colour)
  */
 void GUI_Element::set_active_font_colour(RGB active_font_colour)
 {
+    active_font_colour_set = true;
     this->active_font_colour = active_font_colour;
 }
 
@@ -474,7 +539,7 @@ void GUI_Element::set_font_colours(RGB _font_colour, RGB _active_font_colour)
  */
 void GUI_Element::set_font_size(uint8_t font_size)
 {
-    is_font_size_set = true;
+    font_size_set = true;
     this->font_size = font_size;
 }
 
@@ -570,19 +635,19 @@ bool GUI_Element::within_bounds(int16_t x_pos, int16_t y_pos)
  *
  * @return True if font size has been manually set otherwise false
  */
-bool GUI_Element::font_size_set()
+bool GUI_Element::is_font_size_set()
 {
-    return is_font_size_set;
+    return font_size_set;
 }
 
 /**
- * @brief Check if font colour has been manually set
+ * @brief Check if colour scheme has been manually set
  *
- * @return True if font colour has been manually set otherwise false
+ * @return True if colour scheme has been manually set otherwise false
  */
-bool GUI_Element::font_colour_set()
+bool GUI_Element::is_colour_scheme_set()
 {
-    return is_font_colour_set;
+    return colour_scheme_set;
 }
 
 #ifdef VERBOSE_ELEMENT_DEBUG
@@ -596,3 +661,63 @@ void GUI_Element::print_element()
 #else
 void GUI_Element::print_element() {}
 #endif
+
+void GUI_Element::_set_background_colour(RGB background_colour)
+{
+    if (background_colour_set)
+    {
+        return;
+    }
+
+    this->background_colour = background_colour;
+}
+
+void GUI_Element::_set_active_background_colour(RGB active_background_colour)
+{
+    if (active_background_colour_set)
+    {
+        return;
+    }
+
+    this->active_background_colour = active_background_colour;
+}
+
+void GUI_Element::_set_trim_colour(RGB trim_colour)
+{
+    if (trim_colour_set)
+    {
+        return;
+    }
+
+    this->trim_colour = trim_colour;
+}
+
+void GUI_Element::_set_active_trim_colour(RGB active_trim_colour)
+{
+    if (active_trim_colour_set)
+    {
+        return;
+    }
+
+    this->active_trim_colour = active_trim_colour;
+}
+
+void GUI_Element::_set_font_colour(RGB font_colour)
+{
+    if (font_colour_set)
+    {
+        return;
+    }
+
+    this->font_colour = font_colour;
+}
+
+void GUI_Element::_set_active_font_colour(RGB active_font_colour)
+{
+    if (active_font_colour_set)
+    {
+        return;
+    }
+
+    this->active_font_colour = active_font_colour;
+}

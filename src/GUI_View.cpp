@@ -75,14 +75,9 @@ void GUI_View::draw(display_driver *display)
             RGB font_c = get_font_colour();
             if (parent)
             {
-                if (!font_size_set())
+                if (!is_font_size_set())
                 {
                     t_size = parent->get_font_size();
-                }
-
-                if (!font_colour_set())
-                {
-                    font_c = parent->get_font_colour();
                 }
             }
 
@@ -160,6 +155,12 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_font_colour(get_font_colour());
     menu->set_font_size(get_font_size());
 
+    if (is_colour_scheme_set())
+    {
+        menu->set_colour_scheme(get_colour_scheme());
+        menu->apply_colour_scheme();
+    }
+
     if (menu_stack.size() > 0)
     {
         menu_stack.top()->set_refresh(true, false);
@@ -170,6 +171,35 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu_stack.push(menu);
 
     refresh = true;
+}
+
+void GUI_View::set_global_colour_scheme(GUI_Colour_Scheme colour_scheme)
+{
+    set_colour_scheme(colour_scheme);
+
+    if (menu_stack.size() > 0)
+    {
+        std::stack<GUI_Menu *> temp_stack;
+
+        while (!menu_stack.empty())
+        {
+            GUI_Menu *m = menu_stack.top();
+            menu_stack.pop();
+            m->set_colour_scheme(colour_scheme);
+            m->apply_colour_scheme();
+            m->set_refresh(true, false);
+
+            temp_stack.push(m);
+        }
+
+        while (!temp_stack.empty())
+        {
+            GUI_Menu *m = temp_stack.top();
+            temp_stack.pop();
+
+            menu_stack.push(m);
+        }
+    }
 }
 
 /**

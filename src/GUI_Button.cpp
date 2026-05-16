@@ -195,14 +195,9 @@ void GUI_Button::draw(display_driver *display)
         uint8_t t_size = get_font_size();
         if (parent)
         {
-            if (!font_size_set())
+            if (!is_font_size_set())
             {
                 t_size = parent->get_font_size();
-            }
-
-            if (!font_colour_set())
-            {
-                font_c = parent->get_font_colour();
             }
         }
         display->draw_text(text_x, text_y, text, t_size, font_c);

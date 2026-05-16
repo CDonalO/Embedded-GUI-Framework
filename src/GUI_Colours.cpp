@@ -91,3 +91,109 @@ uint8_t RGB::get_alpha()
 {
     return a;
 }
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour)
+{
+    this->background_colour = background_colour;
+    background_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour, RGB active_background_colour) : GUI_Colour_Scheme(background_colour)
+{
+    this->active_background_colour = active_background_colour;
+    active_background_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour, RGB active_background_colour, RGB trim_colour) : GUI_Colour_Scheme(background_colour, active_background_colour)
+{
+    this->trim_colour = trim_colour;
+    trim_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour, RGB active_background_colour, RGB trim_colour, RGB active_trim_colour) : GUI_Colour_Scheme(background_colour, active_background_colour, trim_colour)
+{
+    this->active_trim_colour = active_trim_colour;
+    active_trim_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour, RGB active_background_colour, RGB trim_colour, RGB active_trim_colour, RGB font_colour) : GUI_Colour_Scheme(background_colour, active_background_colour, trim_colour, active_trim_colour)
+{
+    this->font_colour = font_colour;
+    font_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour, RGB active_background_colour, RGB trim_colour, RGB active_trim_colour, RGB font_colour, RGB active_font_colour) : GUI_Colour_Scheme(background_colour, active_background_colour, trim_colour, active_trim_colour, font_colour)
+{
+    this->active_font_colour = active_font_colour;
+    active_font_colour_set = true;
+}
+
+GUI_Colour_Scheme::GUI_Colour_Scheme()
+{
+    background_colour_set = false;
+    active_background_colour_set = false;
+    trim_colour_set = false;
+    active_trim_colour_set = false;
+    font_colour_set = false;
+    active_font_colour_set = false;
+}
+
+RGB GUI_Colour_Scheme::get_background_colour()
+{
+    return background_colour;
+}
+
+RGB GUI_Colour_Scheme::get_active_background_colour()
+{
+    return active_background_colour;
+}
+
+RGB GUI_Colour_Scheme::get_trim_colour()
+{
+    return trim_colour;
+}
+
+RGB GUI_Colour_Scheme::get_active_trim_colour()
+{
+    return active_trim_colour;
+}
+
+RGB GUI_Colour_Scheme::get_font_colour()
+{
+    return font_colour;
+}
+
+RGB GUI_Colour_Scheme::get_active_font_colour()
+{
+    return active_font_colour;
+}
+
+bool GUI_Colour_Scheme::is_background_colour_set()
+{
+    return background_colour_set;
+}
+
+bool GUI_Colour_Scheme::is_active_background_colour_set()
+{
+    return active_background_colour_set;
+}
+
+bool GUI_Colour_Scheme::is_trim_colour_set()
+{
+    return trim_colour_set;
+}
+
+bool GUI_Colour_Scheme::is_active_trim_colour_set()
+{
+    return active_trim_colour_set;
+}
+
+bool GUI_Colour_Scheme::is_font_colour_set()
+{
+    return font_colour_set;
+}
+
+bool GUI_Colour_Scheme::is_active_font_colour_set()
+{
+    return active_font_colour_set;
+}
