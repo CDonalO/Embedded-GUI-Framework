@@ -8,6 +8,7 @@ private:
     PLATFORM_STRING label;
 
 public:
+    GUI_Label();
     GUI_Label(PLATFORM_STRING label);
     ~GUI_Label();
 

@@ -24,7 +24,7 @@ typedef enum
 class GUI_Button : public GUI_Element
 {
 private:
-    GUI_Label *label;
+    GUI_Label label;
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     RGB disabled_bg_colour;
@@ -37,6 +37,8 @@ protected:
     bool disabled;
 
 public:
+    GUI_Button(BUTTON_STYLE style);
+    GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str);
     GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb = NULL, void *user_data = NULL);
     ~GUI_Button();
 

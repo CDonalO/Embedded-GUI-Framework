@@ -1,6 +1,11 @@
 #include "GUI_Label.h"
 
-GUI_Label::GUI_Label(PLATFORM_STRING label) : GUI_Element(), label(label)
+GUI_Label::GUI_Label(PLATFORM_STRING label) : GUI_Element()
+{
+    this->label = label;
+}
+
+GUI_Label::GUI_Label() : GUI_Label("")
 {
 }
 

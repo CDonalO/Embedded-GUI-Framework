@@ -1,19 +1,33 @@
 #include "GUI_Button.h"
 
-GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb, void *user_data) : GUI_Element(), button_style(style), click_cb(click_cb), user_data(user_data), border_radius(border_radius)
+GUI_Button::GUI_Button(BUTTON_STYLE style) : GUI_Element()
 {
     disabled = false;
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
     disabled_font_colour = WHITE;
     set_interactable(true);
-    label = new GUI_Label(button_str);
+    this->button_style = style;
+    label.hide();
 }
 
-GUI_Button::~GUI_Button()
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str) : GUI_Button(style)
 {
-    delete label;
+    label.set_label(button_str);
+    if (button_style == BUTTON_NO_STYLE)
+    {
+        label.show();
+    }
 }
+
+GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb, void *user_data) : GUI_Button(style, button_str)
+{
+    this->border_radius = border_radius;
+    this->click_cb = click_cb;
+    this->user_data = user_data;
+}
+
+GUI_Button::~GUI_Button() {}
 
 /**
  * @brief Draw button
@@ -50,8 +64,6 @@ void GUI_Button::draw(display_driver *display)
 
     display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
     display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
-
-    label->hide();
 
     switch (button_style)
     {
@@ -171,12 +183,11 @@ void GUI_Button::draw(display_driver *display)
 
     if (button_style == BUTTON_NO_STYLE)
     {
-        label->set_element_alignment(get_element_alignment());
-        label->set_dimensions(get_x(), get_y(), get_width(), get_height());
-        label->show();
-        label->set_font_colour(get_font_colour());
-        label->set_font_size(get_font_size());
-        label->draw(display);
+        label.set_element_alignment(get_element_alignment());
+        label.set_dimensions(get_x(), get_y(), get_width(), get_height());
+        label.set_font_colour(get_font_colour());
+        label.set_font_size(get_font_size());
+        label.draw(display);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -228,6 +239,11 @@ void GUI_Button::set_refresh(bool r, bool p)
 void GUI_Button::set_button_style(BUTTON_STYLE style)
 {
     button_style = style;
+
+    if (button_style == BUTTON_NO_STYLE)
+    {
+        label.show();
+    }
 }
 
 /**
@@ -237,7 +253,7 @@ void GUI_Button::set_button_style(BUTTON_STYLE style)
  */
 void GUI_Button::set_button_str(PLATFORM_STRING button_str)
 {
-    label->set_label(button_str);
+    label.set_label(button_str);
 }
 
 /**
