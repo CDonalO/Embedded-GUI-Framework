@@ -10,42 +10,62 @@ SDL_Color get_colour(RGB colour)
     return c;
 }
 
-SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size) : display_driver(menu_bar_size)
+SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size, string font_path) : display_driver(menu_bar_size)
 {
     optimize_rendering = false;
     width = window_width;
     height = window_height;
+    setup_error = false;
+
+    view = new GUI_View(menu_bar_size);
+
+    if (font_path.length() == 0)
+    {
+        PLATFORM_PRINTF("SDL3 Font path can't be empty\n");
+        setup_error = true;
+        return;
+    }
 
     SDL_SetAppMetadata("Embedded GUI Framework", "1.0", "embedded_gui_framework");
 
     if (!SDL_Init(SDL_INIT_VIDEO))
     {
-        SDL_Log("Couldn't initialize SDL: %s", SDL_GetError());
+        PLATFORM_PRINTF("Couldn't initialize SDL: %s\n", SDL_GetError());
+        setup_error = true;
         return;
     }
 
     if (!TTF_Init())
     {
-        SDL_Log("TTF_Init failed");
+        PLATFORM_PRINTF("TTF_Init failed\n");
+        setup_error = true;
         return;
     }
 
     if (!SDL_CreateWindowAndRenderer("GUI", window_width, window_height, SDL_WINDOW_OPENGL, &window, &renderer))
     {
-        SDL_Log("Couldn't create window/renderer: %s", SDL_GetError());
+        PLATFORM_PRINTF("Couldn't create window/renderer: %s\n", SDL_GetError());
+        setup_error = true;
         return;
     }
 
+    SDL_SetWindowResizable(window, true);
+
     SDL_SetRenderColorScale(renderer, 1.0f);
 
-    font = TTF_OpenFont("src/font.ttf", 128);
+    font = TTF_OpenFont(font_path.c_str(), 128);
+
+    if (font == NULL)
+    {
+        PLATFORM_PRINTF("Failed to load font %s\n", font_path);
+        setup_error = true;
+        return;
+    }
 
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
     SDL_SetRenderVSync(renderer, 1);
-
-    view = new GUI_View(menu_bar_size);
 }
 
 SDL3_driver::~SDL3_driver()
@@ -54,6 +74,8 @@ SDL3_driver::~SDL3_driver()
     SDL_DestroyWindow(window);
     TTF_Quit();
     SDL_Quit();
+
+    delete view;
 }
 
 void SDL3_driver::get_text_bounds(const char *text, uint16_t *width, uint16_t *height)
