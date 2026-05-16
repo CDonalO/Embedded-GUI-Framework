@@ -360,29 +360,48 @@ void GUI_Toggle_Button::draw(display_driver *display)
     {
     case TOGGLE_BUTTON_ROUND_STYLE:
     {
-        // TODO Make this scale nicely, currently looks bad when button is tall
-        int container_radius = 50;
-        int container_w = 70;
-        int container_h = get_height() - 12;
-        int container_x = get_x() + get_width() - container_w - 6;
-        int container_y = get_y() + 6;
+        RGB container_colour = toggled_colour;
+        int container_padding = 2;
+        int container_h = get_height() - (container_padding * 2);
 
-        int circle_padding = 3;
-        int circle_r = container_h - (circle_padding * 2);
-        int circle_y = container_y + (circle_r / 2) + circle_padding;
-        int circle_x = container_x;
+        if (container_h > 35)
+        {
+            container_h = 35;
+        }
+
+        int container_w = get_width() / 12;
+
+        if (container_w > 55)
+        {
+            container_w = 55;
+        }
+        else if (container_w < 50)
+        {
+            container_w = 50;
+        }
+
+        int circle_r = (container_h / 2) - (container_padding * 2);
+        int circle_y = get_y() + get_height() / 2;
+        int circle_x = get_x() + get_width() - container_w - container_padding;
+
+        int container_r = circle_r + (container_padding * 2);
+        int container_y = circle_y;
+        int container1_x = circle_x;
+        int container2_x = container1_x + container_w - container_r - container_padding;
 
         if (value)
         {
-            circle_x += container_w - (circle_r / 2) - circle_padding;
+            circle_x = container2_x;
         }
         else
         {
-            circle_x += circle_padding + (circle_r / 2);
+            container_colour = non_toggled_colour;
         }
 
-        display->draw_filled_round_rect(container_x, container_y, container_w, container_h, container_radius, value ? toggled_colour : non_toggled_colour);
-        display->draw_filled_circle(circle_x, circle_y, circle_r / 2, toggle_element_colour);
+        display->draw_filled_circle(container1_x, container_y, container_r, container_colour);
+        display->draw_filled_circle(container2_x, container_y, container_r, container_colour);
+        display->draw_filled_rect(container1_x, container_y - container_r, container_w - (container_r), container_r * 2, container_colour);
+        display->draw_filled_circle(circle_x, circle_y, circle_r, toggle_element_colour);
     }
     break;
     }
