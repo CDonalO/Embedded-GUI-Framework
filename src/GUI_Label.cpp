@@ -25,9 +25,19 @@ void GUI_Label::draw(display_driver *display)
     if (is_hidden())
         return;
 
+    uint8_t t_size = get_font_size();
+    RGB font_c = get_font_colour();
+    if (parent)
+    {
+        if (!is_font_size_set())
+        {
+            t_size = parent->get_font_size();
+        }
+    }
+
     if (text_align & ALIGN_CENTER_HORIZONTAL)
     {
-        text_x = display->center_text_horizontal(label, get_width(), get_x());
+        text_x = display->center_text_horizontal(label, get_width(), get_x(), t_size);
     }
     else
     {
@@ -45,7 +55,7 @@ void GUI_Label::draw(display_driver *display)
 
     if (text_align & ALIGN_CENTER_VERTICAL)
     {
-        text_y = display->center_text_vertical(label, get_height(), get_y());
+        text_y = display->center_text_vertical(label, get_height(), get_y(), t_size);
     }
     else
     {
@@ -58,16 +68,6 @@ void GUI_Label::draw(display_driver *display)
             uint16_t w, h;
             display->get_text_bounds((char *)label.c_str(), &w, &h);
             text_y = get_y() + get_height() - h - 5;
-        }
-    }
-
-    uint8_t t_size = get_font_size();
-    RGB font_c = get_font_colour();
-    if (parent)
-    {
-        if (!is_font_size_set())
-        {
-            t_size = parent->get_font_size();
         }
     }
 

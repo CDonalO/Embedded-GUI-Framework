@@ -80,10 +80,13 @@ SDL3_driver::~SDL3_driver()
 
 void SDL3_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_t *height)
 {
-    int w, h;
+    int w = 0;
+    int h = 0;
 
     if (text.length() == 0)
     {
+        *width = 0;
+        *height = 0;
         return;
     }
 
@@ -93,28 +96,36 @@ void SDL3_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_
     *height = (uint16_t)h;
 }
 
-uint16_t SDL3_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y)
+uint16_t SDL3_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint8_t font_size)
 {
-    uint16_t text_w, text_h;
+    uint16_t text_w = 0;
+    uint16_t text_h = 0;
+    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
     if (str.length() == 0)
     {
         return 0;
     }
+
+    TTF_SetFontSize(font, font_size * 8 * scale);
 
     get_text_bounds(str, &text_w, &text_h);
 
     return container_y + (container_h / 2) - (text_h / 2);
 }
 
-uint16_t SDL3_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x)
+uint16_t SDL3_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint8_t font_size)
 {
-    uint16_t text_w, text_h;
+    uint16_t text_w = 0;
+    uint16_t text_h = 0;
+    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
     if (str.length() == 0)
     {
         return 0;
     }
+
+    TTF_SetFontSize(font, font_size * 8 * scale);
 
     get_text_bounds(str, &text_w, &text_h);
 

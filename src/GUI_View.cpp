@@ -81,8 +81,8 @@ void GUI_View::draw(display_driver *display)
                 }
             }
 
-            text_x = display->center_text_horizontal(menu_name, get_width(), 0);
-            text_y = display->center_text_vertical(menu_name, menu_bar_size, 0);
+            text_x = display->center_text_horizontal(menu_name, get_width(), 0, t_size);
+            text_y = display->center_text_vertical(menu_name, menu_bar_size, 0, t_size);
 
             display->draw_text(text_x, text_y, menu_name, t_size, font_c);
 
