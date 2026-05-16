@@ -19,7 +19,6 @@ typedef enum
     INPUT_DOWN,
     INPUT_LEFT,
     INPUT_RIGHT,
-    INPUT_ENTER,
     INPUT_KEYBOARD,
 } INPUT_TYPE;
 
@@ -63,6 +62,7 @@ typedef enum
     KEYBOARD_8,
     KEYBOARD_9,
     KEYBOARD_ESC,
+    KEYBOARD_ENTER,
     KEYBOARD_BACKSPACE,
 } KEYBOARD_KEY;
 
