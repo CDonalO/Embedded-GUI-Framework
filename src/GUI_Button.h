@@ -35,7 +35,7 @@ private:
     TEXT_ALIGN align_value;
     RGB disabled_bg_colour;
     RGB disabled_trim_colour;
-    RGB disabled_text_colour;
+    RGB disabled_font_colour;
 
 protected:
     click_cb_fun click_cb;
@@ -59,7 +59,7 @@ public:
     void set_click_user_cb(click_cb_fun _click_cb, void *_user_data);
     void set_disabled(bool disable);
     bool is_disabled();
-    void set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_text_colour);
+    void set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_font_colour);
     void set_button_attributes(BUTTON_ATTRIBUTE attribute);
 };
 

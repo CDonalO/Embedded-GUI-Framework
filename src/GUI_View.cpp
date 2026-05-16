@@ -71,18 +71,18 @@ void GUI_View::draw(display_driver *display)
         {
             PLATFORM_STRING menu_name = menu_stack.top()->get_menu_name();
 
-            uint8_t t_size = get_text_size();
-            RGB font_c = get_text_colour();
+            uint8_t t_size = get_font_size();
+            RGB font_c = get_font_colour();
             if (parent)
             {
-                if (!text_size_set())
+                if (!font_size_set())
                 {
-                    t_size = parent->get_text_size();
+                    t_size = parent->get_font_size();
                 }
 
-                if (!text_colour_set())
+                if (!font_colour_set())
                 {
-                    font_c = parent->get_text_colour();
+                    font_c = parent->get_font_colour();
                 }
             }
 
@@ -157,8 +157,8 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_y(0);
     menu->set_width(get_width());
     menu->set_height(get_height() - menu_bar_size);
-    menu->set_text_colour(get_text_colour());
-    menu->set_text_size(get_text_size());
+    menu->set_font_colour(get_font_colour());
+    menu->set_font_size(get_font_size());
 
     if (menu_stack.size() > 0)
     {

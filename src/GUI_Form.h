@@ -95,6 +95,6 @@ public:
     void create_toggle_form_data(uint16_t id, bool default_value);
     GUI_Toggle_Button *get_toggle_form_button(uint16_t id);
 
-    void create_string_form_data(uint16_t id, PLATFORM_STRING placeholder, uint8_t text_size, RGB text_colour);
+    void create_string_form_data(uint16_t id, PLATFORM_STRING placeholder, uint8_t font_size, RGB font_colour);
     GUI_Label *get_string_form_input(uint16_t id);
 };

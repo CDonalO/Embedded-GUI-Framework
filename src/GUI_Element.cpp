@@ -4,9 +4,9 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
 {
     hidden = false;
     selected = false;
-    text_size = 1;
-    text_colour = BLACK;
-    active_text_colour = WHITE;
+    font_size = 1;
+    font_colour = BLACK;
+    active_font_colour = WHITE;
     background_colour = WHITE;
     trim_colour = BLACK;
     active_trim_colour = BLACK;
@@ -19,8 +19,8 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     width_auto_size = false;
     height_auto_size = false;
     parent = NULL;
-    is_text_colour_set = false;
-    is_text_size_set = false;
+    is_font_colour_set = false;
+    is_font_size_set = false;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -209,33 +209,33 @@ RGB GUI_Element::get_active_trim_colour()
 }
 
 /**
- * @brief Get RGB text colour of element
+ * @brief Get RGB font colour of element
  *
- * @return RGB text colour of element
+ * @return RGB font colour of element
  */
-RGB GUI_Element::get_text_colour()
+RGB GUI_Element::get_font_colour()
 {
-    return text_colour;
+    return font_colour;
 }
 
 /**
- * @brief Get RGB active text colour of element
+ * @brief Get RGB active font colour of element
  *
- * @return RGB active text colour of element
+ * @return RGB active font colour of element
  */
-RGB GUI_Element::get_active_text_colour()
+RGB GUI_Element::get_active_font_colour()
 {
-    return active_text_colour;
+    return active_font_colour;
 }
 
 /**
- * @brief Get text size of element
+ * @brief Get font size of element
  *
- * @return Text size of element
+ * @return Font size of element
  */
-uint8_t GUI_Element::get_text_size()
+uint8_t GUI_Element::get_font_size()
 {
-    return text_size;
+    return font_size;
 }
 
 /**
@@ -435,47 +435,47 @@ void GUI_Element::set_active_colours(RGB _active_background_colour, RGB _active_
 }
 
 /**
- * @brief Set text colour of element
+ * @brief Set font colour of element
  *
- * @param text_colour Colour of text
+ * @param font_colour Colour of font
  */
-void GUI_Element::set_text_colour(RGB text_colour)
+void GUI_Element::set_font_colour(RGB font_colour)
 {
-    is_text_colour_set = true;
-    this->text_colour = text_colour;
+    is_font_colour_set = true;
+    this->font_colour = font_colour;
 }
 
 /**
- * @brief Set active text colour of element
+ * @brief Set active font colour of element
  *
- * @param active_text_colour Colour of active text
+ * @param active_font_colour Colour of active font
  */
-void GUI_Element::set_active_text_colour(RGB active_text_colour)
+void GUI_Element::set_active_font_colour(RGB active_font_colour)
 {
-    this->active_text_colour = active_text_colour;
+    this->active_font_colour = active_font_colour;
 }
 
 /**
- * @brief Set text colours of element
+ * @brief Set font colours of element
  *
- * @param _text_colour Colour of text
- * @param _active_text_colour Colour of active text
+ * @param _font_colour Colour of font
+ * @param _active_font_colour Colour of active font
  */
-void GUI_Element::set_text_colours(RGB _text_colour, RGB _active_text_colour)
+void GUI_Element::set_font_colours(RGB _font_colour, RGB _active_font_colour)
 {
-    set_text_colour(_text_colour);
-    set_active_text_colour(_active_text_colour);
+    set_font_colour(_font_colour);
+    set_active_font_colour(_active_font_colour);
 }
 
 /**
- * @brief Set text size of element
+ * @brief Set font size of element
  *
- * @param text_size Size of text.
+ * @param font_size Size of font.
  */
-void GUI_Element::set_text_size(uint8_t text_size)
+void GUI_Element::set_font_size(uint8_t font_size)
 {
-    is_text_size_set = true;
-    this->text_size = text_size;
+    is_font_size_set = true;
+    this->font_size = font_size;
 }
 
 /**
@@ -566,23 +566,23 @@ bool GUI_Element::within_bounds(int16_t x_pos, int16_t y_pos)
 }
 
 /**
- * @brief Check if text size has been manually set
+ * @brief Check if font size has been manually set
  *
- * @return True if text size has been manually set otherwise false
+ * @return True if font size has been manually set otherwise false
  */
-bool GUI_Element::text_size_set()
+bool GUI_Element::font_size_set()
 {
-    return is_text_size_set;
+    return is_font_size_set;
 }
 
 /**
- * @brief Check if text colour has been manually set
+ * @brief Check if font colour has been manually set
  *
- * @return True if text colour has been manually set otherwise false
+ * @return True if font colour has been manually set otherwise false
  */
-bool GUI_Element::text_colour_set()
+bool GUI_Element::font_colour_set()
 {
-    return is_text_colour_set;
+    return is_font_colour_set;
 }
 
 #ifdef VERBOSE_ELEMENT_DEBUG

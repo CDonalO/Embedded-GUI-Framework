@@ -1,9 +1,9 @@
 #include "GUI_Label.h"
 
-GUI_Label::GUI_Label(PLATFORM_STRING label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour) : GUI_Element(), label(label)
+GUI_Label::GUI_Label(PLATFORM_STRING label, TEXT_ALIGN align, uint8_t font_size, RGB font_colour) : GUI_Element(), label(label)
 {
-    set_text_colour(text_colour);
-    set_text_size(text_size);
+    set_font_colour(font_colour);
+    set_font_size(font_size);
     align_value = align;
 }
 
@@ -44,18 +44,18 @@ void GUI_Label::draw(display_driver *display)
 
     text_y = display->center_text_vertical((char *)label.c_str(), get_height(), get_y());
 
-    uint8_t t_size = get_text_size();
-    RGB font_c = get_text_colour();
+    uint8_t t_size = get_font_size();
+    RGB font_c = get_font_colour();
     if (parent)
     {
-        if (!text_size_set())
+        if (!font_size_set())
         {
-            t_size = parent->get_text_size();
+            t_size = parent->get_font_size();
         }
 
-        if (!text_colour_set())
+        if (!font_colour_set())
         {
-            font_c = parent->get_text_colour();
+            font_c = parent->get_font_colour();
         }
     }
 

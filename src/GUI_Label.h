@@ -9,7 +9,7 @@ private:
     TEXT_ALIGN align_value;
 
 public:
-    GUI_Label(PLATFORM_STRING label, TEXT_ALIGN align, uint8_t text_size, RGB text_colour);
+    GUI_Label(PLATFORM_STRING label, TEXT_ALIGN align, uint8_t font_size, RGB font_colour);
     ~GUI_Label();
 
     void draw(display_driver *display) override;

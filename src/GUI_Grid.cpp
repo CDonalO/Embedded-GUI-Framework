@@ -426,8 +426,8 @@ void GUI_Grid::add_element(GUI_Element *element)
 
     if (element->get_type() == GUI_Element::Element_Type::GRID)
     {
-        element->set_text_size(get_text_size());
-        element->set_text_colour(get_text_colour());
+        element->set_font_size(get_font_size());
+        element->set_font_colour(get_font_colour());
     }
 
     element->parent = this;

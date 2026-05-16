@@ -6,7 +6,7 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, BUTTON_AT
     disabled = false;
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
-    disabled_text_colour = WHITE;
+    disabled_font_colour = WHITE;
     set_interactable(true);
 }
 
@@ -23,7 +23,7 @@ void GUI_Button::draw(display_driver *display)
 {
     RGB bg_c = get_background_colour();
     RGB trim_c = get_trim_colour();
-    RGB font_c = get_text_colour();
+    RGB font_c = get_font_colour();
     uint16_t text_x, text_y;
 
     if (!refresh)
@@ -36,14 +36,14 @@ void GUI_Button::draw(display_driver *display)
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
-        font_c = get_active_text_colour();
+        font_c = get_active_font_colour();
     }
 
     if (is_disabled())
     {
         bg_c = disabled_bg_colour;
         trim_c = disabled_trim_colour;
-        font_c = disabled_text_colour;
+        font_c = disabled_font_colour;
     }
 
     if (button_attribute == BUTTON_ATTRIBUTE_ROUNDED)
@@ -192,17 +192,17 @@ void GUI_Button::draw(display_driver *display)
 
     if (button_style == BUTTON_NO_STYLE)
     {
-        uint8_t t_size = get_text_size();
+        uint8_t t_size = get_font_size();
         if (parent)
         {
-            if (!text_size_set())
+            if (!font_size_set())
             {
-                t_size = parent->get_text_size();
+                t_size = parent->get_font_size();
             }
 
-            if (!text_colour_set())
+            if (!font_colour_set())
             {
-                font_c = parent->get_text_colour();
+                font_c = parent->get_font_colour();
             }
         }
         display->draw_text(text_x, text_y, (char *)text.c_str(), t_size, font_c);
@@ -306,13 +306,13 @@ bool GUI_Button::is_disabled()
  *
  * @param disabled_bg_colour Background colour when disabled
  * @param disabled_trim_colour Trim colour when disabled
- * @param disabled_text_colour Text colour when disabled
+ * @param disabled_font_colour Font colour when disabled
  */
-void GUI_Button::set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_text_colour)
+void GUI_Button::set_disabled_colours(RGB disabled_bg_colour, RGB disabled_trim_colour, RGB disabled_font_colour)
 {
     this->disabled_bg_colour = disabled_bg_colour;
     this->disabled_trim_colour = disabled_trim_colour;
-    this->disabled_text_colour = disabled_text_colour;
+    this->disabled_font_colour = disabled_font_colour;
 }
 
 /**

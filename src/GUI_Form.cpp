@@ -45,18 +45,18 @@ void GUI_Form::draw(display_driver *display)
         }
     }
 
-    uint8_t t_size = get_text_size();
-    RGB font_c = get_text_colour();
+    uint8_t t_size = get_font_size();
+    RGB font_c = get_font_colour();
     if (parent)
     {
-        if (!text_size_set())
+        if (!font_size_set())
         {
-            t_size = parent->get_text_size();
+            t_size = parent->get_font_size();
         }
 
-        if (!text_colour_set())
+        if (!font_colour_set())
         {
-            font_c = parent->get_text_colour();
+            font_c = parent->get_font_colour();
         }
     }
 
@@ -496,7 +496,7 @@ GUI_Toggle_Button *GUI_Form::get_toggle_form_button(uint16_t id)
  * @param id Form string data id
  * @param default_value Form string data placeholder value
  */
-void GUI_Form::create_string_form_data(uint16_t id, PLATFORM_STRING placeholder, uint8_t text_size, RGB text_colour)
+void GUI_Form::create_string_form_data(uint16_t id, PLATFORM_STRING placeholder, uint8_t font_size, RGB font_colour)
 {
     Form_Data *form_data = get_data_by_id(id, GUI_Form::Form_Data::Form_Data_Type::STRING_DATA);
 
@@ -509,8 +509,8 @@ void GUI_Form::create_string_form_data(uint16_t id, PLATFORM_STRING placeholder,
 
     GUI_Label *label = string_data->get_input_label();
 
-    label->set_text_size(text_size);
-    label->set_text_colour(text_colour);
+    label->set_font_size(font_size);
+    label->set_font_colour(font_colour);
     label->set_label(placeholder);
 }
 

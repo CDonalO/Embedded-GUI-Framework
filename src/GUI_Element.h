@@ -19,11 +19,11 @@ private:
     RGB trim_colour;
     RGB active_background_colour;
     RGB active_trim_colour;
-    RGB text_colour;
-    RGB active_text_colour;
-    uint8_t text_size;
-    bool is_text_size_set;
-    bool is_text_colour_set;
+    RGB font_colour;
+    RGB active_font_colour;
+    uint8_t font_size;
+    bool is_font_size_set;
+    bool is_font_colour_set;
     bool hidden;
     bool selected;
     bool width_auto_size;
@@ -77,9 +77,9 @@ public:
     RGB get_trim_colour();
     RGB get_active_background_colour();
     RGB get_active_trim_colour();
-    RGB get_text_colour();
-    RGB get_active_text_colour();
-    uint8_t get_text_size();
+    RGB get_font_colour();
+    RGB get_active_font_colour();
+    uint8_t get_font_size();
     void set_x(int16_t x);
     void set_y(int16_t y);
     void set_x_offset(uint16_t offset);
@@ -98,10 +98,10 @@ public:
     void set_base_colours(RGB _background_colour, RGB _trim_colour);
     void set_active_colours(RGB _active_background_colour, RGB _active_trim_colour);
     void set_colours(RGB _background_colour, RGB _active_background_colour, RGB _trim_colour, RGB _active_trim_colour);
-    void set_text_colour(RGB text_colour);
-    void set_active_text_colour(RGB active_text_colour);
-    void set_text_colours(RGB _text_colour, RGB _active_text_colour);
-    void set_text_size(uint8_t text_size);
+    void set_font_colour(RGB font_colour);
+    void set_active_font_colour(RGB active_font_colour);
+    void set_font_colours(RGB _font_colour, RGB _active_font_colour);
+    void set_font_size(uint8_t font_size);
     void select();
     void deselect();
     void hide();
@@ -111,8 +111,8 @@ public:
     bool is_hidden();
     bool is_interactable();
     bool within_bounds(int16_t x_pos, int16_t y_pos);
-    bool text_size_set();
-    bool text_colour_set();
+    bool font_size_set();
+    bool font_colour_set();
 
     void print_element();
 };
