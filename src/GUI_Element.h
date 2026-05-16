@@ -48,6 +48,7 @@ public:
         LABEL,
         FORM,
         BITMAP,
+        IMAGE,
     };
 
     virtual ~GUI_Element() = default;

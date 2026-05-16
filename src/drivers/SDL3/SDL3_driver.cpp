@@ -317,4 +317,24 @@ void SDL3_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t heigh
         }
     }
 }
+
+void SDL3_driver::draw_image(int16_t x, int16_t y, int16_t width, int16_t height, string file_path)
+{
+    SDL_FRect src;
+    SDL_FRect dst;
+    src.w = width;
+    src.h = height;
+    src.x = 0;
+    src.y = 0;
+
+    dst.x = x;
+    dst.y = y;
+    dst.w = src.w;
+    dst.h = src.h;
+
+    SDL_Texture *image_texture = IMG_LoadTexture(renderer, file_path.c_str());
+
+    SDL_RenderTexture(renderer, image_texture, &src, &dst);
+}
+
 #endif /* SDL3_DRIVER */

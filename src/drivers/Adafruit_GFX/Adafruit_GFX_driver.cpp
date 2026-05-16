@@ -115,4 +115,9 @@ void Adafruit_GFX_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16
         display->drawBitmap(x, y, data, width, height, c);
     }
 }
+
+void Adafruit_GFX_driver::draw_image(int16_t x, int16_t y, int16_t width, int16_t height, string file_path)
+{
+}
+
 #endif /* ADAFRUIT_DRIVER */

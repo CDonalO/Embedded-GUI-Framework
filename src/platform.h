@@ -4,7 +4,9 @@
 #include <Arduino.h>
 #define PLATFORM_PRINTF(fmt, ...) Serial.printf(fmt, ##__VA_ARGS__)
 #else
+using namespace std;
 #include <cstdlib>
+#include <string>
 #include <cstdint>
 #include <cstdio>
 #include <cstring>
