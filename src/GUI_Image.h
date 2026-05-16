@@ -5,10 +5,10 @@
 class GUI_Image : public GUI_Element
 {
 private:
-    string file_path;
+    PLATFORM_STRING file_path;
 
 public:
-    GUI_Image(string file_path);
+    GUI_Image(PLATFORM_STRING file_path);
     ~GUI_Image();
 
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::IMAGE; }

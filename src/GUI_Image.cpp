@@ -1,6 +1,6 @@
 #include "GUI_Image.h"
 
-GUI_Image::GUI_Image(string file_path) : GUI_Element(), file_path(file_path)
+GUI_Image::GUI_Image(PLATFORM_STRING file_path) : GUI_Element(), file_path(file_path)
 {
 }
 

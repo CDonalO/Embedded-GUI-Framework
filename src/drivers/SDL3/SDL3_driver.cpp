@@ -10,7 +10,7 @@ SDL_Color get_colour(RGB colour)
     return c;
 }
 
-SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size, string font_path) : display_driver(menu_bar_size)
+SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t menu_bar_size, PLATFORM_STRING font_path) : display_driver(menu_bar_size)
 {
     optimize_rendering = false;
     width = window_width;
@@ -340,7 +340,7 @@ void SDL3_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t heigh
     }
 }
 
-void SDL3_driver::draw_image(int16_t x, int16_t y, int16_t width, int16_t height, string file_path)
+void SDL3_driver::draw_image(int16_t x, int16_t y, int16_t width, int16_t height, PLATFORM_STRING file_path)
 {
     SDL_FRect src;
     SDL_FRect dst;
