@@ -398,7 +398,18 @@ void GUI_Grid::apply_colour_scheme()
     {
         for (uint16_t x = 0; x < elements.size(); x++)
         {
-            elements[x]->set_colour_scheme(get_colour_scheme());
+            if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+            {
+                GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+
+                grid_element->set_colour_scheme(get_colour_scheme());
+
+                grid_element->apply_colour_scheme();
+            }
+            else
+            {
+                elements[x]->set_colour_scheme(get_colour_scheme());
+            }
         }
     }
 }
