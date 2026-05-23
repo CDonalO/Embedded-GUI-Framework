@@ -11,6 +11,12 @@ GUI_View::GUI_View(uint16_t menu_bar_size) : GUI_Element()
     this->menu_bar_size = menu_bar_size;
 }
 
+GUI_View::GUI_View(uint16_t menu_bar_size, uint16_t view_width, uint16_t view_height) : GUI_View(menu_bar_size)
+{
+    set_width(view_width);
+    set_height(view_height);
+}
+
 GUI_View::GUI_View() : GUI_View(0) {}
 
 GUI_View::~GUI_View()

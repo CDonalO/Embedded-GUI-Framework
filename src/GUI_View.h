@@ -16,6 +16,7 @@ private:
 
 public:
     GUI_View(uint16_t menu_bar_size);
+    GUI_View(uint16_t menu_bar_size, uint16_t view_width, uint16_t view_height);
     GUI_View();
     ~GUI_View();
 
