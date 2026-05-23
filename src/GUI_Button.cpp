@@ -6,6 +6,9 @@ GUI_Button::GUI_Button(BUTTON_STYLE style) : GUI_Element()
     disabled_bg_colour = BLACK;
     disabled_trim_colour = BLACK;
     disabled_font_colour = WHITE;
+    border_radius = 0;
+    click_cb = NULL;
+    user_data = NULL;
     set_interactable(true);
     this->button_style = style;
     label.hide();
