@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GUI_Grid.h"
+#include "GUI_Button.h"
 
 class GUI_Menu : public GUI_Grid
 {
@@ -19,4 +20,5 @@ public:
 
     PLATFORM_STRING get_menu_name();
     void set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme);
+    void register_menu_change_button(GUI_Button *button, GUI_Menu *menu);
 };

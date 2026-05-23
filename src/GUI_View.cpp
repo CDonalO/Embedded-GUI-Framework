@@ -1,11 +1,5 @@
 #include "GUI_View.h"
 
-typedef struct menu_change_event
-{
-    GUI_View *v;
-    GUI_Menu *m;
-} _menu_change_event;
-
 GUI_View::GUI_View(uint16_t menu_bar_size) : GUI_Element()
 {
     this->menu_bar_size = menu_bar_size;
@@ -160,6 +154,7 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_height(get_height() - menu_bar_size);
     menu->set_font_colour(get_font_colour());
     menu->set_font_size(get_font_size());
+    menu->parent = this;
 
     if (is_colour_scheme_set())
     {
@@ -221,32 +216,6 @@ void GUI_View::reverse_menus(void)
 
     menu_stack.top()->set_refresh(true, false);
     refresh = true;
-}
-
-bool set_menu_cb(void *user_data)
-{
-    menu_change_event *event = (menu_change_event *)user_data;
-
-    event->v->set_menu(event->m);
-
-    return false;
-}
-
-/**
- * @brief Set menu change button
- *
- * @param button Button to change menu
- * @param menu Menu to change to
- */
-void GUI_View::register_menu_change_button(GUI_Button *button, GUI_Menu *menu)
-{
-    menu_change_event *user_data = (menu_change_event *)malloc(sizeof(menu_change_event));
-
-    memset(user_data, 0, sizeof(menu_change_event));
-
-    user_data->v = this;
-    user_data->m = menu;
-    button->set_click_user_cb(set_menu_cb, user_data);
 }
 
 void GUI_View::set_menu_bar_colours(RGB return_bg_colour, RGB arrow_colour)
