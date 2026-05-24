@@ -628,7 +628,7 @@ int16_t GUI_Grid::get_next_interactable_element()
     {
         e = elements[val];
 
-        if (e->is_interactable())
+        if (e->is_interactable() && !e->is_hidden())
         {
             if (e->get_type() == GUI_Element::Element_Type::GRID)
             {
@@ -680,7 +680,7 @@ int16_t GUI_Grid::get_prev_interactable_element()
     {
         e = elements[val];
 
-        if (e->is_interactable())
+        if (e->is_interactable() && !e->is_hidden())
         {
             if (e->get_type() == GUI_Element::Element_Type::GRID)
             {
