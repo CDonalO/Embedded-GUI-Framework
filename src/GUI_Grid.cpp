@@ -26,8 +26,18 @@ GUI_Grid::~GUI_Grid()
  */
 void GUI_Grid::draw(display_driver *display)
 {
+    if (parent && !is_font_size_set() && parent->is_font_size_set())
+    {
+        set_font_size(parent->get_font_size());
+    }
+
     for (uint16_t x = 0; x < elements.size(); x++)
     {
+        if (!elements[x]->is_font_size_set() && is_font_size_set())
+        {
+            elements[x]->set_font_size(get_font_size());
+        }
+
         elements[x]->set_x_offset(get_x());
         elements[x]->set_y_offset(get_y());
         elements[x]->draw(display);
@@ -429,7 +439,10 @@ void GUI_Grid::add_element(GUI_Element *element)
 
     if (element->get_type() == GUI_Element::Element_Type::GRID)
     {
-        element->set_font_size(get_font_size());
+        if (is_font_size_set() && !element->is_font_size_set())
+        {
+            element->set_font_size(get_font_size());
+        }
         element->set_font_colour(get_font_colour());
     }
 

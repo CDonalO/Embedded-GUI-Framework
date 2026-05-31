@@ -73,13 +73,6 @@ void GUI_View::draw(display_driver *display)
 
             uint8_t t_size = get_font_size();
             RGB font_c = get_font_colour();
-            if (parent)
-            {
-                if (!is_font_size_set())
-                {
-                    t_size = parent->get_font_size();
-                }
-            }
 
             text_x = display->center_text_horizontal(menu_name, get_width(), 0, t_size);
             text_y = display->center_text_vertical(menu_name, menu_bar_size, 0, t_size);
@@ -153,7 +146,12 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_width(get_width());
     menu->set_height(get_height() - menu_bar_size);
     menu->set_font_colour(get_font_colour());
-    menu->set_font_size(get_font_size());
+
+    if (!menu->is_font_size_set() && is_font_size_set())
+    {
+        menu->set_font_size(get_font_size());
+    }
+
     menu->parent = this;
 
     if (is_colour_scheme_set())
