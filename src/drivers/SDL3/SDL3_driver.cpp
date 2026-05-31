@@ -5,7 +5,7 @@
 
 SDL_Color get_colour(RGB colour)
 {
-    SDL_Color c = {colour.get_red(), colour.get_green(), colour.get_blue(), 255};
+    SDL_Color c = {colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha()};
 
     return c;
 }
@@ -17,7 +17,7 @@ SDL3_driver::SDL3_driver(uint16_t window_width, uint16_t window_height, uint16_t
     height = window_height;
     setup_error = false;
 
-    view = new GUI_View(menu_bar_size);
+    view = new GUI_View(menu_bar_size, window_width, window_height);
 
     if (font_path.length() == 0)
     {
@@ -185,14 +185,16 @@ void SDL3_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t 
 
 void SDL3_driver::draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, RGB colour)
 {
-    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     SDL_RenderLine(renderer, x1, y1, x2, y2);
 }
 
 void SDL3_driver::draw_filled_circle(int16_t x, int16_t y, int16_t r, RGB colour)
 {
-    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     for (int dy = -r; dy <= r; dy++)
     {
@@ -203,7 +205,8 @@ void SDL3_driver::draw_filled_circle(int16_t x, int16_t y, int16_t r, RGB colour
 
 void SDL3_driver::draw_filled_round_rect(int16_t x, int16_t y, int16_t width, int16_t height, int16_t border_radius, RGB colour)
 {
-    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     for (int dy = 0; dy < height; dy++)
     {
@@ -230,13 +233,15 @@ void SDL3_driver::draw_filled_round_rect(int16_t x, int16_t y, int16_t width, in
 void SDL3_driver::draw_filled_rect(int16_t x, int16_t y, int16_t width, int16_t height, RGB colour)
 {
     SDL_FRect rect = {x, y, width, height};
-    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
     SDL_RenderFillRect(renderer, &rect);
 }
 
 void SDL3_driver::draw_filled_triangle(int16_t x1, int16_t y1, int16_t x2, int16_t y2, int16_t x3, int16_t y3, RGB colour)
 {
-    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 
     if (y1 > y2)
     {
@@ -348,7 +353,8 @@ void SDL3_driver::draw_bitmap(int16_t x, int16_t y, int16_t width, int16_t heigh
                         x + col * scale,
                         y + row * scale,
                         scale, scale};
-                    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), 255);
+                    SDL_SetRenderDrawColor(renderer, colour.get_red(), colour.get_green(), colour.get_blue(), colour.get_alpha());
+                    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
                     SDL_RenderFillRect(renderer, &px);
                 }
             }
