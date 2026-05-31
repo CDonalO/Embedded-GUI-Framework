@@ -28,6 +28,12 @@ private:
     uint16_t element_padding;
     uint8_t attributes;
 
+    void adjust_sub_grids();
+    void adjust_x_y();
+    uint16_t get_auto_resizable_elements();
+    uint16_t get_new_element_width();
+    uint16_t get_new_element_height();
+
     std::vector<GUI_Element *> elements;
 
 public:

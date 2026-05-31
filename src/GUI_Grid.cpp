@@ -183,15 +183,212 @@ void GUI_Grid::set_refresh(bool r, bool p)
     }
 }
 
+void GUI_Grid::adjust_sub_grids()
+{
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        elements[x]->set_refresh(true, false);
+        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+
+            if (grid_type == GRID_TYPE_VERTICAL)
+            {
+                grid_element->set_top_border_padding(0);
+                grid_element->set_bottom_border_padding(0);
+            }
+            else if (grid_type == GRID_TYPE_HORIZONTAL)
+            {
+                grid_element->set_left_border_padding(0);
+                grid_element->set_right_border_padding(0);
+            }
+
+            grid_element->adjust_elements();
+        }
+    }
+}
+
+void GUI_Grid::adjust_x_y()
+{
+    uint16_t new_y = top_border_padding;
+    uint16_t new_x = left_border_padding;
+
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        if (grid_type == GRID_TYPE_VERTICAL)
+        {
+            if (x > 0 && !elements[x - 1]->is_hidden())
+            {
+                new_y += elements[x - 1]->get_height() + element_padding;
+            }
+        }
+        else if (grid_type == GRID_TYPE_HORIZONTAL)
+        {
+            if (x > 0 && !elements[x - 1]->is_hidden())
+            {
+                new_x += elements[x - 1]->get_width() + element_padding;
+            }
+        }
+
+        elements[x]->set_x(new_x);
+        elements[x]->set_y(new_y);
+    }
+}
+
+uint16_t GUI_Grid::get_auto_resizable_elements()
+{
+    uint16_t auto_sizeable_elements = elements.size();
+
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        if (elements[x]->is_hidden())
+        {
+            auto_sizeable_elements--;
+            continue;
+        }
+
+        if (grid_type == GRID_TYPE_VERTICAL)
+        {
+            if (!elements[x]->get_height_auto_sizeable())
+            {
+                auto_sizeable_elements--;
+            }
+        }
+        else if (grid_type == GRID_TYPE_HORIZONTAL)
+        {
+            if (!elements[x]->get_width_auto_sizeable())
+            {
+                auto_sizeable_elements--;
+            }
+        }
+    }
+
+    return auto_sizeable_elements;
+}
+
+uint16_t GUI_Grid::get_new_element_width()
+{
+    uint16_t new_width = get_width() - (left_border_padding + right_border_padding);
+
+    if (grid_type != GRID_TYPE_HORIZONTAL)
+    {
+        return new_width;
+    }
+
+    new_width -= (elements.size() - 1) * element_padding;
+
+    uint16_t auto_sizeable_elements = get_auto_resizable_elements();
+
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        if (elements[x]->is_hidden())
+        {
+            continue;
+        }
+
+        if (!elements[x]->get_width_auto_sizeable())
+        {
+            new_width -= elements[x]->get_width();
+        }
+    }
+
+    if (auto_sizeable_elements > 0)
+    {
+        uint16_t new_element_width = new_width;
+
+        new_width /= (auto_sizeable_elements);
+
+        for (uint16_t x = 0; x < elements.size(); x++)
+        {
+            if (elements[x]->is_hidden())
+            {
+                continue;
+            }
+
+            if (elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
+            {
+                auto_sizeable_elements--;
+                new_element_width -= elements[x]->get_max_width_px();
+                if (auto_sizeable_elements > 0)
+                {
+                    new_width = new_element_width / auto_sizeable_elements;
+                }
+                else
+                {
+                    new_width = new_element_width;
+                }
+            }
+        }
+    }
+
+    return new_width;
+}
+
+uint16_t GUI_Grid::get_new_element_height()
+{
+    uint16_t new_height = get_height() - (top_border_padding + bottom_border_padding);
+
+    if (grid_type != GRID_TYPE_VERTICAL)
+    {
+        return new_height;
+    }
+
+    new_height -= (elements.size() - 1) * element_padding;
+
+    uint16_t auto_sizeable_elements = get_auto_resizable_elements();
+
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        if (elements[x]->is_hidden())
+        {
+            continue;
+        }
+
+        if (!elements[x]->get_height_auto_sizeable())
+        {
+            new_height -= elements[x]->get_height();
+        }
+    }
+
+    if (auto_sizeable_elements > 0)
+    {
+        uint16_t new_element_height = new_height;
+
+        new_height /= (auto_sizeable_elements);
+
+        for (uint16_t x = 0; x < elements.size(); x++)
+        {
+            if (elements[x]->is_hidden())
+            {
+                continue;
+            }
+
+            if (elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
+            {
+                auto_sizeable_elements--;
+                new_element_height -= elements[x]->get_max_height_px();
+                if (auto_sizeable_elements > 0)
+                {
+                    new_height = new_element_height / auto_sizeable_elements;
+                }
+                else
+                {
+                    new_height = new_element_height;
+                }
+            }
+        }
+    }
+
+    return new_height;
+}
+
 /**
  * @brief Adjust elements in grid, will resize if applicable
  */
 void GUI_Grid::adjust_elements()
 {
-    uint16_t new_y = top_border_padding;
-    uint16_t new_x = left_border_padding;
-    uint16_t new_width = get_width() - (left_border_padding + right_border_padding);
-    uint16_t new_height = get_height() - (top_border_padding + bottom_border_padding);
+    uint16_t new_width;
+    uint16_t new_height;
 
     if (elements.size() == 0 || grid_type == GRID_TYPE_NONE)
     {
@@ -200,92 +397,8 @@ void GUI_Grid::adjust_elements()
 
     if (attributes & GRID_ATTRIBUTE_FLEX)
     {
-        uint16_t auto_sizeable_elements = elements.size();
-
-        if (grid_type == GRID_TYPE_VERTICAL)
-        {
-            new_height -= (elements.size() - 1) * element_padding;
-        }
-        else if (grid_type == GRID_TYPE_HORIZONTAL)
-        {
-            new_width -= (elements.size() - 1) * element_padding;
-        }
-
-        for (uint16_t x = 0; x < elements.size(); x++)
-        {
-            if (elements[x]->is_hidden())
-            {
-                auto_sizeable_elements--;
-                continue;
-            }
-
-            if (grid_type == GRID_TYPE_VERTICAL)
-            {
-                if (!elements[x]->get_height_auto_sizeable())
-                {
-                    new_height -= elements[x]->get_height();
-                    auto_sizeable_elements--;
-                }
-            }
-            else if (grid_type == GRID_TYPE_HORIZONTAL)
-            {
-                if (!elements[x]->get_width_auto_sizeable())
-                {
-                    new_width -= elements[x]->get_width();
-                    auto_sizeable_elements--;
-                }
-            }
-        }
-
-        if (auto_sizeable_elements > 0)
-        {
-            uint16_t new_element_height = new_height;
-            uint16_t new_element_width = new_width;
-
-            if (grid_type == GRID_TYPE_VERTICAL)
-            {
-                new_height /= (auto_sizeable_elements);
-            }
-            else if (grid_type == GRID_TYPE_HORIZONTAL)
-            {
-                new_width /= (auto_sizeable_elements);
-            }
-
-            for (uint16_t x = 0; x < elements.size(); x++)
-            {
-                if (elements[x]->is_hidden())
-                {
-                    continue;
-                }
-
-                if (grid_type == GRID_TYPE_VERTICAL && elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
-                {
-                    auto_sizeable_elements--;
-                    new_element_height -= elements[x]->get_max_height_px();
-                    if (auto_sizeable_elements > 0)
-                    {
-                        new_height = new_element_height / auto_sizeable_elements;
-                    }
-                    else
-                    {
-                        new_height = new_element_height;
-                    }
-                }
-                else if (grid_type == GRID_TYPE_HORIZONTAL && elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
-                {
-                    auto_sizeable_elements--;
-                    new_element_width -= elements[x]->get_max_width_px();
-                    if (auto_sizeable_elements > 0)
-                    {
-                        new_width = new_element_width / auto_sizeable_elements;
-                    }
-                    else
-                    {
-                        new_width = new_element_width;
-                    }
-                }
-            }
-        }
+        new_width = get_new_element_width();
+        new_height = get_new_element_height();
 
         for (uint16_t x = 0; x < elements.size(); x++)
         {
@@ -328,48 +441,8 @@ void GUI_Grid::adjust_elements()
         }
     }
 
-    for (uint16_t x = 0; x < elements.size(); x++)
-    {
-        if (grid_type == GRID_TYPE_VERTICAL)
-        {
-            if (x > 0 && !elements[x - 1]->is_hidden())
-            {
-                new_y += elements[x - 1]->get_height() + element_padding;
-            }
-        }
-        else if (grid_type == GRID_TYPE_HORIZONTAL)
-        {
-            if (x > 0 && !elements[x - 1]->is_hidden())
-            {
-                new_x += elements[x - 1]->get_width() + element_padding;
-            }
-        }
-
-        elements[x]->set_x(new_x);
-        elements[x]->set_y(new_y);
-    }
-
-    for (uint16_t x = 0; x < elements.size(); x++)
-    {
-        elements[x]->set_refresh(true, false);
-        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
-        {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
-
-            if (grid_type == GRID_TYPE_VERTICAL)
-            {
-                grid_element->set_top_border_padding(0);
-                grid_element->set_bottom_border_padding(0);
-            }
-            else if (grid_type == GRID_TYPE_HORIZONTAL)
-            {
-                grid_element->set_left_border_padding(0);
-                grid_element->set_right_border_padding(0);
-            }
-
-            grid_element->adjust_elements();
-        }
-    }
+    adjust_x_y();
+    adjust_sub_grids();
 }
 
 /**
