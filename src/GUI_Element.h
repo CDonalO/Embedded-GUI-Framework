@@ -59,6 +59,7 @@ public:
         FORM,
         BITMAP,
         IMAGE,
+        SLIDER,
     };
 
     virtual ~GUI_Element() = default;

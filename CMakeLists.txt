@@ -37,6 +37,8 @@ target_sources(EmbeddedGUIFramework
         src/GUI_Bitmap.h
         src/GUI_Image.cpp
         src/GUI_Image.h
+        src/GUI_Slider.cpp
+        src/GUI_Slider.h
         src/drivers/display_driver.h
         src/platform.h
     PUBLIC

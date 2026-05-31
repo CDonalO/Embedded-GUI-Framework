@@ -11,6 +11,7 @@
 #include "../src/GUI_Form.h"
 #include "../src/GUI_Bitmap.h"
 #include "../src/GUI_Image.h"
+#include "../src/GUI_Slider.h"
 
 #ifdef ADAFRUIT_DRIVER
 #include "../src/drivers/Adafruit_GFX/Adafruit_GFX_driver.h"

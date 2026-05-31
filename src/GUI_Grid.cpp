@@ -65,7 +65,7 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 {
     bool in_grid = true;
 
-    if (input == INPUT_KEYBOARD)
+    if (input == INPUT_KEYBOARD || input == INPUT_LEFT || input == INPUT_RIGHT)
     {
         if (selected_element != -1)
         {
