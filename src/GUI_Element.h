@@ -37,6 +37,7 @@ private:
     bool width_auto_size;
     bool height_auto_size;
     bool interactable = false;
+    uint16_t id;
 
 protected:
     bool refresh;
@@ -127,6 +128,8 @@ public:
     bool is_colour_scheme_set();
 
     void print_element();
+    void set_id(uint16_t id);
+    uint16_t get_id();
 
 private:
     void _set_background_colour(RGB background_colour);

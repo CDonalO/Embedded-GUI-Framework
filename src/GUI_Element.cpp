@@ -28,6 +28,7 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     active_font_colour_set = false;
     font_size_set = false;
     alignment = ALIGN_CENTER_HORIZONTAL | ALIGN_CENTER_VERTICAL;
+    id = 0;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -674,7 +675,15 @@ bool GUI_Element::is_colour_scheme_set()
 #ifdef VERBOSE_ELEMENT_DEBUG
 void GUI_Element::print_element()
 {
-    PLATFORM_PRINTF("Element\n");
+    uint16_t e_id = get_id();
+    if (e_id)
+    {
+        PLATFORM_PRINTF("Element ID %d\n", e_id);
+    }
+    else
+    {
+        PLATFORM_PRINTF("Element\n");
+    }
     PLATFORM_PRINTF("X: %d, X offset: %d\n", x, container_x_offset);
     PLATFORM_PRINTF("Y: %d, Y offset: %d\n", y, container_y_offset);
     PLATFORM_PRINTF("Width: %d, Height: %d\n", width, height);
@@ -682,6 +691,26 @@ void GUI_Element::print_element()
 #else
 void GUI_Element::print_element() {}
 #endif
+
+/**
+ * @brief Set element ID used in print element
+ *
+ * @param id Element id
+ */
+void GUI_Element::set_id(uint16_t id)
+{
+    this->id = id;
+}
+
+/**
+ * @brief Get element ID
+ *
+ * @return Element ID
+ */
+uint16_t GUI_Element::get_id()
+{
+    return id;
+}
 
 void GUI_Element::_set_background_colour(RGB background_colour)
 {
