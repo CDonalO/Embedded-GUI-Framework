@@ -79,8 +79,8 @@ void GUI_Label::draw(display_driver *display)
     display->draw_text(text_x, text_y, label, t_size, font_c);
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->draw_line(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->draw_line(get_x(), get_center_y(), get_x() + get_width(), get_center_y(), RED);
+    display->draw_line(get_center_x(), get_y(), get_center_x(), get_y() + get_height(), RED);
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 

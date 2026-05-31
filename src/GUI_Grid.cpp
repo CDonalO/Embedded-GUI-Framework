@@ -45,8 +45,8 @@ void GUI_Grid::draw(display_driver *display)
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->draw_line(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->draw_line(get_x(), get_center_y(), get_x() + get_width(), get_center_y(), RED);
+    display->draw_line(get_center_x(), get_y(), get_center_x(), get_y() + get_height(), RED);
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 

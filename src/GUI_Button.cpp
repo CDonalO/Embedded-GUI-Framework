@@ -86,8 +86,8 @@ void GUI_Button::draw(display_driver *display)
 
             int arrow_width = 15;
             int arrow_height = 15;
-            int arrow_x1 = get_x() + (get_width() / 2) - (arrow_width / 2);
-            int arrow_y1 = get_y() + (get_height() / 2);
+            int arrow_x1 = get_center_x() - (arrow_width / 2);
+            int arrow_y1 = get_center_y();
 
             if (arrow_up_dir)
             {
@@ -127,7 +127,7 @@ void GUI_Button::draw(display_driver *display)
             int arrow_width = 15;
             int arrow_height = 15;
 
-            int arrow_x1 = get_x() + (get_width() / 2);
+            int arrow_x1 = get_center_x();
 
             if (arrow_left_dir)
             {
@@ -138,7 +138,7 @@ void GUI_Button::draw(display_driver *display)
                 arrow_x1 -= (arrow_width / 2);
             }
 
-            int arrow_y1 = get_y() + (get_height() / 2) - (arrow_height / 2);
+            int arrow_y1 = get_center_y() - (arrow_height / 2);
             int arrow_x2 = arrow_x1;
 
             if (arrow_left_dir)
@@ -169,15 +169,15 @@ void GUI_Button::draw(display_driver *display)
 
         int bar_height = bar_width / 6;
 
-        int bar_x = get_x() + (get_width() / 2) - (bar_width / 2);
-        int bar_y = get_y() + (get_height() / 2) - (bar_height / 2);
+        int bar_x = get_center_x() - (bar_width / 2);
+        int bar_y = get_center_y() - (bar_height / 2);
 
         display->draw_filled_rect(bar_x, bar_y, bar_width, bar_height, font_c);
 
         if (button_style == BUTTON_STYLE_PLUS)
         {
-            bar_x = get_x() + (get_width() / 2) - (bar_height / 2);
-            bar_y = get_y() + (get_height() / 2) - (bar_width / 2);
+            bar_x = get_center_x() - (bar_height / 2);
+            bar_y = get_center_y() - (bar_width / 2);
 
             display->draw_filled_rect(bar_x, bar_y, bar_height, bar_width, font_c);
         }
@@ -194,8 +194,8 @@ void GUI_Button::draw(display_driver *display)
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
-    display->draw_line(get_x(), get_y() + (get_height() / 2), get_x() + get_width(), get_y() + (get_height() / 2), RED);
-    display->draw_line(get_x() + (get_width() / 2), get_y(), get_x() + (get_width() / 2), get_y() + get_height(), RED);
+    display->draw_line(get_x(), get_center_y(), get_x() + get_width(), get_center_y(), RED);
+    display->draw_line(get_center_x(), get_y(), get_center_x(), get_y() + get_height(), RED);
 #endif /* VISUAL_ELEMENT_DEBUG */
 }
 
@@ -376,7 +376,7 @@ void GUI_Toggle_Button::draw(display_driver *display)
         }
 
         int circle_r = (container_h / 2) - (container_padding * 2);
-        int circle_y = get_y() + get_height() / 2;
+        int circle_y = get_center_y();
         int circle_x = get_x() + get_width() - container_w - container_padding;
 
         if (get_element_alignment() & ALIGN_LEFT)

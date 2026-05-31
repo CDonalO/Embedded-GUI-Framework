@@ -167,6 +167,26 @@ uint16_t GUI_Element::get_max_height_px()
 }
 
 /**
+ * @brief Get center y position of element
+ *
+ * @return Center y position of element
+ */
+uint16_t GUI_Element::get_center_y()
+{
+    return get_y() + (get_height() / 2);
+}
+
+/**
+ * @brief Get center x position of element
+ *
+ * @return Center x position of element
+ */
+uint16_t GUI_Element::get_center_x()
+{
+    return get_x() + (get_width() / 2);
+}
+
+/**
  * @brief Get element width auto sizeable
  *
  * @return True if width is auto sizeable

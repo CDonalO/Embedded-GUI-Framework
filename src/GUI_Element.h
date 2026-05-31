@@ -81,6 +81,8 @@ public:
     uint16_t get_height();
     uint16_t get_max_width_px();
     uint16_t get_max_height_px();
+    uint16_t get_center_y();
+    uint16_t get_center_x();
     bool get_width_auto_sizeable();
     bool get_height_auto_sizeable();
     GUI_Colour_Scheme get_colour_scheme();
