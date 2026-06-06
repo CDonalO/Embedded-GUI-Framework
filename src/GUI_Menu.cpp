@@ -1,11 +1,11 @@
 #include "GUI_Menu.h"
 #include "GUI_View.h"
 
-GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes), menu_name(menu_name)
+GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes, columns), menu_name(menu_name)
 {
 }
 
-GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name) : GUI_Menu(menu_name, GRID_TYPE_NONE, 0, 0, 0)
+GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name) : GUI_Menu(menu_name, MENU_TYPE_NONE, 0, 0, 0)
 {
 }
 

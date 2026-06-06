@@ -8,6 +8,9 @@ typedef enum
     GRID_TYPE_NONE,
     GRID_TYPE_VERTICAL,
     GRID_TYPE_HORIZONTAL,
+    MENU_TYPE_NONE = GRID_TYPE_NONE,
+    MENU_TYPE_VERTICAL = GRID_TYPE_VERTICAL,
+    MENU_TYPE_HORIZONTAL = GRID_TYPE_HORIZONTAL,
 } GRID_TYPE;
 
 #define GRID_ATTRIBUTE_NONE (1 << 0)
@@ -26,18 +29,26 @@ private:
     uint16_t left_border_padding;
     uint16_t right_border_padding;
     uint16_t element_padding;
+    uint16_t columns;
     uint8_t attributes;
 
+    std::vector<int32_t> row_heights;
+    std::vector<int32_t> col_widths;
+
+    void resize_elements();
+
+    uint16_t get_column_width(uint16_t col);
+    uint16_t get_row_height(uint16_t row);
+
+    uint16_t get_rows();
     void adjust_sub_grids();
     void adjust_x_y();
-    uint16_t get_auto_resizable_elements();
-    uint16_t get_new_element_width();
-    uint16_t get_new_element_height();
 
     std::vector<GUI_Element *> elements;
 
 public:
-    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE);
+    GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE, uint16_t columns = 1);
+
     ~GUI_Grid();
 
     void draw(display_driver *display) override;

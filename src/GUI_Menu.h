@@ -9,7 +9,7 @@ private:
     PLATFORM_STRING menu_name;
 
 public:
-    GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes);
+    GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns = 1);
     GUI_Menu(PLATFORM_STRING menu_name);
     ~GUI_Menu();
 

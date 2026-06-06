@@ -43,7 +43,7 @@ void GUI_View::draw(display_driver *display)
             menu_stack.top()->set_width(get_width());
         }
 
-        if (menu_stack.top()->get_height() != get_height())
+        if (menu_stack.top()->get_height() != (get_height() - menu_bar_size))
         {
             resize_menu = true;
             menu_stack.top()->set_height(get_height() - menu_bar_size);
