@@ -39,7 +39,6 @@ private:
     uint16_t get_row_height(uint16_t row);
 
     uint16_t get_rows();
-    void adjust_sub_grids();
     void adjust_x_y();
 
     std::vector<GUI_Element *> elements;

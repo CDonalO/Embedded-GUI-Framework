@@ -197,18 +197,31 @@ void GUI_Grid::set_refresh(bool r, bool p)
 
 uint32_t GUI_Grid::get_element_min_width_px()
 {
-    return get_min_width_px() + min_col_width;
+    uint32_t min_width = get_min_width_px() + min_col_width;
+
+    if (get_max_width_px() != 0 && get_max_width_px() < min_width)
+    {
+        return get_max_width_px();
+    }
+
+    return min_width;
 }
 
 uint32_t GUI_Grid::get_element_min_height_px()
 {
-    return get_min_height_px() + min_row_height;
+    uint32_t min_height = get_min_height_px() + min_row_height;
+
+    if (get_max_height_px() != 0 && get_max_height_px() < min_height)
+    {
+        return get_max_height_px();
+    }
+
+    return min_height;
 }
 
 uint16_t GUI_Grid::get_column_width(uint16_t col)
 {
     GUI_Element *e = NULL;
-    uint16_t cols = columns;
     uint16_t col_width = get_width() - get_left_padding() - get_right_padding();
 
     if (elements.size() == 1)
@@ -226,28 +239,26 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
         return col_widths[col];
     }
 
-    col_width -= (cols - 1) * element_padding;
-    min_col_width += (cols - 1) * element_padding;
-    uint16_t standard_col_width = col_width / cols;
+    col_width -= (columns - 1) * element_padding;
+    uint16_t standard_col_width = col_width / columns;
     uint16_t rows = get_rows();
     uint16_t ret_col_width = standard_col_width;
-    uint16_t auto_sizeable_cols = cols;
+    uint16_t auto_sizeable_cols = columns;
 
-    for (uint16_t x = 0; x < cols; x++)
+    for (uint16_t x = 0; x < columns; x++)
     {
         col_widths.push_back(-1);
     }
 
-    for (uint16_t x = 0; x < cols; x++)
+    for (uint16_t x = 0; x < columns; x++)
     {
-        uint32_t max_min_col_width = 0;
         bool uniform_col = true;
         bool hidden_col = true;
         uint32_t max_col_width = standard_col_width;
 
         for (uint16_t y = 0; y < rows; y++)
         {
-            uint16_t element_index = y * cols + x;
+            uint16_t element_index = y * columns + x;
 
             if (element_index < elements.size())
             {
@@ -257,8 +268,6 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
                 {
                     hidden_col = false;
                 }
-
-                max_min_col_width = max(max_min_col_width, e->get_element_min_width_px());
 
                 if (!e->get_width_auto_sizeable())
                 {
@@ -285,7 +294,7 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
             uniform_col = false;
         }
 
-        if (!uniform_col)
+        if (!uniform_col && columns > 1)
         {
             col_width -= max_col_width;
             col_widths[x] = max_col_width;
@@ -297,11 +306,9 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
                 standard_col_width = col_width / auto_sizeable_cols;
             }
         }
-
-        min_col_width += max_min_col_width;
     }
 
-    for (uint16_t x = 0; x < cols; x++)
+    for (uint16_t x = 0; x < columns; x++)
     {
         if (col_widths[x] == -1)
         {
@@ -334,7 +341,6 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
     }
 
     row_height -= (rows - 1) * element_padding;
-    min_row_height += (rows - 1) * element_padding;
     uint16_t standard_row_height = row_height / rows;
     uint16_t ret_row_height = standard_row_height;
     uint16_t auto_sizeable_rows = rows;
@@ -346,7 +352,6 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
 
     for (uint16_t x = 0; x < rows; x++)
     {
-        uint32_t max_min_row_height = 0;
         bool uniform_row = true;
         bool hidden_row = true;
         uint32_t max_row_height = standard_row_height;
@@ -357,8 +362,6 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
             if (element_index < elements.size())
             {
                 e = elements[element_index];
-
-                max_min_row_height = max(max_min_row_height, e->get_element_min_height_px());
 
                 if (hidden_row && !e->is_hidden())
                 {
@@ -390,7 +393,7 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
             uniform_row = false;
         }
 
-        if (!uniform_row)
+        if (!uniform_row && rows > 1)
         {
             row_height -= max_row_height;
             row_heights[x] = max_row_height;
@@ -402,8 +405,6 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
                 standard_row_height = row_height / auto_sizeable_rows;
             }
         }
-
-        min_row_height += max_min_row_height;
     }
 
     for (uint16_t x = 0; x < rows; x++)
@@ -430,31 +431,6 @@ uint16_t GUI_Grid::get_rows()
     return (uint16_t)ceil(r);
 }
 
-void GUI_Grid::adjust_sub_grids()
-{
-    for (uint16_t x = 0; x < elements.size(); x++)
-    {
-        elements[x]->set_refresh(true, false);
-        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
-        {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
-
-            if (grid_type == GRID_TYPE_VERTICAL)
-            {
-                grid_element->set_top_padding(0);
-                grid_element->set_bottom_padding(0);
-            }
-            else if (grid_type == GRID_TYPE_HORIZONTAL)
-            {
-                grid_element->set_left_padding(0);
-                grid_element->set_right_padding(0);
-            }
-
-            grid_element->adjust_elements();
-        }
-    }
-}
-
 void GUI_Grid::adjust_x_y()
 {
     uint16_t new_y = get_top_padding();
@@ -471,7 +447,7 @@ void GUI_Grid::adjust_x_y()
 
     for (uint16_t x = 0; x < columns; x++)
     {
-        if (x > col_widths.size())
+        if (x >= col_widths.size())
         {
             continue;
         }
@@ -503,6 +479,26 @@ void GUI_Grid::adjust_x_y()
                 }
             }
 
+            if (columns == 1)
+            {
+                new_x = get_left_padding();
+            }
+
+            if (rows == 1)
+            {
+                new_y = get_top_padding();
+            }
+
+            if (columns == 1 && elements[element_index]->get_width() != col_widths[x] && elements[element_index]->get_element_alignment() & ALIGN_CENTER_HORIZONTAL)
+            {
+                new_x += (get_width() / 2) - (elements[element_index]->get_width() / 2);
+            }
+
+            if (rows == 1 && elements[element_index]->get_height() != row_heights[y] && elements[element_index]->get_element_alignment() & ALIGN_CENTER_VERTICAL)
+            {
+                new_y += (get_height() / 2) - (elements[element_index]->get_height() / 2);
+            }
+
             elements[element_index]->set_y(new_y + elements[element_index]->get_top_padding());
             elements[element_index]->set_x(new_x + elements[element_index]->get_left_padding());
         }
@@ -513,10 +509,24 @@ void GUI_Grid::resize_elements()
 {
     uint16_t new_width;
     uint16_t new_height;
+    uint16_t rows = get_rows();
 
     if (!(attributes & GRID_ATTRIBUTE_FLEX))
     {
         return;
+    }
+
+    std::vector<uint32_t> min_row_heights;
+    std::vector<uint32_t> min_col_widths;
+
+    for (uint16_t x = 0; x < columns; x++)
+    {
+        min_col_widths.push_back(0);
+    }
+
+    for (uint16_t x = 0; x < rows; x++)
+    {
+        min_row_heights.push_back(0);
     }
 
     for (uint16_t x = 0; x < elements.size(); x++)
@@ -527,6 +537,16 @@ void GUI_Grid::resize_elements()
         new_width = get_column_width(current_col);
         new_height = get_row_height(current_row);
 
+        if (columns == 1 && elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
+        {
+            new_width = elements[x]->get_max_width_px() - elements[x]->get_left_padding() - elements[x]->get_right_padding();
+        }
+
+        if (rows == 1 && elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
+        {
+            new_height = elements[x]->get_max_height_px() - elements[x]->get_top_padding() - elements[x]->get_bottom_padding();
+        }
+
         if (elements[x]->get_width_auto_sizeable())
         {
             elements[x]->set_width(new_width - elements[x]->get_left_padding() - elements[x]->get_right_padding());
@@ -536,9 +556,33 @@ void GUI_Grid::resize_elements()
         {
             elements[x]->set_height(new_height - elements[x]->get_top_padding() - elements[x]->get_bottom_padding());
         }
+
+        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+
+            grid_element->adjust_elements();
+        }
+
+        min_col_widths[current_col] = max(min_col_widths[current_col], elements[x]->get_element_min_width_px());
+        min_row_heights[current_row] = max(min_row_heights[current_row], elements[x]->get_element_min_height_px());
+
 #ifdef VERBOSE_ELEMENT_DEBUG
         PLATFORM_PRINTF("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
 #endif /* VERBOSE_ELEMENT_DEBUG */
+    }
+
+    min_col_width = (columns - 1) * element_padding;
+    min_row_height = (rows - 1) * element_padding;
+
+    for (uint16_t x = 0; x < columns; x++)
+    {
+        min_col_width += min_col_widths[x];
+    }
+
+    for (uint16_t x = 0; x < rows; x++)
+    {
+        min_row_height += min_row_heights[x];
     }
 }
 
@@ -554,6 +598,7 @@ void GUI_Grid::adjust_elements()
 
     if (attributes & GRID_ATTRIBUTE_FLEX)
     {
+        set_refresh(true, false);
         min_col_width = 0;
         min_row_height = 0;
         col_widths.clear();
@@ -562,7 +607,6 @@ void GUI_Grid::adjust_elements()
     }
 
     adjust_x_y();
-    adjust_sub_grids();
 }
 
 /**
