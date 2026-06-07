@@ -4,10 +4,12 @@
 #include "GUI_Button.h"
 
 #include <stack>
+#include <set>
 
 class GUI_View : public GUI_Element
 {
 private:
+    std::set<GUI_Menu *> menu_objects;
     std::stack<GUI_Menu *> menu_stack;
     uint16_t menu_bar_size;
     RGB back_button_bg_colour;

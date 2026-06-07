@@ -3,10 +3,13 @@
 #include "GUI_Grid.h"
 #include "GUI_Button.h"
 
+#include <set>
+
 class GUI_Menu : public GUI_Grid
 {
 private:
     GUI_Label menu_label;
+    std::set<std::uintptr_t> menu_cb_objs;
 
 public:
     GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns = 1);

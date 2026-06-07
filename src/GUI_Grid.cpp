@@ -16,6 +16,19 @@ GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_pad
 
 GUI_Grid::~GUI_Grid()
 {
+    for (uint16_t x = 0; x < elements.size(); x++)
+    {
+        GUI_Element *e = elements[x];
+
+        if (e->get_ref_count() <= 1)
+        {
+            delete e;
+        }
+        else
+        {
+            e->decrease_ref();
+        }
+    }
 }
 
 /**
@@ -632,6 +645,7 @@ void GUI_Grid::add_element(GUI_Element *element)
     }
 
     element->parent = this;
+    element->increase_ref();
     elements.push_back(element);
 
     adjust_elements();

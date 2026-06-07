@@ -22,6 +22,7 @@ private:
     uint16_t left_padding;
     uint16_t right_padding;
     uint8_t alignment;
+    uint8_t ref_count;
     GUI_Colour_Scheme colour_scheme;
     bool colour_scheme_set;
     RGB background_colour;
@@ -86,6 +87,7 @@ public:
     uint16_t get_x_offset();
     uint16_t get_y_offset();
     uint8_t get_element_alignment();
+    uint8_t get_ref_count();
     uint16_t get_width();
     uint16_t get_height();
     uint32_t get_total_width();
@@ -152,6 +154,8 @@ public:
     bool within_bounds(int16_t x_pos, int16_t y_pos);
     bool is_font_size_set();
     bool is_colour_scheme_set();
+    void increase_ref();
+    void decrease_ref();
 
     void print_element();
     void set_id(uint16_t id);

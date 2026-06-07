@@ -11,15 +11,25 @@ GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name) : GUI_Menu(menu_name, MENU_TYPE_NO
 {
 }
 
-GUI_Menu::~GUI_Menu()
-{
-}
-
 typedef struct menu_change_event
 {
     GUI_Menu *parent_menu;
     GUI_Menu *sub_menu;
 } _menu_change_event;
+
+GUI_Menu::~GUI_Menu()
+{
+    for (uintptr_t p : menu_cb_objs)
+    {
+        menu_change_event *e = reinterpret_cast<menu_change_event *>(p);
+        if (e->sub_menu->get_ref_count() == 0)
+        {
+            delete e->sub_menu;
+        }
+
+        free(e);
+    }
+}
 
 /**
  * @brief Draw menu
@@ -88,6 +98,8 @@ void GUI_Menu::register_menu_change_button(GUI_Button *button, GUI_Menu *menu)
     menu_change_event *user_data = (menu_change_event *)malloc(sizeof(menu_change_event));
 
     memset(user_data, 0, sizeof(menu_change_event));
+
+    menu_cb_objs.insert((uintptr_t)user_data);
 
     user_data->parent_menu = this;
     user_data->sub_menu = menu;

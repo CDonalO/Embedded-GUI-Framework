@@ -35,6 +35,7 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     font_size_set = false;
     alignment = ALIGN_CENTER_HORIZONTAL | ALIGN_CENTER_VERTICAL;
     id = 0;
+    ref_count = 0;
 }
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
@@ -130,6 +131,16 @@ uint16_t GUI_Element::get_y_offset()
 uint8_t GUI_Element::get_element_alignment()
 {
     return alignment;
+}
+
+/**
+ * @brief Get Element reference count
+ *
+ * @return Reference count of element
+ */
+uint8_t GUI_Element::get_ref_count()
+{
+    return ref_count;
 }
 
 /**
@@ -852,6 +863,25 @@ bool GUI_Element::is_font_size_set()
 bool GUI_Element::is_colour_scheme_set()
 {
     return colour_scheme_set;
+}
+
+/**
+ * @brief Increase reference count of element
+ */
+void GUI_Element::increase_ref()
+{
+    ref_count++;
+}
+
+/**
+ * @brief Decrease reference count of element
+ */
+void GUI_Element::decrease_ref()
+{
+    if (ref_count > 0)
+    {
+        ref_count--;
+    }
 }
 
 #ifdef VERBOSE_ELEMENT_DEBUG

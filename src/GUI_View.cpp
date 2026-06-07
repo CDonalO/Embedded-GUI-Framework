@@ -15,6 +15,12 @@ GUI_View::GUI_View() : GUI_View(0) {}
 
 GUI_View::~GUI_View()
 {
+    for (GUI_Menu *m : menu_objects)
+    {
+        delete m;
+    }
+
+    menu_objects.clear();
 }
 
 /**
@@ -172,6 +178,8 @@ void GUI_View::set_menu(GUI_Menu *menu)
     menu->set_height(get_height() - menu_bar_size);
     menu->set_font_colour(get_font_colour());
 
+    menu_objects.insert(menu);
+
     if (!menu->is_font_size_set() && is_font_size_set())
     {
         menu->set_font_size(get_font_size());
@@ -192,6 +200,7 @@ void GUI_View::set_menu(GUI_Menu *menu)
 
     menu->set_refresh(true, false);
     menu->adjust_elements();
+    menu->increase_ref();
     menu_stack.push(menu);
 
     refresh = true;
