@@ -87,6 +87,7 @@ void GUI_View::draw(display_driver *display)
                 int arrow_height = menu_bar_size / 2;
                 int arrow_width = 8;
                 display->draw_filled_round_rect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
+                set_min_width_px(22);
                 display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
                 display->draw_filled_triangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
             }
@@ -128,10 +129,34 @@ void GUI_View::set_refresh(bool r, bool p)
 {
     refresh = r;
 
-    if (ignore_refresh)
+    if (ignore_refresh && !menu_stack.empty())
     {
         menu_stack.top()->set_refresh(true, false);
     }
+}
+
+uint32_t GUI_View::get_element_min_width_px()
+{
+    uint32_t min_width = get_min_width_px();
+
+    if (!menu_stack.empty())
+    {
+        min_width = max(min_width, menu_stack.top()->get_element_min_width_px());
+    }
+
+    return min_width;
+}
+
+uint32_t GUI_View::get_element_min_height_px()
+{
+    uint32_t min_height = menu_bar_size + get_min_height_px();
+
+    if (!menu_stack.empty())
+    {
+        min_height += menu_stack.top()->get_element_min_height_px();
+    }
+
+    return min_height;
 }
 
 /**

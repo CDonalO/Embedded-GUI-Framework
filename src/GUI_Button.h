@@ -42,13 +42,15 @@ public:
     GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb = NULL, void *user_data = NULL);
     ~GUI_Button();
 
+    GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
+    GUI_Element *clone() const override { return new GUI_Button(*this); }
+
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void navigate(INPUT_TYPE input, KEYBOARD_KEY key) override;
     void set_refresh(bool r, bool p) override;
-    GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::BUTTON; }
-
-    GUI_Element *clone() const override { return new GUI_Button(*this); }
+    uint32_t get_element_min_width_px() override;
+    uint32_t get_element_min_height_px() override;
 
     void set_button_style(BUTTON_STYLE style);
     void set_button_str(PLATFORM_STRING button_str);

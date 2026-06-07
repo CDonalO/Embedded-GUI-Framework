@@ -1,8 +1,10 @@
 #include "GUI_Menu.h"
 #include "GUI_View.h"
 
-GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes, columns), menu_name(menu_name)
+GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns) : GUI_Grid(menu_type, border_padding, element_padding, grid_attributes, columns)
 {
+    menu_label.set_label(menu_name);
+    menu_label.hide();
 }
 
 GUI_Menu::GUI_Menu(PLATFORM_STRING menu_name) : GUI_Menu(menu_name, MENU_TYPE_NONE, 0, 0, 0)
@@ -26,6 +28,8 @@ typedef struct menu_change_event
  */
 void GUI_Menu::draw(display_driver *display)
 {
+    menu_label.draw(display);
+
     if (refresh)
         display->draw_filled_rect(get_x(), get_y(), get_width(), get_height(), get_background_colour());
 
@@ -34,9 +38,19 @@ void GUI_Menu::draw(display_driver *display)
     refresh = false;
 }
 
+uint32_t GUI_Menu::get_element_min_width_px()
+{
+    return max(GUI_Grid::get_element_min_width_px(), menu_label.get_element_min_width_px());
+}
+
+uint32_t GUI_Menu::get_element_min_height_px()
+{
+    return GUI_Grid::get_element_min_height_px();
+}
+
 PLATFORM_STRING GUI_Menu::get_menu_name()
 {
-    return menu_name;
+    return menu_label.get_label();
 }
 
 void GUI_Menu::set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme)

@@ -234,6 +234,18 @@ void GUI_Button::set_refresh(bool r, bool p)
     }
 }
 
+uint32_t GUI_Button::get_element_min_width_px()
+{
+    uint32_t label_min_width = label.get_min_width_px();
+    return get_min_width_px() + label_min_width;
+}
+
+uint32_t GUI_Button::get_element_min_height_px()
+{
+    uint32_t label_min_height = label.get_min_height_px();
+    return get_min_height_px() + label_min_height;
+}
+
 /**
  * @brief Set button style
  *

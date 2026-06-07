@@ -6,17 +6,19 @@
 class GUI_Menu : public GUI_Grid
 {
 private:
-    PLATFORM_STRING menu_name;
+    GUI_Label menu_label;
 
 public:
     GUI_Menu(PLATFORM_STRING menu_name, GRID_TYPE menu_type, int16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint8_t columns = 1);
     GUI_Menu(PLATFORM_STRING menu_name);
     ~GUI_Menu();
 
-    void draw(display_driver *display) override;
     GUI_Element::Element_Type get_type() override { return GUI_Element::Element_Type::MENU; }
-
     GUI_Element *clone() const override { return new GUI_Menu(*this); }
+
+    void draw(display_driver *display) override;
+    uint32_t get_element_min_width_px() override;
+    uint32_t get_element_min_height_px() override;
 
     PLATFORM_STRING get_menu_name();
     void set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme);

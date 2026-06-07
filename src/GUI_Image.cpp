@@ -39,4 +39,14 @@ void GUI_Image::set_refresh(bool r, bool p)
     refresh = r;
 }
 
+uint32_t GUI_Image::get_element_min_width_px()
+{
+    return get_min_width_px();
+}
+
+uint32_t GUI_Image::get_element_min_height_px()
+{
+    return get_min_height_px();
+}
+
 #endif /* GUI_IMAGE_SUPPORT */

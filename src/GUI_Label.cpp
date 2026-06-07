@@ -24,6 +24,20 @@ void GUI_Label::draw(display_driver *display)
     int16_t text_y = get_y();
     uint8_t text_align = get_element_alignment();
 
+    uint16_t text_h, text_w;
+
+    if (label.size() == 0)
+    {
+        set_min_width_px(0);
+        set_min_height_px(0);
+        return;
+    }
+
+    display->get_text_bounds((char *)label.c_str(), &text_w, &text_h);
+
+    set_min_height_px(text_h + 8);
+    set_min_width_px(text_w + 8);
+
     if (!refresh)
         return;
 
@@ -52,9 +66,7 @@ void GUI_Label::draw(display_driver *display)
         }
         else if (text_align & ALIGN_RIGHT)
         {
-            uint16_t w, h;
-            display->get_text_bounds((char *)label.c_str(), &w, &h);
-            text_x = get_x() + get_width() - w - 5;
+            text_x = get_x() + get_width() - text_w - 5;
         }
     }
 
@@ -70,9 +82,7 @@ void GUI_Label::draw(display_driver *display)
         }
         else if (text_align & ALIGN_BOTTOM)
         {
-            uint16_t w, h;
-            display->get_text_bounds((char *)label.c_str(), &w, &h);
-            text_y = get_y() + get_height() - h - 5;
+            text_y = get_y() + get_height() - text_h - 5;
         }
     }
 
@@ -139,4 +149,14 @@ void GUI_Label::set_refresh(bool r, bool p)
     {
         parent->set_refresh(r, p);
     }
+}
+
+uint32_t GUI_Label::get_element_min_width_px()
+{
+    return get_min_width_px();
+}
+
+uint32_t GUI_Label::get_element_min_height_px()
+{
+    return get_min_height_px();
 }

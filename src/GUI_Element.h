@@ -15,6 +15,8 @@ private:
     uint16_t container_y_offset;
     uint16_t max_height_px;
     uint16_t max_width_px;
+    uint32_t min_height_px;
+    uint32_t min_width_px;
     uint16_t top_padding;
     uint16_t bottom_padding;
     uint16_t left_padding;
@@ -72,6 +74,8 @@ public:
     virtual void navigate(int16_t x_pos, int16_t y_pos) = 0;
     virtual void navigate(INPUT_TYPE input, KEYBOARD_KEY key) = 0;
     virtual void set_refresh(bool r, bool p) = 0;
+    virtual uint32_t get_element_min_width_px() = 0;
+    virtual uint32_t get_element_min_height_px() = 0;
     virtual Element_Type get_type() = 0;
     virtual GUI_Element *clone() const = 0;
 
@@ -88,6 +92,8 @@ public:
     uint32_t get_total_height();
     uint16_t get_max_width_px();
     uint16_t get_max_height_px();
+    uint32_t get_min_width_px();
+    uint32_t get_min_height_px();
     uint16_t get_top_padding();
     uint16_t get_bottom_padding();
     uint16_t get_left_padding();
@@ -113,6 +119,8 @@ public:
     void set_height(uint16_t height);
     void set_max_width_px(uint16_t max_width);
     void set_max_height_px(uint16_t max_height);
+    void set_min_width_px(uint32_t min_width);
+    void set_min_height_px(uint32_t min_height);
     void set_top_padding(uint16_t top_padding);
     void set_bottom_padding(uint16_t bottom_padding);
     void set_left_padding(uint16_t left_padding);

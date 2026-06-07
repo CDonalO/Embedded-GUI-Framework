@@ -24,3 +24,13 @@ void GUI_Bitmap::set_refresh(bool r, bool p)
 {
     refresh = r;
 }
+
+uint32_t GUI_Bitmap::get_element_min_width_px()
+{
+    return get_min_width_px();
+}
+
+uint32_t GUI_Bitmap::get_element_min_height_px()
+{
+    return get_min_height_px();
+}
