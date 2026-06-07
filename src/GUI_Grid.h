@@ -24,10 +24,6 @@ protected:
 
 private:
     GRID_TYPE grid_type;
-    uint16_t top_border_padding;
-    uint16_t bottom_border_padding;
-    uint16_t left_border_padding;
-    uint16_t right_border_padding;
     uint16_t element_padding;
     uint16_t columns;
     uint8_t attributes;
@@ -62,10 +58,6 @@ public:
     void add_element(GUI_Element *element);
     void adjust_elements();
     void apply_colour_scheme();
-    void set_top_border_padding(uint16_t border_padding);
-    void set_bottom_border_padding(uint16_t border_padding);
-    void set_left_border_padding(uint16_t border_padding);
-    void set_right_border_padding(uint16_t border_padding);
 
 protected:
     void deselect_elements();

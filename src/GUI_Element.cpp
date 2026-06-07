@@ -15,6 +15,10 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
     container_y_offset = 0;
     max_width_px = 0;
     max_height_px = 0;
+    top_padding = 0;
+    bottom_padding = 0;
+    left_padding = 0;
+    right_padding = 0;
     refresh = true;
     width_auto_size = false;
     height_auto_size = false;
@@ -147,13 +151,33 @@ uint16_t GUI_Element::get_height()
 }
 
 /**
+ * @brief Get total width of element
+ *
+ * @return Width of element
+ */
+uint32_t GUI_Element::get_total_width()
+{
+    return width + left_padding + right_padding;
+}
+
+/**
+ * @brief Get total height of element
+ *
+ * @return Height of element
+ */
+uint32_t GUI_Element::get_total_height()
+{
+    return height + top_padding + bottom_padding;
+}
+
+/**
  * @brief Get max width of element
  *
  * @return Max width in px of element
  */
 uint16_t GUI_Element::get_max_width_px()
 {
-    return max_width_px;
+    return max_width_px + (max_width_px ? (left_padding + right_padding) : 0);
 }
 
 /**
@@ -163,7 +187,47 @@ uint16_t GUI_Element::get_max_width_px()
  */
 uint16_t GUI_Element::get_max_height_px()
 {
-    return max_height_px;
+    return max_height_px + (max_height_px ? (top_padding + bottom_padding) : 0);
+}
+
+/**
+ * @brief Get top padding of element
+ *
+ * @return Padding in px
+ */
+uint16_t GUI_Element::get_top_padding()
+{
+    return top_padding;
+}
+
+/**
+ * @brief Get bottom padding of element
+ *
+ * @return Padding in px
+ */
+uint16_t GUI_Element::get_bottom_padding()
+{
+    return bottom_padding;
+}
+
+/**
+ * @brief Get left padding of element
+ *
+ * @return Padding in px
+ */
+uint16_t GUI_Element::get_left_padding()
+{
+    return left_padding;
+}
+
+/**
+ * @brief Get right padding of element
+ *
+ * @return Padding in px
+ */
+uint16_t GUI_Element::get_right_padding()
+{
+    return right_padding;
 }
 
 /**
@@ -374,6 +438,62 @@ void GUI_Element::set_max_width_px(uint16_t max_width)
 void GUI_Element::set_max_height_px(uint16_t max_height)
 {
     max_height_px = max_height;
+}
+
+/**
+ * @brief Set top padding of element in px
+ *
+ * @param top_padding The new top padding px
+ */
+void GUI_Element::set_top_padding(uint16_t top_padding)
+{
+    this->top_padding = top_padding;
+}
+
+/**
+ * @brief Set bottom padding of element in px
+ *
+ * @param bottom_padding The new bottom padding px
+ */
+void GUI_Element::set_bottom_padding(uint16_t bottom_padding)
+{
+    this->bottom_padding = bottom_padding;
+}
+
+/**
+ * @brief Set left padding of element in px
+ *
+ * @param left_padding The new left padding px
+ */
+void GUI_Element::set_left_padding(uint16_t left_padding)
+{
+    this->left_padding = left_padding;
+}
+
+/**
+ * @brief Set right padding of element in px
+ *
+ * @param right_padding The new right padding px
+ */
+void GUI_Element::set_right_padding(uint16_t right_padding)
+{
+    this->right_padding = right_padding;
+}
+
+/**
+ * @brief Set padding of element in px
+ *
+ * @param top_padding The new top padding px
+ * @param bottom_padding The new bottom padding px
+ * @param left_padding The new left padding px
+ * @param right_padding The new right padding px
+ */
+void GUI_Element::set_padding(uint16_t top_padding, uint16_t bottom_padding, uint16_t left_padding, uint16_t right_padding)
+{
+    set_top_padding(top_padding);
+    set_bottom_padding(bottom_padding);
+    set_left_padding(left_padding);
+    set_right_padding(right_padding);
 }
 
 /**

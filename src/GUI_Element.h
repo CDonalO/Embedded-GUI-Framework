@@ -15,6 +15,10 @@ private:
     uint16_t container_y_offset;
     uint16_t max_height_px;
     uint16_t max_width_px;
+    uint16_t top_padding;
+    uint16_t bottom_padding;
+    uint16_t left_padding;
+    uint16_t right_padding;
     uint8_t alignment;
     GUI_Colour_Scheme colour_scheme;
     bool colour_scheme_set;
@@ -80,8 +84,14 @@ public:
     uint8_t get_element_alignment();
     uint16_t get_width();
     uint16_t get_height();
+    uint32_t get_total_width();
+    uint32_t get_total_height();
     uint16_t get_max_width_px();
     uint16_t get_max_height_px();
+    uint16_t get_top_padding();
+    uint16_t get_bottom_padding();
+    uint16_t get_left_padding();
+    uint16_t get_right_padding();
     uint16_t get_center_y();
     uint16_t get_center_x();
     bool get_width_auto_sizeable();
@@ -103,6 +113,11 @@ public:
     void set_height(uint16_t height);
     void set_max_width_px(uint16_t max_width);
     void set_max_height_px(uint16_t max_height);
+    void set_top_padding(uint16_t top_padding);
+    void set_bottom_padding(uint16_t bottom_padding);
+    void set_left_padding(uint16_t left_padding);
+    void set_right_padding(uint16_t right_padding);
+    void set_padding(uint16_t top_padding, uint16_t bottom_padding, uint16_t left_padding, uint16_t right_padding);
     void set_dimensions(int16_t _x, int16_t _y, uint16_t _w, uint16_t _h);
     void set_width_auto_sizeable(bool auto_sizeable);
     void set_height_auto_sizeable(bool auto_sizeable);

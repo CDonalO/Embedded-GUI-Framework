@@ -5,10 +5,7 @@
 GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint16_t columns) : GUI_Element(), columns(columns), grid_type(type), attributes(grid_attributes)
 {
     this->element_padding = element_padding;
-    top_border_padding = border_padding;
-    bottom_border_padding = border_padding;
-    right_border_padding = border_padding;
-    left_border_padding = border_padding;
+    set_padding(border_padding, border_padding, border_padding, border_padding);
     selected_element = -1;
     first_interactable_element_index = -1;
     last_interactable_element_index = -1;
@@ -185,11 +182,16 @@ void GUI_Grid::set_refresh(bool r, bool p)
 
 uint16_t GUI_Grid::get_column_width(uint16_t col)
 {
+    GUI_Element *e = NULL;
     uint16_t cols = columns;
-    uint16_t col_width = get_width() - left_border_padding - right_border_padding;
+    uint16_t col_width = get_width() - get_left_padding() - get_right_padding();
 
     if (elements.size() == 1)
     {
+        if (elements[0]->get_max_width_px() != 0)
+        {
+            return elements[0]->get_max_width_px();
+        }
         return col_width;
     }
 
@@ -213,27 +215,30 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
     {
         bool uniform_col = true;
         bool hidden_col = true;
-        uint16_t max_col_width = standard_col_width;
+        uint32_t max_col_width = standard_col_width;
 
         for (uint16_t y = 0; y < rows; y++)
         {
             uint16_t element_index = y * cols + x;
+
             if (element_index < elements.size())
             {
-                if (hidden_col && !elements[element_index]->is_hidden())
+                e = elements[element_index];
+
+                if (hidden_col && !e->is_hidden())
                 {
                     hidden_col = false;
                 }
 
-                if (!elements[element_index]->get_width_auto_sizeable())
+                if (!e->get_width_auto_sizeable())
                 {
                     uniform_col = false;
-                    max_col_width = min(max_col_width, elements[element_index]->get_width());
+                    max_col_width = min(max_col_width, e->get_total_width());
                 }
-                else if (elements[element_index]->get_max_width_px() != 0 && max_col_width > elements[element_index]->get_max_width_px())
+                else if (e->get_max_width_px() != 0 && max_col_width > e->get_max_width_px())
                 {
                     uniform_col = false;
-                    max_col_width = elements[element_index]->get_max_width_px();
+                    max_col_width = e->get_max_width_px();
                 }
             }
         }
@@ -272,11 +277,16 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
 
 uint16_t GUI_Grid::get_row_height(uint16_t row)
 {
+    GUI_Element *e = NULL;
     uint16_t rows = get_rows();
-    uint16_t row_height = get_height() - top_border_padding - bottom_border_padding;
+    uint16_t row_height = get_height() - get_top_padding() - get_bottom_padding();
 
     if (elements.size() == 1)
     {
+        if (elements[0]->get_max_height_px() != 0)
+        {
+            return elements[0]->get_max_height_px();
+        }
         return row_height;
     }
 
@@ -299,27 +309,29 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
     {
         bool uniform_row = true;
         bool hidden_row = true;
-        uint16_t max_row_height = standard_row_height;
+        uint32_t max_row_height = standard_row_height;
 
         for (uint16_t y = 0; y < columns; y++)
         {
             uint16_t element_index = (x * columns) + y;
             if (element_index < elements.size())
             {
-                if (hidden_row && !elements[element_index]->is_hidden())
+                e = elements[element_index];
+
+                if (hidden_row && !e->is_hidden())
                 {
                     hidden_row = false;
                 }
 
-                if (!elements[element_index]->get_height_auto_sizeable())
+                if (!e->get_height_auto_sizeable())
                 {
                     uniform_row = false;
-                    max_row_height = min(max_row_height, elements[element_index]->get_height());
+                    max_row_height = min(max_row_height, e->get_total_height());
                 }
-                else if (elements[element_index]->get_max_height_px() != 0 && max_row_height > elements[element_index]->get_max_height_px())
+                else if (e->get_max_height_px() != 0 && max_row_height > e->get_max_height_px())
                 {
                     uniform_row = false;
-                    max_row_height = elements[element_index]->get_max_height_px();
+                    max_row_height = e->get_max_height_px();
                 }
             }
         }
@@ -380,13 +392,13 @@ void GUI_Grid::adjust_sub_grids()
 
             if (grid_type == GRID_TYPE_VERTICAL)
             {
-                grid_element->set_top_border_padding(0);
-                grid_element->set_bottom_border_padding(0);
+                grid_element->set_top_padding(0);
+                grid_element->set_bottom_padding(0);
             }
             else if (grid_type == GRID_TYPE_HORIZONTAL)
             {
-                grid_element->set_left_border_padding(0);
-                grid_element->set_right_border_padding(0);
+                grid_element->set_left_padding(0);
+                grid_element->set_right_padding(0);
             }
 
             grid_element->adjust_elements();
@@ -396,8 +408,8 @@ void GUI_Grid::adjust_sub_grids()
 
 void GUI_Grid::adjust_x_y()
 {
-    uint16_t new_y = top_border_padding;
-    uint16_t new_x = left_border_padding;
+    uint16_t new_y = get_top_padding();
+    uint16_t new_x = get_left_padding();
     uint16_t prev_col = 0;
     uint16_t prev_row = 0;
 
@@ -423,7 +435,7 @@ void GUI_Grid::adjust_x_y()
             }
         }
 
-        new_y = top_border_padding;
+        new_y = get_top_padding();
 
         for (uint16_t y = 0; y < rows; y++)
         {
@@ -442,8 +454,8 @@ void GUI_Grid::adjust_x_y()
                 }
             }
 
-            elements[element_index]->set_y(new_y);
-            elements[element_index]->set_x(new_x);
+            elements[element_index]->set_y(new_y + elements[element_index]->get_top_padding());
+            elements[element_index]->set_x(new_x + elements[element_index]->get_left_padding());
         }
     }
 }
@@ -468,12 +480,12 @@ void GUI_Grid::resize_elements()
 
         if (elements[x]->get_width_auto_sizeable())
         {
-            elements[x]->set_width(new_width);
+            elements[x]->set_width(new_width - elements[x]->get_left_padding() - elements[x]->get_right_padding());
         }
 
         if (elements[x]->get_height_auto_sizeable())
         {
-            elements[x]->set_height(new_height);
+            elements[x]->set_height(new_height - elements[x]->get_top_padding() - elements[x]->get_bottom_padding());
         }
 #ifdef VERBOSE_ELEMENT_DEBUG
         PLATFORM_PRINTF("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
@@ -587,46 +599,6 @@ void GUI_Grid::add_element(GUI_Element *element)
     adjust_elements();
 
     refresh = true;
-}
-
-/**
- * @brief Set grid top border padding
- *
- * @param border_padding Padding in px
- */
-void GUI_Grid::set_top_border_padding(uint16_t border_padding)
-{
-    top_border_padding = border_padding;
-}
-
-/**
- * @brief Set grid bottom border padding
- *
- * @param border_padding Padding in px
- */
-void GUI_Grid::set_bottom_border_padding(uint16_t border_padding)
-{
-    bottom_border_padding = border_padding;
-}
-
-/**
- * @brief Set grid left border padding
- *
- * @param border_padding Padding in px
- */
-void GUI_Grid::set_left_border_padding(uint16_t border_padding)
-{
-    left_border_padding = border_padding;
-}
-
-/**
- * @brief Set grid right border padding
- *
- * @param border_padding Padding in px
- */
-void GUI_Grid::set_right_border_padding(uint16_t border_padding)
-{
-    right_border_padding = border_padding;
 }
 
 /**
