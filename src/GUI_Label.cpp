@@ -26,7 +26,7 @@ void GUI_Label::draw(display_driver *display)
 
     uint16_t text_h, text_w;
 
-    if (label.size() == 0)
+    if (label.length() == 0)
     {
         set_min_width_px(0);
         set_min_height_px(0);

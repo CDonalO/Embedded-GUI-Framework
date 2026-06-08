@@ -23,6 +23,8 @@ GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str) : GUI_But
     }
 }
 
+GUI_Button::GUI_Button(PLATFORM_STRING button_str) : GUI_Button(BUTTON_NO_STYLE, button_str) {}
+
 GUI_Button::GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb, void *user_data) : GUI_Button(style, button_str)
 {
     this->border_radius = border_radius;

@@ -72,6 +72,12 @@ SDL3_driver::~SDL3_driver()
 {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
+
+    if (font)
+    {
+        TTF_CloseFont(font);
+    }
+
     TTF_Quit();
     SDL_Quit();
 

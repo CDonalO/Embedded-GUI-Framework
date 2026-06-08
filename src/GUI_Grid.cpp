@@ -16,10 +16,8 @@ GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_pad
 
 GUI_Grid::~GUI_Grid()
 {
-    for (uint16_t x = 0; x < elements.size(); x++)
+    for (GUI_Element *e : elements)
     {
-        GUI_Element *e = elements[x];
-
         if (e->get_ref_count() <= 1)
         {
             delete e;
@@ -43,17 +41,17 @@ void GUI_Grid::draw(display_driver *display)
         set_font_size(parent->get_font_size());
     }
 
-    for (uint16_t x = 0; x < elements.size(); x++)
+    for (GUI_Element *e : elements)
     {
-        if (!elements[x]->is_font_size_set() && is_font_size_set())
+        if (!e->is_font_size_set() && is_font_size_set())
         {
-            elements[x]->set_font_size(get_font_size());
+            e->set_font_size(get_font_size());
         }
 
-        elements[x]->set_x_offset(get_x());
-        elements[x]->set_y_offset(get_y());
-        elements[x]->draw(display);
-        elements[x]->set_refresh(false, false);
+        e->set_x_offset(get_x());
+        e->set_y_offset(get_y());
+        e->draw(display);
+        e->set_refresh(false, false);
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -64,11 +62,11 @@ void GUI_Grid::draw(display_driver *display)
 
 void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
 {
-    for (uint16_t x = 0; x < elements.size(); x++)
+    for (GUI_Element *e : elements)
     {
-        if (elements[x]->within_bounds(x_pos, y_pos))
+        if (e->within_bounds(x_pos, y_pos))
         {
-            elements[x]->navigate(x_pos, y_pos);
+            e->navigate(x_pos, y_pos);
         }
     }
 }
@@ -188,9 +186,9 @@ void GUI_Grid::set_refresh(bool r, bool p)
 
     if (!p)
     {
-        for (uint16_t x = 0; x < elements.size(); x++)
+        for (GUI_Element *e : elements)
         {
-            elements[x]->set_refresh(r, false);
+            e->set_refresh(r, false);
         }
     }
 }
@@ -616,11 +614,11 @@ void GUI_Grid::apply_colour_scheme()
 {
     if (is_colour_scheme_set())
     {
-        for (uint16_t x = 0; x < elements.size(); x++)
+        for (GUI_Element *e : elements)
         {
-            if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+            if (e->get_type() == GUI_Element::Element_Type::GRID)
             {
-                GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+                GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
 
                 grid_element->set_colour_scheme(get_colour_scheme());
 
@@ -628,7 +626,7 @@ void GUI_Grid::apply_colour_scheme()
             }
             else
             {
-                elements[x]->set_colour_scheme(get_colour_scheme());
+                e->set_colour_scheme(get_colour_scheme());
             }
         }
     }
@@ -703,17 +701,17 @@ void GUI_Grid::add_element(GUI_Element *element)
  */
 void GUI_Grid::deselect_elements()
 {
-    for (uint16_t x = 0; x < elements.size(); x++)
+    for (GUI_Element *e : elements)
     {
-        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        if (e->get_type() == GUI_Element::Element_Type::GRID)
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
 
             grid_element->deselect_elements();
         }
         else
         {
-            elements[x]->deselect();
+            e->deselect();
         }
     }
 }
@@ -805,7 +803,7 @@ int16_t GUI_Grid::get_next_interactable_element()
     int16_t val = selected_element;
     uint16_t count = elements.size();
 
-    if (elements.size() == 0)
+    if (count == 0)
     {
         return -1;
     }
@@ -853,7 +851,7 @@ int16_t GUI_Grid::get_prev_interactable_element()
     int16_t val = selected_element;
     uint16_t count = elements.size();
 
-    if (elements.size() == 0)
+    if (count == 0)
     {
         return -1;
     }

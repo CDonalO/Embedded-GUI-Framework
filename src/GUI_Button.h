@@ -39,6 +39,7 @@ protected:
 public:
     GUI_Button(BUTTON_STYLE style);
     GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str);
+    GUI_Button(PLATFORM_STRING button_str);
     GUI_Button(BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb = NULL, void *user_data = NULL);
     ~GUI_Button();
 
@@ -199,32 +200,48 @@ private:
     class Button_Links
     {
     private:
-        std::vector<GUI_Element *> linked_elements;
-        std::vector<linked_button_update_fun> linked_functions;
+        typedef struct linked_element_func
+        {
+            GUI_Element *element;
+            linked_button_update_fun linked_func;
+        } _linked_element_func;
+        std::vector<linked_element_func *> linked_elements;
 
     public:
         Button_Links() {}
-        ~Button_Links() {}
+        ~Button_Links()
+        {
+            for (linked_element_func *l : linked_elements)
+            {
+                free(l);
+            }
+
+            linked_elements.clear();
+        }
 
         void add_button_link(GUI_Element *element, linked_button_update_fun link_function)
         {
-            linked_elements.push_back(element);
-            linked_functions.push_back(link_function);
+            linked_element_func *l = (linked_element_func *)malloc(sizeof(linked_element_func));
+            l->element = element;
+            l->linked_func = link_function;
+
+            linked_elements.push_back(l);
         }
 
         void trigger_links(bool toggle_value)
         {
-            for (int x = 0; x < linked_elements.size(); x++)
+            for (linked_element_func *l : linked_elements)
             {
-                GUI_Element *old_element = linked_elements[x]->clone();
-                linked_functions[x](linked_elements[x], toggle_value);
-                if (*old_element == *linked_elements[x])
+                GUI_Element *old_element = l->element->clone();
+                l->linked_func(l->element, toggle_value);
+
+                if (*old_element == *l->element)
                 {
-                    linked_elements[x]->set_refresh(true, false);
+                    l->element->set_refresh(true, false);
                 }
                 else
                 {
-                    linked_elements[x]->set_refresh(true, true);
+                    l->element->set_refresh(true, true);
                 }
 
                 delete old_element;
