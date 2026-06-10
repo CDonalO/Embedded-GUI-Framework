@@ -1,8 +1,9 @@
 #pragma once
 
 #include "GUI_Element.h"
+#include "Form_Data.h"
 
-class GUI_Slider : public GUI_Element
+class GUI_Slider : public GUI_Element, public Form_Data_Number
 {
 private:
     int16_t default_val;

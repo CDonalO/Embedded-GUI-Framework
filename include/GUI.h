@@ -13,6 +13,8 @@
 #include "../src/GUI_Image.h"
 #include "../src/GUI_Slider.h"
 
+#include "../src/Form_Data_Register.h"
+
 #ifdef ADAFRUIT_DRIVER
 #include "../src/drivers/Adafruit_GFX/Adafruit_GFX_driver.h"
 #endif /* ADAFRUIT_DRIVER */

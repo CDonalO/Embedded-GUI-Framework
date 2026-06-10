@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-GUI_Slider::GUI_Slider(int16_t min_val, int16_t max_val, int16_t default_val) : GUI_Element(), min_val(min_val), max_val(max_val), default_val(default_val)
+GUI_Slider::GUI_Slider(int16_t min_val, int16_t max_val, int16_t default_val) : GUI_Element(), min_val(min_val), max_val(max_val), default_val(default_val), Form_Data_Number()
 {
     if (default_val < min_val || default_val > max_val)
     {
@@ -34,6 +34,7 @@ GUI_Slider::~GUI_Slider()
 void GUI_Slider::normalize_value()
 {
     norm_val = val - min_val;
+    Form_Data_Number::set_data(val);
 }
 
 void GUI_Slider::draw(display_driver *display)

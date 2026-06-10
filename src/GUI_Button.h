@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GUI_Label.h"
+#include "Form_Data.h"
 
 #include <vector>
 
@@ -194,7 +195,7 @@ static void deselect_on_toggle(GUI_Element *linked_element, bool toggle_value)
     }
 }
 
-class GUI_Toggle_Button : public GUI_Button
+class GUI_Toggle_Button : public GUI_Button, public Form_Data_Number
 {
 private:
     class Button_Links

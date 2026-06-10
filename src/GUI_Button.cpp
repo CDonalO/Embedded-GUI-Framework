@@ -329,7 +329,7 @@ void GUI_Button::set_button_border_radius(uint8_t border_radius)
     this->border_radius = border_radius;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, 10, click_cb, NULL)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, 10, click_cb, NULL), Form_Data_Number(default_value)
 {
     button_style = style;
     value = default_value;
@@ -484,6 +484,8 @@ void GUI_Toggle_Button::toggle()
 {
     value = !value;
     links.trigger_links(value);
+
+    Form_Data_Number::set_data(value);
     refresh = true;
 }
 

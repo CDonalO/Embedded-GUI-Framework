@@ -39,6 +39,9 @@ target_sources(EmbeddedGUIFramework
         src/GUI_Image.h
         src/GUI_Slider.cpp
         src/GUI_Slider.h
+        src/Form_Data.cpp
+        src/Form_Data.h
+        src/Form_Data_Register.h
         src/drivers/display_driver.h
         src/platform.h
     PUBLIC
