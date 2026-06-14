@@ -28,6 +28,7 @@ private:
     uint32_t min_row_height;
     uint16_t element_padding;
     uint16_t columns;
+    uint16_t rows;
     uint8_t attributes;
 
     std::vector<int32_t> row_heights;
@@ -38,10 +39,54 @@ private:
     uint16_t get_column_width(uint16_t col);
     uint16_t get_row_height(uint16_t row);
 
-    uint16_t get_rows();
+    class Grid_Element
+    {
+    private:
+        GUI_Element *element;
+        uint16_t column_span;
+        uint16_t row_span;
+        uint16_t curr_col;
+        uint16_t curr_row;
+
+    public:
+        Grid_Element(GUI_Element *element, uint16_t column_span, uint16_t row_span) : element(element), column_span(column_span), row_span(row_span)
+        {
+            curr_col = 0;
+            curr_row = 0;
+        };
+
+        ~Grid_Element()
+        {
+            if (element->get_ref_count() <= 1)
+            {
+                delete element;
+            }
+            else
+            {
+                element->decrease_ref();
+            }
+        };
+
+        GUI_Element *get_element() { return element; };
+        uint16_t get_row_span() { return row_span; };
+        uint16_t get_col_span() { return column_span; };
+        void set_row_span(uint16_t row_span) { this->row_span = row_span; };
+        void set_col_span(uint16_t column_span) { this->column_span = column_span; };
+
+        uint16_t get_current_row() { return curr_row; };
+        uint16_t get_current_col() { return curr_col; };
+        void set_current_row(uint16_t row) { curr_row = row; };
+        void set_current_col(uint16_t col) { curr_col = col; };
+    };
+
+    bool can_grid_element_fit(uint16_t col, uint16_t row, uint16_t col_span, uint16_t row_span);
+    Grid_Element *get_grid_element(uint16_t col, uint16_t row);
+    void set_grid_element_col_row(Grid_Element *g);
+    uint16_t get_col_x(uint16_t col);
+    uint16_t get_row_y(uint16_t row);
     void adjust_x_y();
 
-    std::vector<GUI_Element *> elements;
+    std::vector<Grid_Element *> elements;
 
 public:
     GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes = GRID_ATTRIBUTE_NONE, uint16_t columns = 1);
@@ -58,9 +103,11 @@ public:
     uint32_t get_element_min_width_px() override;
     uint32_t get_element_min_height_px() override;
 
+    void add_element(GUI_Element *element, uint16_t col_span, uint16_t row_span);
     void add_element(GUI_Element *element);
     void adjust_elements();
     void apply_colour_scheme();
+    uint16_t get_rows();
 
 protected:
     void deselect_elements();

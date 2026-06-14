@@ -11,22 +11,18 @@ GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_pad
     last_interactable_element_index = -1;
     min_col_width = 0;
     min_row_height = 0;
+    rows = 0;
     set_interactable(true);
 }
 
 GUI_Grid::~GUI_Grid()
 {
-    for (GUI_Element *e : elements)
+    for (Grid_Element *e : elements)
     {
-        if (e->get_ref_count() <= 1)
-        {
-            delete e;
-        }
-        else
-        {
-            e->decrease_ref();
-        }
+        delete e;
     }
+
+    elements.clear();
 }
 
 /**
@@ -41,8 +37,9 @@ void GUI_Grid::draw(display_driver *display)
         set_font_size(parent->get_font_size());
     }
 
-    for (GUI_Element *e : elements)
+    for (Grid_Element *g : elements)
     {
+        GUI_Element *e = g->get_element();
         if (!e->is_font_size_set() && is_font_size_set())
         {
             e->set_font_size(get_font_size());
@@ -62,8 +59,9 @@ void GUI_Grid::draw(display_driver *display)
 
 void GUI_Grid::navigate(int16_t x_pos, int16_t y_pos)
 {
-    for (GUI_Element *e : elements)
+    for (Grid_Element *g : elements)
     {
+        GUI_Element *e = g->get_element();
         if (e->within_bounds(x_pos, y_pos))
         {
             e->navigate(x_pos, y_pos);
@@ -79,28 +77,28 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
     {
         if (selected_element != -1)
         {
-            elements[selected_element]->navigate(input, key);
+            elements[selected_element]->get_element()->navigate(input, key);
         }
         return;
     }
 
     int16_t new_selected_element = -1;
-    if (selected_element != -1 && elements[selected_element]->is_interactable())
+    if (selected_element != -1 && elements[selected_element]->get_element()->is_interactable())
     {
-        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
             if (grid_element->first_interactable_element_index != -1)
             {
                 if (input == INPUT_UP && !grid_element->start_of_interactable_elements())
                 {
-                    elements[selected_element]->navigate(input, key);
+                    elements[selected_element]->get_element()->navigate(input, key);
                     in_grid = false;
                 }
                 else if (input == INPUT_DOWN && !grid_element->end_of_interactable_elements())
                 {
-                    elements[selected_element]->navigate(input, key);
+                    elements[selected_element]->get_element()->navigate(input, key);
                     in_grid = false;
                 }
             }
@@ -113,7 +111,7 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
         {
             if (elements.size() > 1)
             {
-                elements[selected_element]->deselect();
+                elements[selected_element]->get_element()->deselect();
             }
         }
     }
@@ -134,15 +132,15 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
     {
         selected_element = new_selected_element;
 
-        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
             if (input == INPUT_UP)
             {
                 if (grid_element->selected_element != grid_element->last_interactable_element_index)
                 {
-                    elements[selected_element]->navigate(input, key);
+                    elements[selected_element]->get_element()->navigate(input, key);
                 }
                 else
                 {
@@ -153,7 +151,7 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
             {
                 if (grid_element->selected_element != grid_element->first_interactable_element_index)
                 {
-                    elements[selected_element]->navigate(input, key);
+                    elements[selected_element]->get_element()->navigate(input, key);
                 }
                 else
                 {
@@ -163,7 +161,7 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
         }
         else
         {
-            elements[selected_element]->select();
+            elements[selected_element]->get_element()->select();
         }
     }
 }
@@ -186,9 +184,9 @@ void GUI_Grid::set_refresh(bool r, bool p)
 
     if (!p)
     {
-        for (GUI_Element *e : elements)
+        for (Grid_Element *e : elements)
         {
-            e->set_refresh(r, false);
+            e->get_element()->set_refresh(r, false);
         }
     }
 }
@@ -224,12 +222,18 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
 
     if (elements.size() == 1)
     {
-        min_col_width = elements[0]->get_element_min_width_px();
-        if (elements[0]->get_max_width_px() != 0)
+        min_col_width = elements[0]->get_element()->get_element_min_width_px();
+
+        if (elements[0]->get_element()->get_max_width_px() != 0)
         {
-            return elements[0]->get_max_width_px();
+            col_widths.push_back(elements[0]->get_element()->get_max_width_px());
         }
-        return col_width;
+        else
+        {
+            col_widths.push_back(col_width);
+        }
+
+        return col_widths[0];
     }
 
     if (col < col_widths.size())
@@ -239,8 +243,6 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
 
     col_width -= (columns - 1) * element_padding;
     uint16_t standard_col_width = col_width / columns;
-    uint16_t rows = get_rows();
-    uint16_t ret_col_width = standard_col_width;
     uint16_t auto_sizeable_cols = columns;
 
     for (uint16_t x = 0; x < columns; x++)
@@ -256,11 +258,11 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
 
         for (uint16_t y = 0; y < rows; y++)
         {
-            uint16_t element_index = y * columns + x;
+            Grid_Element *g = get_grid_element(x, y);
 
-            if (element_index < elements.size())
+            if (g != NULL)
             {
-                e = elements[element_index];
+                e = g->get_element();
 
                 if (hidden_col && !e->is_hidden())
                 {
@@ -270,7 +272,7 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
                 if (!e->get_width_auto_sizeable())
                 {
                     uniform_col = false;
-                    max_col_width = min(max_col_width, e->get_total_width());
+                    max_col_width = min(max_col_width, (e->get_total_width() / g->get_col_span()));
                 }
                 else if (e->get_max_width_px() != 0 && max_col_width > e->get_max_width_px())
                 {
@@ -320,17 +322,22 @@ uint16_t GUI_Grid::get_column_width(uint16_t col)
 uint16_t GUI_Grid::get_row_height(uint16_t row)
 {
     GUI_Element *e = NULL;
-    uint16_t rows = get_rows();
     uint16_t row_height = get_height() - get_top_padding() - get_bottom_padding();
 
     if (elements.size() == 1)
     {
-        min_row_height = elements[0]->get_element_min_height_px();
-        if (elements[0]->get_max_height_px() != 0)
+        min_row_height = elements[0]->get_element()->get_element_min_height_px();
+
+        if (elements[0]->get_element()->get_max_height_px() != 0)
         {
-            return elements[0]->get_max_height_px();
+            row_heights.push_back(elements[0]->get_element()->get_max_height_px());
         }
-        return row_height;
+        else
+        {
+            row_heights.push_back(row_height);
+        }
+
+        return row_heights[0];
     }
 
     if (row < row_heights.size())
@@ -340,7 +347,6 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
 
     row_height -= (rows - 1) * element_padding;
     uint16_t standard_row_height = row_height / rows;
-    uint16_t ret_row_height = standard_row_height;
     uint16_t auto_sizeable_rows = rows;
 
     for (uint16_t x = 0; x < rows; x++)
@@ -356,10 +362,11 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
 
         for (uint16_t y = 0; y < columns; y++)
         {
-            uint16_t element_index = (x * columns) + y;
-            if (element_index < elements.size())
+            Grid_Element *g = get_grid_element(y, x);
+
+            if (g != NULL)
             {
-                e = elements[element_index];
+                e = g->get_element();
 
                 if (hidden_row && !e->is_hidden())
                 {
@@ -369,7 +376,7 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
                 if (!e->get_height_auto_sizeable())
                 {
                     uniform_row = false;
-                    max_row_height = min(max_row_height, e->get_total_height());
+                    max_row_height = min(max_row_height, (e->get_total_height() / g->get_row_span()));
                 }
                 else if (e->get_max_height_px() != 0 && max_row_height > e->get_max_height_px())
                 {
@@ -416,90 +423,129 @@ uint16_t GUI_Grid::get_row_height(uint16_t row)
     return row_heights[row];
 }
 
-uint16_t GUI_Grid::get_rows()
+bool GUI_Grid::can_grid_element_fit(uint16_t col, uint16_t row, uint16_t col_span, uint16_t row_span)
 {
-    if (elements.size() == 0 || !(attributes & GRID_ATTRIBUTE_FLEX))
+    if (col >= columns || col + col_span > columns)
     {
-        return 1;
+        return false;
     }
 
-    double r = elements.size();
-    r /= columns;
+    for (Grid_Element *g : elements)
+    {
+        uint16_t g_col = g->get_current_col();
+        uint16_t g_row = g->get_current_row();
 
-    return (uint16_t)ceil(r);
+        if (col >= g_col && col < (g_col + g->get_col_span()))
+        {
+            if (row >= g_row && row < (g_row + g->get_row_span()))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+GUI_Grid::Grid_Element *GUI_Grid::get_grid_element(uint16_t col, uint16_t row)
+{
+    for (Grid_Element *g : elements)
+    {
+        uint16_t current_col = g->get_current_col();
+        uint16_t current_row = g->get_current_row();
+
+        if ((col >= current_col && col < (current_col + g->get_col_span())) && (row >= current_row && row < (current_row + g->get_row_span())))
+        {
+            return g;
+        }
+    }
+
+    return NULL;
+}
+
+void GUI_Grid::set_grid_element_col_row(Grid_Element *g)
+{
+    if (elements.size() == 0)
+    {
+        g->set_current_col(0);
+        g->set_current_row(0);
+        rows++;
+        return;
+    }
+
+    Grid_Element *prev_element = elements[elements.size() - 1];
+
+    uint16_t current_col = prev_element->get_current_col() + prev_element->get_col_span();
+    uint16_t current_row = prev_element->get_current_row();
+
+    while (!can_grid_element_fit(current_col, current_row, g->get_col_span(), g->get_row_span()))
+    {
+        current_col++;
+
+        if (current_col >= columns)
+        {
+            current_col = 0;
+            current_row++;
+        }
+    }
+
+    g->set_current_col(current_col);
+    g->set_current_row(current_row);
+
+    if (rows < g->get_current_row() + g->get_row_span())
+    {
+        rows = g->get_current_row() + g->get_row_span();
+    }
+}
+
+uint16_t GUI_Grid::get_col_x(uint16_t col)
+{
+    uint16_t col_x = get_left_padding();
+
+    for (uint16_t x = 0; x < col; x++)
+    {
+        col_x += col_widths[x] + element_padding;
+    }
+
+    return col_x;
+}
+
+uint16_t GUI_Grid::get_row_y(uint16_t row)
+{
+    uint16_t row_x = get_top_padding();
+
+    for (uint16_t x = 0; x < row; x++)
+    {
+        row_x += row_heights[x] + element_padding;
+    }
+
+    return row_x;
 }
 
 void GUI_Grid::adjust_x_y()
 {
-    uint16_t new_y = get_top_padding();
-    uint16_t new_x = get_left_padding();
-    uint16_t prev_col = 0;
-    uint16_t prev_row = 0;
+    uint16_t new_y = 0;
+    uint16_t new_x = 0;
 
     if (grid_type == GRID_TYPE_NONE && columns == 1)
     {
         return;
     }
 
-    uint16_t rows = get_rows();
-
-    for (uint16_t x = 0; x < columns; x++)
+    if (col_widths.size() != columns || row_heights.size() != rows)
     {
-        if (x >= col_widths.size())
-        {
-            continue;
-        }
+        return;
+    }
 
-        if (x > 0)
-        {
-            if (col_widths[x - 1] != 0)
-            {
-                new_x += col_widths[x - 1] + element_padding;
-            }
-        }
+    for (Grid_Element *g : elements)
+    {
+        GUI_Element *e = g->get_element();
 
-        new_y = get_top_padding();
+        new_x = get_col_x(g->get_current_col());
+        new_y = get_row_y(g->get_current_row());
 
-        for (uint16_t y = 0; y < rows; y++)
-        {
-            uint16_t element_index = (y * columns) + x;
-
-            if (element_index >= elements.size())
-            {
-                continue;
-            }
-
-            if (y > 0)
-            {
-                if (row_heights[y - 1] != 0)
-                {
-                    new_y += row_heights[y - 1] + element_padding;
-                }
-            }
-
-            if (columns == 1)
-            {
-                new_x = get_left_padding();
-            }
-
-            if (rows == 1)
-            {
-                new_y = get_top_padding();
-            }
-
-            if (columns == 1 && elements[element_index]->get_width() != col_widths[x] && elements[element_index]->get_element_alignment() & ALIGN_CENTER_HORIZONTAL)
-            {
-                new_x += (get_width() / 2) - (elements[element_index]->get_width() / 2);
-            }
-
-            if (rows == 1 && elements[element_index]->get_height() != row_heights[y] && elements[element_index]->get_element_alignment() & ALIGN_CENTER_VERTICAL)
-            {
-                new_y += (get_height() / 2) - (elements[element_index]->get_height() / 2);
-            }
-
-            elements[element_index]->set_y(new_y + elements[element_index]->get_top_padding());
-            elements[element_index]->set_x(new_x + elements[element_index]->get_left_padding());
-        }
+        e->set_x(new_x);
+        e->set_y(new_y);
     }
 }
 
@@ -507,7 +553,6 @@ void GUI_Grid::resize_elements()
 {
     uint16_t new_width;
     uint16_t new_height;
-    uint16_t rows = get_rows();
 
     if (!(attributes & GRID_ATTRIBUTE_FLEX))
     {
@@ -527,46 +572,110 @@ void GUI_Grid::resize_elements()
         min_row_heights.push_back(0);
     }
 
-    for (uint16_t x = 0; x < elements.size(); x++)
+    for (Grid_Element *g : elements)
     {
-        uint8_t current_col = x % columns;
-        uint8_t current_row = x / columns;
+        GUI_Element *e = g->get_element();
+
+        uint16_t current_col = g->get_current_col();
+        uint16_t current_row = g->get_current_row();
 
         new_width = get_column_width(current_col);
         new_height = get_row_height(current_row);
 
-        if (columns == 1 && elements[x]->get_max_width_px() != 0 && new_width > elements[x]->get_max_width_px())
+        for (uint16_t x = 1; x < g->get_col_span(); x++)
         {
-            new_width = elements[x]->get_max_width_px() - elements[x]->get_left_padding() - elements[x]->get_right_padding();
+            new_width += get_column_width(current_col + x) + element_padding;
         }
 
-        if (rows == 1 && elements[x]->get_max_height_px() != 0 && new_height > elements[x]->get_max_height_px())
+        for (uint16_t x = 1; x < g->get_row_span(); x++)
         {
-            new_height = elements[x]->get_max_height_px() - elements[x]->get_top_padding() - elements[x]->get_bottom_padding();
+            new_height += get_row_height(current_row + x) + element_padding;
         }
 
-        if (elements[x]->get_width_auto_sizeable())
+        e = g->get_element();
+
+        if (columns == 1 && e->get_max_width_px() != 0 && new_width > e->get_max_width_px())
         {
-            elements[x]->set_width(new_width - elements[x]->get_left_padding() - elements[x]->get_right_padding());
+            new_width = e->get_max_width_px() - e->get_left_padding() - e->get_right_padding();
         }
 
-        if (elements[x]->get_height_auto_sizeable())
+        if (rows == 1 && e->get_max_height_px() != 0 && new_height > e->get_max_height_px())
         {
-            elements[x]->set_height(new_height - elements[x]->get_top_padding() - elements[x]->get_bottom_padding());
+            new_height = e->get_max_height_px() - e->get_top_padding() - e->get_bottom_padding();
         }
 
-        if (elements[x]->get_type() == GUI_Element::Element_Type::GRID)
+        if (e->get_width_auto_sizeable())
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[x]);
+            new_width -= e->get_left_padding();
+            new_width -= e->get_right_padding();
+            if (new_width < e->get_element_min_width_px())
+            {
+                new_width = e->get_element_min_width_px();
+            }
+        }
+        else
+        {
+            new_width = e->get_width();
+            new_width -= e->get_left_padding();
+            new_width -= e->get_right_padding();
+
+            if (new_width < e->get_element_min_width_px())
+            {
+                new_width = e->get_element_min_width_px();
+            }
+        }
+
+        e->set_width(new_width);
+
+        if (e->get_height_auto_sizeable())
+        {
+            new_height -= e->get_top_padding();
+            new_height -= e->get_bottom_padding();
+
+            if (new_height < e->get_element_min_height_px())
+            {
+                new_height = e->get_element_min_height_px();
+            }
+        }
+        else
+        {
+            new_height = e->get_height();
+            new_height -= e->get_top_padding();
+            new_height -= e->get_bottom_padding();
+
+            if (new_height < e->get_element_min_height_px())
+            {
+                new_height = e->get_element_min_height_px();
+            }
+        }
+
+        e->set_height(new_height);
+
+        if (e->get_type() == GUI_Element::Element_Type::GRID)
+        {
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
 
             grid_element->adjust_elements();
         }
 
-        min_col_widths[current_col] = max(min_col_widths[current_col], elements[x]->get_element_min_width_px());
-        min_row_heights[current_row] = max(min_row_heights[current_row], elements[x]->get_element_min_height_px());
+        for (uint16_t x = current_col; x < current_col + g->get_col_span(); x++)
+        {
+            if (x < min_col_widths.size())
+            {
+                min_col_widths[x] = max(min_col_widths[x], e->get_element_min_width_px());
+            }
+        }
+
+        for (uint16_t x = current_row; x < current_row + g->get_row_span(); x++)
+        {
+            if (x < min_row_heights.size())
+            {
+                min_row_heights[x] = max(min_row_heights[x], e->get_element_min_height_px());
+            }
+        }
 
 #ifdef VERBOSE_ELEMENT_DEBUG
-        PLATFORM_PRINTF("[%d] Setting new width %d, new height %d\n", x, elements[x]->get_width(), elements[x]->get_height());
+        PLATFORM_PRINTF("[%d] Setting new width %d, new height %d\n", x, e->get_width(), e->get_height());
 #endif /* VERBOSE_ELEMENT_DEBUG */
     }
 
@@ -614,8 +723,10 @@ void GUI_Grid::apply_colour_scheme()
 {
     if (is_colour_scheme_set())
     {
-        for (GUI_Element *e : elements)
+        for (Grid_Element *g : elements)
         {
+            GUI_Element *e = g->get_element();
+
             if (e->get_type() == GUI_Element::Element_Type::GRID)
             {
                 GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
@@ -633,16 +744,28 @@ void GUI_Grid::apply_colour_scheme()
 }
 
 /**
- * @brief Add element to grid
+ * @brief Get rows in grid
  *
- * @param element Element to add to grid
+ * @return Rows in grid
  */
-void GUI_Grid::add_element(GUI_Element *element)
+uint16_t GUI_Grid::get_rows()
 {
+    return rows;
+}
+
+void GUI_Grid::add_element(GUI_Element *element, uint16_t col_span, uint16_t row_span)
+{
+    if (col_span > columns)
+    {
+        col_span = columns;
+    }
+
     if (element->get_type() == GUI_Element::Element_Type::MENU)
     {
         return;
     }
+
+    Grid_Element *grid_e = new Grid_Element(element, col_span, row_span);
 
     if (is_colour_scheme_set() && !element->is_colour_scheme_set())
     {
@@ -688,11 +811,24 @@ void GUI_Grid::add_element(GUI_Element *element)
 
     element->parent = this;
     element->increase_ref();
-    elements.push_back(element);
+
+    set_grid_element_col_row(grid_e);
+
+    elements.push_back(grid_e);
 
     adjust_elements();
 
     refresh = true;
+}
+
+/**
+ * @brief Add element to grid
+ *
+ * @param element Element to add to grid
+ */
+void GUI_Grid::add_element(GUI_Element *element)
+{
+    add_element(element, 1, 1);
 }
 
 /**
@@ -701,8 +837,10 @@ void GUI_Grid::add_element(GUI_Element *element)
  */
 void GUI_Grid::deselect_elements()
 {
-    for (GUI_Element *e : elements)
+    for (Grid_Element *g : elements)
     {
+        GUI_Element *e = g->get_element();
+
         if (e->get_type() == GUI_Element::Element_Type::GRID)
         {
             GUI_Grid *grid_element = static_cast<GUI_Grid *>(e);
@@ -727,15 +865,15 @@ void GUI_Grid::select_elements()
         return;
     }
 
-    if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+    if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
     {
-        GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+        GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
         grid_element->select_elements();
     }
     else
     {
-        elements[selected_element]->select();
+        elements[selected_element]->get_element()->select();
     }
 }
 
@@ -753,9 +891,9 @@ bool GUI_Grid::end_of_interactable_elements()
 
     if (selected_element == last_interactable_element_index)
     {
-        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
             return grid_element->end_of_interactable_elements();
         }
@@ -782,9 +920,9 @@ bool GUI_Grid::start_of_interactable_elements()
 
     if (selected_element == first_interactable_element_index)
     {
-        if (elements[selected_element]->get_type() == GUI_Element::Element_Type::GRID)
+        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
         {
-            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]);
+            GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
             return grid_element->start_of_interactable_elements();
         }
@@ -813,7 +951,7 @@ int16_t GUI_Grid::get_next_interactable_element()
 
     while (count > 0)
     {
-        e = elements[val];
+        e = elements[val]->get_element();
 
         if (e->is_interactable() && !e->is_hidden())
         {
@@ -865,7 +1003,7 @@ int16_t GUI_Grid::get_prev_interactable_element()
 
     while (count > 0)
     {
-        e = elements[val];
+        e = elements[val]->get_element();
 
         if (e->is_interactable() && !e->is_hidden())
         {
