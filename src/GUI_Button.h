@@ -214,6 +214,15 @@ private:
         {
             for (linked_element_func *l : linked_elements)
             {
+                if (l->element->get_ref_count() <= 1)
+                {
+                    delete l->element;
+                }
+                else
+                {
+                    l->element->decrease_ref();
+                }
+
                 free(l);
             }
 
@@ -225,6 +234,7 @@ private:
             linked_element_func *l = (linked_element_func *)malloc(sizeof(linked_element_func));
             l->element = element;
             l->linked_func = link_function;
+            element->increase_ref();
 
             linked_elements.push_back(l);
         }
@@ -259,6 +269,7 @@ private:
 
 public:
     GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb = NULL, bool default_value = false);
+    ~GUI_Toggle_Button() {};
 
     void draw(display_driver *display) override;
     void navigate(int16_t x_pos, int16_t y_pos) override;
