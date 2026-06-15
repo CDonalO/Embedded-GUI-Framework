@@ -1,4 +1,5 @@
 #include "GUI_Button.h"
+#include "Form_Data_Register.h"
 
 GUI_Button::GUI_Button(BUTTON_STYLE style) : GUI_Element()
 {
@@ -511,4 +512,45 @@ void GUI_Toggle_Button::set_toggled_colours(RGB toggled_colour, RGB non_toggled_
     this->toggled_colour = toggled_colour;
     this->non_toggled_colour = non_toggled_colour;
     this->toggle_element_colour = toggle_element_colour;
+}
+
+GUI_Radio_Button::GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group) : GUI_Toggle_Button(TOGGLE_BUTTON_NO_STYLE, button_str), group(group)
+{
+    Form_Data_Register::register_radio_button(group, this);
+}
+
+void GUI_Radio_Button::draw(display_driver *display)
+{
+    GUI_Toggle_Button::draw(display);
+}
+
+void GUI_Radio_Button::navigate(int16_t x_pos, int16_t y_pos)
+{
+    if (is_disabled())
+        return;
+
+    if (!GUI_Toggle_Button::get_toggled())
+    {
+        std::set<GUI_Radio_Button *> *radio_buttons = Form_Data_Register::get_radio_buttons(group);
+
+        if (radio_buttons != NULL)
+        {
+            for (GUI_Radio_Button *r : *radio_buttons)
+            {
+                if (r->get_toggled())
+                {
+                    r->toggle();
+                }
+            }
+        }
+        toggle();
+    }
+}
+
+void GUI_Radio_Button::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
+{
+    if (input != INPUT_KEYBOARD && key != KEYBOARD_ENTER)
+        return;
+
+    navigate(0, 0);
 }

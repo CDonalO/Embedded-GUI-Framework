@@ -285,3 +285,17 @@ public:
     bool get_toggled();
     void set_toggled_colours(RGB toggled_colour, RGB non_toggled_colour, RGB toggle_element_colour);
 };
+
+class GUI_Radio_Button : public GUI_Toggle_Button
+{
+private:
+    PLATFORM_STRING group;
+
+public:
+    GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group);
+    ~GUI_Radio_Button() {};
+
+    void draw(display_driver *display) override;
+    void navigate(int16_t x_pos, int16_t y_pos) override;
+    void navigate(INPUT_TYPE input, KEYBOARD_KEY key) override;
+};
