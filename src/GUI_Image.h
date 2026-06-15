@@ -10,6 +10,7 @@ private:
     PLATFORM_STRING file_path;
 
 public:
+    GUI_Image(PLATFORM_STRING file_path, uint16_t width, uint16_t height);
     GUI_Image(PLATFORM_STRING file_path);
     ~GUI_Image();
 

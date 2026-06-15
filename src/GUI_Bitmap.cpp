@@ -1,8 +1,8 @@
 #include "GUI_Bitmap.h"
 
-GUI_Bitmap::GUI_Bitmap(uint8_t *bitmap) : GUI_Element(), bitmap_data(bitmap), bitmap_type(BITMAP_ALPHA_MAP) {}
+GUI_Bitmap::GUI_Bitmap(uint8_t *bitmap, uint16_t width, uint16_t height) : GUI_Element(width, height), bitmap_data(bitmap), bitmap_type(BITMAP_ALPHA_MAP) {}
 
-GUI_Bitmap::GUI_Bitmap(uint16_t *bitmap) : GUI_Element(), bitmap_data(bitmap), bitmap_type(BITMAP_RGB565) {}
+GUI_Bitmap::GUI_Bitmap(uint16_t *bitmap, uint16_t width, uint16_t height) : GUI_Element(width, height), bitmap_data(bitmap), bitmap_type(BITMAP_RGB565) {}
 
 GUI_Bitmap::~GUI_Bitmap() {}
 

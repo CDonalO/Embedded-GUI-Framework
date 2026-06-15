@@ -50,8 +50,9 @@ protected:
     bool refresh;
 
 public:
-    GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width);
+    GUI_Element(int16_t x, int16_t y, uint16_t width, uint16_t height);
     GUI_Element(int16_t x, int16_t y);
+    GUI_Element(uint16_t width, uint16_t height);
     GUI_Element();
     GUI_Element *parent;
 

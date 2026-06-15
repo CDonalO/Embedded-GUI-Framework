@@ -1,6 +1,6 @@
 #include "GUI_Element.h"
 
-GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) : x(x), y(y), height(height), width(width)
+GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t width, uint16_t height) : x(x), y(y), width(width), height(height)
 {
     hidden = false;
     selected = false;
@@ -40,7 +40,9 @@ GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t height, uint16_t width) 
 
 GUI_Element::GUI_Element(int16_t x, int16_t y) : GUI_Element(x, y, 0, 0) {}
 
-GUI_Element::GUI_Element() : GUI_Element(0, 0) {}
+GUI_Element::GUI_Element(uint16_t width, uint16_t height) : GUI_Element(0, 0, width, height) {}
+
+GUI_Element::GUI_Element() : GUI_Element(0, 0, 0, 0) {}
 
 // Compare visible element properties
 bool GUI_Element::operator==(const GUI_Element &element) const

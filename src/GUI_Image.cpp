@@ -2,13 +2,11 @@
 
 #ifdef GUI_IMAGE_SUPPORT
 
-GUI_Image::GUI_Image(PLATFORM_STRING file_path) : GUI_Element(), file_path(file_path)
-{
-}
+GUI_Image::GUI_Image(PLATFORM_STRING file_path, uint16_t width, uint16_t height) : GUI_Element(width, height), file_path(file_path) {}
 
-GUI_Image::~GUI_Image()
-{
-}
+GUI_Image::GUI_Image(PLATFORM_STRING file_path) : GUI_Image(file_path, 0, 0) {}
+
+GUI_Image::~GUI_Image() {}
 
 /**
  * @brief Draw image
