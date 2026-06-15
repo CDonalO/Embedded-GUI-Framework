@@ -85,7 +85,7 @@ void GUI_Grid::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
     int16_t new_selected_element = -1;
     if (selected_element != -1 && elements[selected_element]->get_element()->is_interactable())
     {
-        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID)
+        if (elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::GRID || elements[selected_element]->get_element()->get_type() == GUI_Element::Element_Type::DATE_PICKER)
         {
             GUI_Grid *grid_element = static_cast<GUI_Grid *>(elements[selected_element]->get_element());
 
@@ -504,7 +504,10 @@ uint16_t GUI_Grid::get_col_x(uint16_t col)
 
     for (uint16_t x = 0; x < col; x++)
     {
-        col_x += col_widths[x] + element_padding;
+        if (col_widths[x] != 0)
+        {
+            col_x += col_widths[x] + element_padding;
+        }
     }
 
     return col_x;
@@ -516,7 +519,10 @@ uint16_t GUI_Grid::get_row_y(uint16_t row)
 
     for (uint16_t x = 0; x < row; x++)
     {
-        row_x += row_heights[x] + element_padding;
+        if (row_heights[x] != 0)
+        {
+            row_x += row_heights[x] + element_padding;
+        }
     }
 
     return row_x;
@@ -751,6 +757,28 @@ void GUI_Grid::apply_colour_scheme()
 uint16_t GUI_Grid::get_rows()
 {
     return rows;
+}
+
+/**
+ * @brief Clear elements in grid
+ */
+void GUI_Grid::clear()
+{
+    for (Grid_Element *e : elements)
+    {
+        delete e;
+    }
+
+    elements.clear();
+
+    elements.shrink_to_fit();
+
+    selected_element = -1;
+    first_interactable_element_index = -1;
+    last_interactable_element_index = -1;
+    min_col_width = 0;
+    min_row_height = 0;
+    rows = 0;
 }
 
 void GUI_Grid::add_element(GUI_Element *element, uint16_t col_span, uint16_t row_span)

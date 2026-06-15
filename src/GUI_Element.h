@@ -67,6 +67,7 @@ public:
         BITMAP,
         IMAGE,
         SLIDER,
+        DATE_PICKER,
     };
 
     virtual ~GUI_Element() = default;

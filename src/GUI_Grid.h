@@ -108,6 +108,7 @@ public:
     void adjust_elements();
     void apply_colour_scheme();
     uint16_t get_rows();
+    void clear();
 
 protected:
     void deselect_elements();

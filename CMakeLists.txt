@@ -9,6 +9,7 @@ option(EGUI_VISUAL_DEBUG  "Enable visual element debug"   OFF)
 option(EGUI_VERBOSE_DEBUG "Enable verbose element debug"  OFF)
 
 set(GUI_IMAGE_SUPPORT FALSE)
+set(GUI_DATE_PICKER_SUPPORT FALSE)
 
 # C++ Standards
 set(CMAKE_CXX_STANDARD 20)
@@ -39,6 +40,8 @@ target_sources(EmbeddedGUIFramework
         src/GUI_Image.h
         src/GUI_Slider.cpp
         src/GUI_Slider.h
+        src/GUI_Datepicker.cpp
+        src/GUI_Datepicker.h
         src/Form_Data.cpp
         src/Form_Data.h
         src/Form_Data_Register.h
@@ -83,6 +86,7 @@ if(TARGET Adafruit-GFX-Library::Adafruit-GFX-Library)
 
 elseif(TARGET SDL3::SDL3)
     message(STATUS "EmbeddedGUI: using SDL3 driver")
+    set(GUI_DATE_PICKER_SUPPORT TRUE)
 
     # SDL3_image
     if(NOT TARGET SDL3_image::SDL3_image)
@@ -130,4 +134,8 @@ endif()
 
 if (GUI_IMAGE_SUPPORT)
     target_compile_definitions(EmbeddedGUIFramework PUBLIC GUI_IMAGE_SUPPORT=1)
+endif()
+
+if (GUI_DATE_PICKER_SUPPORT)
+    target_compile_definitions(EmbeddedGUIFramework PUBLIC GUI_DATE_PICKER_SUPPORT=1)
 endif()

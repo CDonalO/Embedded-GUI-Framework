@@ -12,6 +12,7 @@
 #include "../src/GUI_Bitmap.h"
 #include "../src/GUI_Image.h"
 #include "../src/GUI_Slider.h"
+#include "../src/GUI_Datepicker.h"
 
 #include "../src/Form_Data_Register.h"
 
