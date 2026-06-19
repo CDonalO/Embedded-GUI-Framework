@@ -28,10 +28,10 @@ public:
     virtual int16_t get_display_width() = 0;
     virtual int16_t get_display_height() = 0;
 
-    virtual uint16_t center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint8_t font_size) = 0;
-    virtual uint16_t center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint8_t font_size) = 0;
+    virtual uint16_t center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint16_t font_size) = 0;
+    virtual uint16_t center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint16_t font_size) = 0;
 
-    virtual void draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t size, RGB colour) = 0;
+    virtual void draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint16_t size, RGB colour) = 0;
     virtual void draw_line(int16_t x1, int16_t y1, int16_t x2, int16_t y2, RGB colour) = 0;
     virtual void draw_filled_circle(int16_t x, int16_t y, int16_t r, RGB colour) = 0;
     virtual void draw_filled_round_rect(int16_t x, int16_t y, int16_t width, int16_t height, int16_t border_radius, RGB colour) = 0;

@@ -37,7 +37,7 @@ private:
     bool font_colour_set;
     RGB active_font_colour;
     bool active_font_colour_set;
-    uint8_t font_size;
+    uint16_t font_size;
     bool font_size_set;
     bool hidden;
     bool selected;
@@ -113,7 +113,7 @@ public:
     RGB get_active_trim_colour();
     RGB get_font_colour();
     RGB get_active_font_colour();
-    uint8_t get_font_size();
+    uint16_t get_font_size();
     void set_x(int16_t x);
     void set_y(int16_t y);
     void set_x_offset(uint16_t offset);
@@ -144,7 +144,7 @@ public:
     void set_font_colour(RGB font_colour);
     void set_active_font_colour(RGB active_font_colour);
     void set_font_colours(RGB _font_colour, RGB _active_font_colour);
-    void set_font_size(uint8_t font_size);
+    void set_font_size(uint16_t font_size);
     void select();
     void deselect();
     void hide();

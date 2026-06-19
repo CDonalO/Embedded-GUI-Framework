@@ -34,7 +34,7 @@ void Adafruit_GFX_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width,
     display->getTextBounds(text.c_str(), 0, 0, &temp, &temp, width, height);
 }
 
-uint16_t Adafruit_GFX_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint8_t font_size)
+uint16_t Adafruit_GFX_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint16_t font_size)
 {
     uint16_t text_w, text_h;
 
@@ -50,7 +50,7 @@ uint16_t Adafruit_GFX_driver::center_text_vertical(PLATFORM_STRING str, uint16_t
     return container_y + (container_h / 2) + (text_h / 2);
 }
 
-uint16_t Adafruit_GFX_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint8_t font_size)
+uint16_t Adafruit_GFX_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint16_t font_size)
 {
     uint16_t text_w, text_h;
 
@@ -76,7 +76,7 @@ int16_t Adafruit_GFX_driver::get_display_height()
     return display->height();
 }
 
-void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t size, RGB colour)
+void Adafruit_GFX_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint16_t size, RGB colour)
 {
     if (text.length() == 0)
     {

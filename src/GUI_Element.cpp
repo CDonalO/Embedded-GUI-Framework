@@ -380,7 +380,7 @@ RGB GUI_Element::get_active_font_colour()
  *
  * @return Font size of element
  */
-uint8_t GUI_Element::get_font_size()
+uint16_t GUI_Element::get_font_size()
 {
     return font_size;
 }
@@ -754,7 +754,7 @@ void GUI_Element::set_font_colours(RGB _font_colour, RGB _active_font_colour)
  *
  * @param font_size Size of font.
  */
-void GUI_Element::set_font_size(uint8_t font_size)
+void GUI_Element::set_font_size(uint16_t font_size)
 {
     font_size_set = true;
     this->font_size = font_size;

@@ -102,36 +102,34 @@ void SDL3_driver::get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_
     *height = (uint16_t)h;
 }
 
-uint16_t SDL3_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint8_t font_size)
+uint16_t SDL3_driver::center_text_vertical(PLATFORM_STRING str, uint16_t container_h, uint16_t container_y, uint16_t font_size)
 {
     uint16_t text_w = 0;
     uint16_t text_h = 0;
-    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
     if (str.length() == 0)
     {
         return 0;
     }
 
-    TTF_SetFontSize(font, font_size * 8 * scale);
+    TTF_SetFontSize(font, font_size);
 
     get_text_bounds(str, &text_w, &text_h);
 
     return container_y + (container_h / 2) - (text_h / 2);
 }
 
-uint16_t SDL3_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint8_t font_size)
+uint16_t SDL3_driver::center_text_horizontal(PLATFORM_STRING str, uint16_t container_w, uint16_t container_x, uint16_t font_size)
 {
     uint16_t text_w = 0;
     uint16_t text_h = 0;
-    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
     if (str.length() == 0)
     {
         return 0;
     }
 
-    TTF_SetFontSize(font, font_size * 8 * scale);
+    TTF_SetFontSize(font, font_size);
 
     get_text_bounds(str, &text_w, &text_h);
 
@@ -148,7 +146,7 @@ int16_t SDL3_driver::get_display_height()
     return height;
 }
 
-void SDL3_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t size, RGB colour)
+void SDL3_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint16_t size, RGB colour)
 {
     if (text.length() == 0)
     {
@@ -160,9 +158,8 @@ void SDL3_driver::draw_text(int16_t x, int16_t y, PLATFORM_STRING text, uint8_t 
     uint16_t text_width, text_height;
 
     SDL_Color text_colour = get_colour(colour);
-    float scale = SDL_GetDisplayContentScale(SDL_GetPrimaryDisplay());
 
-    TTF_SetFontSize(font, size * 8 * scale);
+    TTF_SetFontSize(font, size);
 
     get_text_bounds(text, &text_width, &text_height);
 
