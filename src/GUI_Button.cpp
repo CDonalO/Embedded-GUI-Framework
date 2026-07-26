@@ -42,17 +42,16 @@ GUI_Button::~GUI_Button() {}
  */
 void GUI_Button::draw(display_driver *display)
 {
+    if (!refresh || is_hidden())
+    {
+        return;
+    }
+
     uint8_t align_value = get_element_alignment();
     RGB bg_c = get_background_colour();
     RGB trim_c = get_trim_colour();
     RGB font_c = get_font_colour();
     uint16_t text_x, text_y;
-
-    if (!refresh)
-        return;
-
-    if (is_hidden())
-        return;
 
     if (is_selected())
     {
@@ -237,16 +236,12 @@ void GUI_Button::set_refresh(bool r, bool p)
     }
 }
 
-uint32_t GUI_Button::get_element_min_width_px()
+void GUI_Button::calculate_sizing(display_driver *display)
 {
-    uint32_t label_min_width = label.get_min_width_px();
-    return get_min_width_px() + label_min_width;
-}
+    label.calculate_sizing(display);
 
-uint32_t GUI_Button::get_element_min_height_px()
-{
-    uint32_t label_min_height = label.get_min_height_px();
-    return get_min_height_px() + label_min_height;
+    set_min_width_px(label.get_min_width_px());
+    set_min_height_px(label.get_min_height_px());
 }
 
 /**

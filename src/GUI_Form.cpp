@@ -87,12 +87,7 @@ void GUI_Form::set_refresh(bool r, bool p)
     }
 }
 
-uint32_t GUI_Form::get_element_min_width_px()
+void GUI_Form::calculate_sizing(display_driver *display)
 {
-    return get_min_width_px();
-}
-
-uint32_t GUI_Form::get_element_min_height_px()
-{
-    return get_min_height_px();
+    // TODO
 }

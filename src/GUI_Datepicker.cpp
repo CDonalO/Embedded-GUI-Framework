@@ -274,6 +274,11 @@ void GUI_Datepicker::set_date_year_month(uint16_t year, uint8_t month)
     }
 
     this->month = month;
+
+    if (needs_update)
+    {
+        set_refresh(true, true);
+    }
 }
 
 uint16_t GUI_Datepicker::get_date_year()
@@ -288,21 +293,22 @@ uint8_t GUI_Datepicker::get_date_month()
 
 void GUI_Datepicker::draw(display_driver *display)
 {
+    if (!refresh)
+    {
+        return;
+    }
+
     if (needs_update)
     {
         setup_calendar_grid();
         needs_update = false;
         set_refresh(true, false);
+        calculate_sizing(display);
     }
 
-    date_grid->set_width(get_width());
-    date_grid->set_height(get_height());
     date_grid->set_x(get_x());
     date_grid->set_y(get_y());
-    date_grid->set_font_size(get_font_size());
-    date_grid->set_colour_scheme(get_colour_scheme());
-    date_grid->apply_colour_scheme();
-    date_grid->adjust_elements();
+
     date_grid->draw(display);
 }
 
@@ -319,16 +325,30 @@ void GUI_Datepicker::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 void GUI_Datepicker::set_refresh(bool r, bool p)
 {
     date_grid->set_refresh(r, p);
+
+    if (p && parent != NULL)
+    {
+        parent->set_refresh(r, true);
+    }
 }
 
-uint32_t GUI_Datepicker::get_element_min_width_px()
+void GUI_Datepicker::calculate_sizing(display_driver *display)
 {
-    return date_grid->get_element_min_width_px();
-}
+    if (!refresh)
+    {
+        return;
+    }
 
-uint32_t GUI_Datepicker::get_element_min_height_px()
-{
-    return date_grid->get_element_min_height_px();
+    date_grid->set_width(get_width());
+    date_grid->set_height(get_height());
+    date_grid->set_x(get_x());
+    date_grid->set_y(get_y());
+    date_grid->set_font_size(get_font_size());
+    date_grid->set_colour_scheme(get_colour_scheme());
+    date_grid->apply_colour_scheme();
+    date_grid->calculate_sizing(display);
+    set_min_height_px(date_grid->get_min_height_px());
+    set_min_width_px(date_grid->get_min_width_px());
 }
 
 #endif /* GUI_DATE_PICKER_SUPPORT */

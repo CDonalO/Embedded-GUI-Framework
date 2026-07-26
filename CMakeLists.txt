@@ -34,8 +34,6 @@ target_sources(EmbeddedGUIFramework
         src/GUI_Menu.h
         src/GUI_View.cpp
         src/GUI_View.h
-        src/GUI_Bitmap.cpp
-        src/GUI_Bitmap.h
         src/GUI_Image.cpp
         src/GUI_Image.h
         src/GUI_Slider.cpp

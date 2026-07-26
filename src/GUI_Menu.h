@@ -20,8 +20,7 @@ public:
     GUI_Element *clone() const override { return new GUI_Menu(*this); }
 
     void draw(display_driver *display) override;
-    uint32_t get_element_min_width_px() override;
-    uint32_t get_element_min_height_px() override;
+    void calculate_sizing(display_driver *display) override;
 
     PLATFORM_STRING get_menu_name();
     void set_menu_colour_scheme(GUI_Colour_Scheme colour_scheme);

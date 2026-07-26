@@ -15,6 +15,7 @@ private:
     uint16_t max_bar_x;
     uint16_t bar_w;
     uint16_t bar_h;
+    uint16_t bar_y;
     uint16_t slider_h;
     uint16_t bar_padding;
     uint32_t range;
@@ -33,6 +34,5 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void navigate(INPUT_TYPE input, KEYBOARD_KEY key) override;
     void set_refresh(bool r, bool p) override;
-    uint32_t get_element_min_width_px() override;
-    uint32_t get_element_min_height_px() override;
+    void calculate_sizing(display_driver *display) override;
 };

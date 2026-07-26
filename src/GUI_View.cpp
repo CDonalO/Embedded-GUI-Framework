@@ -3,6 +3,7 @@
 GUI_View::GUI_View(uint16_t menu_bar_size) : GUI_Element()
 {
     this->menu_bar_size = menu_bar_size;
+    update_sizing = true;
 }
 
 GUI_View::GUI_View(uint16_t menu_bar_size, uint16_t view_width, uint16_t view_height) : GUI_View(menu_bar_size)
@@ -32,33 +33,14 @@ void GUI_View::draw(display_driver *display)
 {
     uint16_t text_y, text_x;
 
+    calculate_sizing(display);
+
     ignore_refresh = !display->get_optimize_rendering();
 
     if (ignore_refresh)
     {
         set_refresh(true, false);
         refresh = true;
-    }
-
-    if (menu_stack.size() > 0)
-    {
-        bool resize_menu = false;
-        if (menu_stack.top()->get_width() != get_width())
-        {
-            resize_menu = true;
-            menu_stack.top()->set_width(get_width());
-        }
-
-        if (menu_stack.top()->get_height() != (get_height() - menu_bar_size))
-        {
-            resize_menu = true;
-            menu_stack.top()->set_height(get_height() - menu_bar_size);
-        }
-
-        if (resize_menu)
-        {
-            menu_stack.top()->adjust_elements();
-        }
     }
 
     if (refresh)
@@ -69,8 +51,6 @@ void GUI_View::draw(display_driver *display)
 
     if (menu_stack.size() > 0)
     {
-        menu_stack.top()->set_x_offset(get_x());
-        menu_stack.top()->set_y_offset(menu_bar_size);
         menu_stack.top()->draw(display);
 
         if (refresh)
@@ -93,7 +73,7 @@ void GUI_View::draw(display_driver *display)
                 int arrow_height = menu_bar_size / 2;
                 int arrow_width = 8;
                 display->draw_filled_round_rect(8, 2, menu_bar_size - 4, 22, 5, back_button_bg_colour);
-                set_min_width_px(22);
+                set_min_width_px(max((uint16_t)22, get_min_width_px()));
                 display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x1 - arrow_width, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height, back_button_arrow_colour);
                 display->draw_filled_triangle(arrow_x1, arrow_y1 + 3, arrow_x1 - arrow_width + 3, arrow_y1 + (arrow_height / 2), arrow_x1, arrow_y1 + arrow_height - 3, back_button_bg_colour);
             }
@@ -135,34 +115,82 @@ void GUI_View::set_refresh(bool r, bool p)
 {
     refresh = r;
 
-    if (ignore_refresh && !menu_stack.empty())
+    if (ignore_refresh && !menu_stack.empty() && !p)
     {
         menu_stack.top()->set_refresh(true, false);
     }
 }
 
-uint32_t GUI_View::get_element_min_width_px()
+void GUI_View::calculate_sizing(display_driver *display)
 {
-    uint32_t min_width = get_min_width_px();
-
-    if (!menu_stack.empty())
+    if (menu_stack.size() > 0)
     {
-        min_width = max(min_width, menu_stack.top()->get_element_min_width_px());
+        if (menu_stack.top()->get_width() != get_width())
+        {
+            update_sizing = true;
+        }
+
+        if (menu_stack.top()->get_height() != (get_height() - menu_bar_size))
+        {
+            update_sizing = true;
+        }
+
+        if (refresh)
+        {
+            update_sizing = true;
+        }
     }
 
-    return min_width;
-}
-
-uint32_t GUI_View::get_element_min_height_px()
-{
-    uint32_t min_height = menu_bar_size + get_min_height_px();
-
-    if (!menu_stack.empty())
+    if (update_sizing)
     {
-        min_height += menu_stack.top()->get_element_min_height_px();
+        set_refresh(true, false);
     }
 
-    return min_height;
+    if (menu_stack.size() > 0)
+    {
+        GUI_Menu *m = NULL;
+        std::stack<GUI_Menu *> temp_stack;
+
+        while (!menu_stack.empty())
+        {
+            m = menu_stack.top();
+            m->set_x_offset(get_x());
+            m->set_y_offset(menu_bar_size);
+            m->set_width(get_width());
+            m->set_height(get_height() - menu_bar_size);
+            m->calculate_sizing(display);
+            temp_stack.push(m);
+            menu_stack.pop();
+        }
+
+        while (!temp_stack.empty())
+        {
+            m = temp_stack.top();
+            menu_stack.push(m);
+            temp_stack.pop();
+        }
+
+        m = menu_stack.top();
+        uint16_t min_width = 0;
+        uint16_t min_height = 0;
+
+        min_width = m->get_min_width_px();
+        if (get_max_width_px())
+        {
+            min_width = min(min_width, get_max_width_px());
+        }
+
+        min_height = menu_bar_size + m->get_min_height_px();
+        if (get_max_height_px())
+        {
+            min_height = min(min_height, get_max_height_px());
+        }
+
+        set_min_width_px(min_width);
+        set_min_height_px(min_height);
+    }
+
+    update_sizing = false;
 }
 
 /**
@@ -199,7 +227,6 @@ void GUI_View::set_menu(GUI_Menu *menu)
     }
 
     menu->set_refresh(true, false);
-    menu->adjust_elements();
     menu->increase_ref();
     menu_stack.push(menu);
 

@@ -20,31 +20,19 @@ GUI_Label::~GUI_Label()
  */
 void GUI_Label::draw(display_driver *display)
 {
-    int16_t text_x = get_x();
-    int16_t text_y = get_y();
-    uint8_t text_align = get_element_alignment();
-
-    uint16_t text_h, text_w;
-
-    if (label.length() == 0)
+    if (label.length() == 0 || !refresh || is_hidden())
     {
-        set_min_width_px(0);
-        set_min_height_px(0);
         return;
     }
 
+    int16_t text_x = get_x();
+    int16_t text_y = get_y();
+    uint16_t text_h, text_w;
+    uint8_t text_align = get_element_alignment();
+    uint8_t t_size = get_font_size();
+
     display->get_text_bounds((char *)label.c_str(), &text_w, &text_h);
 
-    set_min_height_px(text_h + 8);
-    set_min_width_px(text_w + 8);
-
-    if (!refresh)
-        return;
-
-    if (is_hidden())
-        return;
-
-    uint8_t t_size = get_font_size();
     RGB font_c = get_font_colour();
     if (parent)
     {
@@ -151,12 +139,19 @@ void GUI_Label::set_refresh(bool r, bool p)
     }
 }
 
-uint32_t GUI_Label::get_element_min_width_px()
+void GUI_Label::calculate_sizing(display_driver *display)
 {
-    return get_min_width_px();
-}
+    uint16_t text_h, text_w;
 
-uint32_t GUI_Label::get_element_min_height_px()
-{
-    return get_min_height_px();
+    if (label.length() == 0)
+    {
+        set_min_width_px(0);
+        set_min_height_px(0);
+        return;
+    }
+
+    display->get_text_bounds((char *)label.c_str(), &text_w, &text_h);
+
+    set_min_height_px(text_h + 8);
+    set_min_width_px(text_w + 8);
 }

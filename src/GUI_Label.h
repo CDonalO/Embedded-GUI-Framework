@@ -19,8 +19,7 @@ public:
     void navigate(int16_t x_pos, int16_t y_pos) override;
     void navigate(INPUT_TYPE input, KEYBOARD_KEY key) override;
     void set_refresh(bool r, bool p) override;
-    uint32_t get_element_min_width_px() override;
-    uint32_t get_element_min_height_px() override;
+    void calculate_sizing(display_driver *display) override;
 
     PLATFORM_STRING get_label();
     void set_label(PLATFORM_STRING new_label);

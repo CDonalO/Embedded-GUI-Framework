@@ -48,14 +48,32 @@ void GUI_Menu::draw(display_driver *display)
     refresh = false;
 }
 
-uint32_t GUI_Menu::get_element_min_width_px()
+void GUI_Menu::calculate_sizing(display_driver *display)
 {
-    return max(GUI_Grid::get_element_min_width_px(), menu_label.get_element_min_width_px());
-}
+    uint16_t min_width = get_max_width_px();
+    uint16_t min_height = get_max_height_px();
+    GUI_Grid::calculate_sizing(display);
 
-uint32_t GUI_Menu::get_element_min_height_px()
-{
-    return GUI_Grid::get_element_min_height_px();
+    if (refresh)
+    {
+        menu_label.calculate_sizing(display);
+    }
+
+    min_width = max(GUI_Grid::get_min_width_px(), menu_label.get_min_width_px());
+    if (get_max_width_px())
+    {
+        min_width = min(min_width, get_max_width_px());
+    }
+
+    min_height = GUI_Grid::get_min_height_px();
+
+    if (get_max_height_px())
+    {
+        min_height = min(min_height, get_max_height_px());
+    }
+
+    set_min_width_px(min_width);
+    set_min_height_px(min_height);
 }
 
 PLATFORM_STRING GUI_Menu::get_menu_name()

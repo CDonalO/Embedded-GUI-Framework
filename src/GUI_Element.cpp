@@ -210,9 +210,9 @@ uint16_t GUI_Element::get_max_height_px()
  *
  * @return Min width in px of element
  */
-uint32_t GUI_Element::get_min_width_px()
+uint16_t GUI_Element::get_min_width_px()
 {
-    return min_width_px + left_padding + right_padding;
+    return min_width_px;
 }
 
 /**
@@ -220,9 +220,9 @@ uint32_t GUI_Element::get_min_width_px()
  *
  * @return Max height in px of element
  */
-uint32_t GUI_Element::get_min_height_px()
+uint16_t GUI_Element::get_min_height_px()
 {
-    return min_height_px + top_padding + bottom_padding;
+    return min_height_px;
 }
 
 /**
@@ -480,7 +480,7 @@ void GUI_Element::set_max_height_px(uint16_t max_height)
  *
  * @param min_width The new min width px
  */
-void GUI_Element::set_min_width_px(uint32_t min_width)
+void GUI_Element::set_min_width_px(uint16_t min_width)
 {
     min_width_px = min_width;
 }
@@ -490,7 +490,7 @@ void GUI_Element::set_min_width_px(uint32_t min_width)
  *
  * @param min_height The new min height px
  */
-void GUI_Element::set_min_height_px(uint32_t min_height)
+void GUI_Element::set_min_height_px(uint16_t min_height)
 {
     min_height_px = min_height;
 }

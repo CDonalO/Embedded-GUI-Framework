@@ -21,9 +21,6 @@ GUI_Slider::GUI_Slider(int16_t min_val, int16_t max_val, int16_t default_val) : 
     bar_padding = 20;
     slider_h = bar_h * 4;
 
-    set_min_height_px(slider_h + 8);
-    set_min_width_px(bar_padding * 2 + 8);
-
     set_interactable(true);
 }
 
@@ -39,17 +36,14 @@ void GUI_Slider::normalize_value()
 
 void GUI_Slider::draw(display_driver *display)
 {
+    if (!refresh)
+    {
+        return;
+    }
+
     RGB slider_edge_colour = get_background_colour();
-    uint16_t bar_y = get_center_y() - (bar_h / 2);
 
-    min_bar_x = get_x() + bar_padding;
-    max_bar_x = get_x() + get_width() - bar_padding;
-    bar_w = max_bar_x - min_bar_x;
-    x_per_val = bar_w;
-
-    display->draw_filled_round_rect(min_bar_x, bar_y + (bar_h / 2), bar_w, bar_h, 2, get_background_colour());
-
-    x_per_val /= range;
+    display->draw_filled_round_rect(min_bar_x, bar_y, bar_w, bar_h, 2, get_background_colour());
 
     uint16_t slider_x = min_bar_x + (x_per_val * norm_val);
 
@@ -58,8 +52,8 @@ void GUI_Slider::draw(display_driver *display)
         slider_edge_colour = get_active_background_colour();
     }
 
-    display->draw_filled_circle(slider_x, get_center_y(), slider_h, slider_edge_colour);
-    display->draw_filled_circle(slider_x, get_center_y(), slider_h - 3, get_background_colour());
+    display->draw_filled_circle(slider_x, bar_y + (bar_h / 2), slider_h, slider_edge_colour);
+    display->draw_filled_circle(slider_x, bar_y + (bar_h / 2), slider_h - 3, get_background_colour());
 }
 
 void GUI_Slider::navigate(int16_t x_pos, int16_t y_pos)
@@ -113,14 +107,22 @@ void GUI_Slider::navigate(INPUT_TYPE input, KEYBOARD_KEY key)
 void GUI_Slider::set_refresh(bool r, bool p)
 {
     refresh = r;
+
+    if (p && parent != NULL)
+    {
+        parent->set_refresh(r, p);
+    }
 }
 
-uint32_t GUI_Slider::get_element_min_width_px()
+void GUI_Slider::calculate_sizing(display_driver *display)
 {
-    return get_min_width_px();
-}
+    bar_y = get_center_y() - (bar_h / 2);
+    min_bar_x = get_x() + bar_padding;
+    max_bar_x = get_x() + get_width() - bar_padding;
+    bar_w = max_bar_x - min_bar_x;
+    x_per_val = bar_w;
+    x_per_val /= range;
 
-uint32_t GUI_Slider::get_element_min_height_px()
-{
-    return get_min_height_px();
+    set_min_height_px(slider_h + 8);
+    set_min_width_px(bar_padding * 2 + 8);
 }

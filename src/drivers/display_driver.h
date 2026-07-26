@@ -11,6 +11,9 @@ typedef enum
 class GUI_View;
 class display_driver
 {
+private:
+    bool update_sizing = true;
+
 protected:
     bool optimize_rendering = true;
 
@@ -22,6 +25,8 @@ public:
     virtual ~display_driver() {}
 
     bool get_optimize_rendering() { return optimize_rendering; }
+
+    void set_update_sizing() { update_sizing = true; }
 
     virtual void get_text_bounds(PLATFORM_STRING text, uint16_t *width, uint16_t *height) = 0;
 

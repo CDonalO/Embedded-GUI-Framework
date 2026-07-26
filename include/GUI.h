@@ -9,7 +9,6 @@
 #include "../src/GUI_View.h"
 #include "../src/GUI_Label.h"
 #include "../src/GUI_Form.h"
-#include "../src/GUI_Bitmap.h"
 #include "../src/GUI_Image.h"
 #include "../src/GUI_Slider.h"
 #include "../src/GUI_Datepicker.h"
