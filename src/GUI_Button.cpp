@@ -50,141 +50,22 @@ void GUI_Button::draw(display_driver *display)
     uint8_t align_value = get_element_alignment();
     RGB bg_c = get_background_colour();
     RGB trim_c = get_trim_colour();
-    RGB font_c = get_font_colour();
     uint16_t text_x, text_y;
 
     if (is_selected())
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
-        font_c = get_active_font_colour();
     }
 
     if (is_disabled())
     {
         bg_c = disabled_bg_colour;
         trim_c = disabled_trim_colour;
-        font_c = disabled_font_colour;
     }
 
     display->draw_filled_round_rect(get_x(), get_y(), get_width(), get_height(), border_radius, trim_c);
     display->draw_filled_round_rect(get_x() + 1, get_y() + 1, get_width() - 2, get_height() - 2, border_radius, bg_c);
-
-    switch (button_style)
-    {
-    case BUTTON_STYLE_UP_ARROW:
-    case BUTTON_STYLE_DOWN_ARROW:
-    case BUTTON_STYLE_LEFT_ARROW:
-    case BUTTON_STYLE_RIGHT_ARROW:
-
-        if (button_style == BUTTON_STYLE_UP_ARROW || button_style == BUTTON_STYLE_DOWN_ARROW)
-        {
-            // TODO make this dynamically sized
-            bool arrow_up_dir = true;
-            if (button_style == BUTTON_STYLE_DOWN_ARROW)
-            {
-                arrow_up_dir = false;
-            }
-
-            int arrow_width = 15;
-            int arrow_height = 15;
-            int arrow_x1 = get_center_x() - (arrow_width / 2);
-            int arrow_y1 = get_center_y();
-
-            if (arrow_up_dir)
-            {
-                arrow_y1 += (arrow_height / 2);
-            }
-            else
-            {
-                arrow_y1 -= (arrow_height / 2);
-            }
-
-            int arrow_x2 = arrow_x1 + (arrow_width / 2);
-            int arrow_y2 = arrow_y1;
-
-            if (arrow_up_dir)
-            {
-                arrow_y2 -= arrow_height;
-            }
-            else
-            {
-                arrow_y2 += arrow_height;
-            }
-
-            int arrow_x3 = arrow_x1 + arrow_width;
-            int arrow_y3 = arrow_y1;
-
-            display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
-        }
-        else if (button_style == BUTTON_STYLE_LEFT_ARROW || button_style == BUTTON_STYLE_RIGHT_ARROW)
-        {
-            // TODO make this dynamically sized
-            bool arrow_left_dir = true;
-            if (button_style == BUTTON_STYLE_RIGHT_ARROW)
-            {
-                arrow_left_dir = false;
-            }
-
-            int arrow_width = 15;
-            int arrow_height = 15;
-
-            int arrow_x1 = get_center_x();
-
-            if (arrow_left_dir)
-            {
-                arrow_x1 += (arrow_width / 2);
-            }
-            else
-            {
-                arrow_x1 -= (arrow_width / 2);
-            }
-
-            int arrow_y1 = get_center_y() - (arrow_height / 2);
-            int arrow_x2 = arrow_x1;
-
-            if (arrow_left_dir)
-            {
-                arrow_x2 -= arrow_width;
-            }
-            else
-            {
-                arrow_x2 += arrow_width;
-            }
-
-            int arrow_y2 = arrow_y1 + (arrow_height / 2);
-            int arrow_x3 = arrow_x1;
-            int arrow_y3 = arrow_y1 + arrow_height;
-
-            display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, font_c);
-        }
-
-        break;
-    case BUTTON_STYLE_PLUS:
-    case BUTTON_STYLE_MINUS:
-        int bar_width = get_height() / 4;
-
-        if (get_height() > get_width())
-        {
-            bar_width = get_width() / 4;
-        }
-
-        int bar_height = bar_width / 6;
-
-        int bar_x = get_center_x() - (bar_width / 2);
-        int bar_y = get_center_y() - (bar_height / 2);
-
-        display->draw_filled_rect(bar_x, bar_y, bar_width, bar_height, font_c);
-
-        if (button_style == BUTTON_STYLE_PLUS)
-        {
-            bar_x = get_center_x() - (bar_height / 2);
-            bar_y = get_center_y() - (bar_width / 2);
-
-            display->draw_filled_rect(bar_x, bar_y, bar_height, bar_width, font_c);
-        }
-        break;
-    }
 
     if (button_style == BUTTON_NO_STYLE)
     {
@@ -193,6 +74,43 @@ void GUI_Button::draw(display_driver *display)
         label.set_font_colour(get_font_colour());
         label.set_font_size(get_font_size());
         label.draw(display);
+    }
+    else
+    {
+        if (draw_instructions.shape == SHAPE_SQUARE && draw_instructions.coords.size() == 2)
+        {
+            int16_t x1 = draw_instructions.coords.at(0).get_x();
+            int16_t y1 = draw_instructions.coords.at(0).get_y();
+            int16_t width = draw_instructions.coords.at(1).get_x() - x1;
+            int16_t height = draw_instructions.coords.at(1).get_y() - y1;
+
+            display->draw_filled_rect(x1, y1, width, height, draw_instructions.colour);
+        }
+        else if (draw_instructions.shape == SHAPE_PLUS && draw_instructions.coords.size() == 3)
+        {
+            int16_t x1 = draw_instructions.coords.at(0).get_x();
+            int16_t y1 = draw_instructions.coords.at(0).get_y();
+            int16_t width = draw_instructions.coords.at(1).get_x() - x1;
+            int16_t height = draw_instructions.coords.at(1).get_y() - y1;
+
+            display->draw_filled_rect(x1, y1, width, height, draw_instructions.colour);
+
+            x1 = draw_instructions.coords.at(2).get_x();
+            y1 = draw_instructions.coords.at(2).get_y();
+            display->draw_filled_rect(x1, y1, height, width, draw_instructions.colour);
+        }
+        else if (draw_instructions.shape == SHAPE_TRIANGLE && draw_instructions.coords.size() == 3)
+        {
+            int16_t arrow_x1 = draw_instructions.coords.at(0).get_x();
+            int16_t arrow_x2 = draw_instructions.coords.at(1).get_x();
+            int16_t arrow_x3 = draw_instructions.coords.at(2).get_x();
+
+            int16_t arrow_y1 = draw_instructions.coords.at(0).get_y();
+            int16_t arrow_y2 = draw_instructions.coords.at(1).get_y();
+            int16_t arrow_y3 = draw_instructions.coords.at(2).get_y();
+
+            display->draw_filled_triangle(arrow_x1, arrow_y1, arrow_x2, arrow_y2, arrow_x3, arrow_y3, draw_instructions.colour);
+        }
     }
 
 #ifdef VISUAL_ELEMENT_DEBUG
@@ -238,10 +156,182 @@ void GUI_Button::set_refresh(bool r, bool p)
 
 void GUI_Button::calculate_sizing(display_driver *display)
 {
-    label.calculate_sizing(display);
+    RGB font_c = get_font_colour();
 
-    set_min_width_px(label.get_min_width_px());
-    set_min_height_px(label.get_min_height_px());
+    if (is_selected())
+    {
+        font_c = get_active_font_colour();
+    }
+
+    if (is_disabled())
+    {
+        font_c = disabled_font_colour;
+    }
+
+    switch (button_style)
+    {
+    case BUTTON_STYLE_UP_ARROW:
+    case BUTTON_STYLE_DOWN_ARROW:
+    case BUTTON_STYLE_LEFT_ARROW:
+    case BUTTON_STYLE_RIGHT_ARROW:
+    {
+        draw_instructions.shape = SHAPE_TRIANGLE;
+        draw_instructions.colour = font_c;
+        draw_instructions.coords.clear();
+        if (button_style == BUTTON_STYLE_UP_ARROW || button_style == BUTTON_STYLE_DOWN_ARROW)
+        {
+            // TODO make this dynamically sized
+            bool arrow_up_dir = true;
+            if (button_style == BUTTON_STYLE_DOWN_ARROW)
+            {
+                arrow_up_dir = false;
+            }
+
+            int arrow_width = 15;
+            int arrow_height = 15;
+            int arrow_x1 = get_center_x() - (arrow_width / 2);
+            int arrow_y1 = get_center_y();
+
+            if (arrow_up_dir)
+            {
+                arrow_y1 += (arrow_height / 2);
+            }
+            else
+            {
+                arrow_y1 -= (arrow_height / 2);
+            }
+
+            int arrow_x2 = arrow_x1 + (arrow_width / 2);
+            int arrow_y2 = arrow_y1;
+
+            if (arrow_up_dir)
+            {
+                arrow_y2 -= arrow_height;
+            }
+            else
+            {
+                arrow_y2 += arrow_height;
+            }
+
+            int arrow_x3 = arrow_x1 + arrow_width;
+            int arrow_y3 = arrow_y1;
+
+            draw_instructions.coords.push_back(Coordinates(arrow_x1, arrow_y1));
+            draw_instructions.coords.push_back(Coordinates(arrow_x2, arrow_y2));
+            draw_instructions.coords.push_back(Coordinates(arrow_x3, arrow_y3));
+
+            set_min_width_px(arrow_width + 5);
+            set_min_height_px(arrow_height + 5);
+        }
+        else if (button_style == BUTTON_STYLE_LEFT_ARROW || button_style == BUTTON_STYLE_RIGHT_ARROW)
+        {
+            // TODO make this dynamically sized
+            bool arrow_left_dir = true;
+            if (button_style == BUTTON_STYLE_RIGHT_ARROW)
+            {
+                arrow_left_dir = false;
+            }
+
+            int arrow_width = 15;
+            int arrow_height = 15;
+
+            int arrow_x1 = get_center_x();
+
+            if (arrow_left_dir)
+            {
+                arrow_x1 += (arrow_width / 2);
+            }
+            else
+            {
+                arrow_x1 -= (arrow_width / 2);
+            }
+
+            int arrow_y1 = get_center_y() - (arrow_height / 2);
+            int arrow_x2 = arrow_x1;
+
+            if (arrow_left_dir)
+            {
+                arrow_x2 -= arrow_width;
+            }
+            else
+            {
+                arrow_x2 += arrow_width;
+            }
+
+            int arrow_y2 = arrow_y1 + (arrow_height / 2);
+            int arrow_x3 = arrow_x1;
+            int arrow_y3 = arrow_y1 + arrow_height;
+
+            draw_instructions.coords.push_back(Coordinates(arrow_x1, arrow_y1));
+            draw_instructions.coords.push_back(Coordinates(arrow_x2, arrow_y2));
+            draw_instructions.coords.push_back(Coordinates(arrow_x3, arrow_y3));
+
+            set_min_width_px(arrow_width + 5);
+            set_min_height_px(arrow_height + 5);
+        }
+
+        break;
+    }
+    case BUTTON_STYLE_PLUS:
+    case BUTTON_STYLE_MINUS:
+    {
+        int bar_width = get_height() / 4;
+
+        if (get_height() > get_width())
+        {
+            bar_width = get_width() / 4;
+        }
+
+        int bar_height = bar_width / 6;
+
+        int bar_x = get_center_x() - (bar_width / 2);
+        int bar_y = get_center_y() - (bar_height / 2);
+
+        draw_instructions.colour = font_c;
+        draw_instructions.shape = SHAPE_SQUARE;
+        draw_instructions.coords.clear();
+
+        draw_instructions.coords.push_back(Coordinates(bar_x, bar_y));
+
+        int16_t b_h = bar_height;
+        int16_t b_w = bar_width;
+
+        if (b_h == 0)
+        {
+            b_h = 1;
+        }
+
+        if (b_w == 0)
+        {
+            b_w = 1;
+        }
+
+        draw_instructions.coords.push_back(Coordinates(bar_x + b_w, bar_y + b_h));
+
+        set_min_width_px(b_w + 5);
+        set_min_height_px(b_h + 5);
+
+        if (button_style == BUTTON_STYLE_PLUS)
+        {
+            draw_instructions.shape = SHAPE_PLUS;
+            bar_x = get_center_x() - (b_h / 2);
+            bar_y = get_center_y() - (b_w / 2);
+
+            draw_instructions.coords.push_back(Coordinates(bar_x, bar_y));
+
+            set_min_width_px(b_h + 5);
+            set_min_height_px(b_w + 5);
+        }
+        break;
+    }
+    case BUTTON_NO_STYLE:
+    {
+        label.calculate_sizing(display);
+        set_min_width_px(label.get_min_width_px());
+        set_min_height_px(label.get_min_height_px());
+        break;
+    }
+    }
 }
 
 /**

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Coordinate.h"
 #include "GUI_Colours.h"
 #include "drivers/display_driver.h"
 #include "GUI_Definitions.h"
@@ -7,8 +8,7 @@
 class GUI_Element
 {
 private:
-    int16_t x;
-    int16_t y;
+    Coordinates coords;
     uint16_t height;
     uint16_t width;
     uint16_t container_x_offset;
@@ -83,10 +83,10 @@ public:
 
     bool operator==(const GUI_Element &element) const;
 
-    int16_t get_x();
-    int16_t get_y();
-    uint16_t get_x_offset();
-    uint16_t get_y_offset();
+    int16_t get_x() const;
+    int16_t get_y() const;
+    uint16_t get_x_offset() const;
+    uint16_t get_y_offset() const;
     uint8_t get_element_alignment();
     uint8_t get_ref_count();
     uint16_t get_width();

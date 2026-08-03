@@ -25,12 +25,27 @@ typedef enum
 class GUI_Button : public GUI_Element
 {
 private:
+    typedef enum
+    {
+        SHAPE_SQUARE,
+        SHAPE_CIRCLE,
+        SHAPE_TRIANGLE,
+        SHAPE_PLUS,
+    } SHAPE_TYPE;
+    typedef struct
+    {
+        std::vector<Coordinates> coords;
+        RGB colour;
+        SHAPE_TYPE shape;
+    } Coords_Shape_Colour;
+
     GUI_Label label;
     BUTTON_STYLE button_style;
     uint8_t border_radius;
     RGB disabled_bg_colour;
     RGB disabled_trim_colour;
     RGB disabled_font_colour;
+    Coords_Shape_Colour draw_instructions;
 
 protected:
     click_cb_fun click_cb;

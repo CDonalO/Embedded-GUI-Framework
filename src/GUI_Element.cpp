@@ -1,6 +1,6 @@
 #include "GUI_Element.h"
 
-GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t width, uint16_t height) : x(x), y(y), width(width), height(height)
+GUI_Element::GUI_Element(int16_t x, int16_t y, uint16_t width, uint16_t height) : coords(x, y), width(width), height(height)
 {
     hidden = false;
     selected = false;
@@ -47,12 +47,12 @@ GUI_Element::GUI_Element() : GUI_Element(0, 0, 0, 0) {}
 // Compare visible element properties
 bool GUI_Element::operator==(const GUI_Element &element) const
 {
-    if (this->x != element.x)
+    if (this->get_x() - this->get_x_offset() != element.get_x() - this->get_x_offset())
     {
         return false;
     }
 
-    if (this->y != element.y)
+    if (this->get_y() - this->get_y_offset() != element.get_y() - this->get_y_offset())
     {
         return false;
     }
@@ -90,9 +90,9 @@ bool GUI_Element::operator==(const GUI_Element &element) const
  *
  * @return Absolute x position of element
  */
-int16_t GUI_Element::get_x()
+int16_t GUI_Element::get_x() const
 {
-    return x + container_x_offset;
+    return coords.get_x() + container_x_offset;
 }
 
 /**
@@ -100,9 +100,9 @@ int16_t GUI_Element::get_x()
  *
  * @return Absolute y position of element
  */
-int16_t GUI_Element::get_y()
+int16_t GUI_Element::get_y() const
 {
-    return y + container_y_offset;
+    return coords.get_y() + container_y_offset;
 }
 
 /**
@@ -110,7 +110,7 @@ int16_t GUI_Element::get_y()
  *
  * @return X offset of element
  */
-uint16_t GUI_Element::get_x_offset()
+uint16_t GUI_Element::get_x_offset() const
 {
     return container_x_offset;
 }
@@ -120,7 +120,7 @@ uint16_t GUI_Element::get_x_offset()
  *
  * @return Y offset of element
  */
-uint16_t GUI_Element::get_y_offset()
+uint16_t GUI_Element::get_y_offset() const
 {
     return container_y_offset;
 }
@@ -392,7 +392,7 @@ uint16_t GUI_Element::get_font_size()
  */
 void GUI_Element::set_x(int16_t x)
 {
-    this->x = x;
+    coords.set_x(x);
 }
 
 /**
@@ -402,7 +402,7 @@ void GUI_Element::set_x(int16_t x)
  */
 void GUI_Element::set_y(int16_t y)
 {
-    this->y = y;
+    coords.set_y(y);
 }
 
 /**

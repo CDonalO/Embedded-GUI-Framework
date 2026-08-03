@@ -40,6 +40,8 @@ target_sources(EmbeddedGUIFramework
         src/GUI_Slider.h
         src/GUI_Datepicker.cpp
         src/GUI_Datepicker.h
+        src/Coordinate.cpp
+        src/Coordinate.h
         src/Form_Data.cpp
         src/Form_Data.h
         src/Form_Data_Register.h
