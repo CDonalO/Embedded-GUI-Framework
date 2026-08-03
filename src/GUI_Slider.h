@@ -1,6 +1,7 @@
 #pragma once
 
-#include "GUI_Element.h"
+#include <format>
+#include "GUI_Label.h"
 #include "Form_Data.h"
 
 class GUI_Slider : public GUI_Element, public Form_Data_Number
@@ -21,6 +22,10 @@ private:
     uint32_t range;
     uint32_t norm_val;
     float x_per_val;
+    GUI_Label value_label;
+    GUI_Label min_value_label;
+    GUI_Label max_value_label;
+
     void normalize_value();
 
 public:
