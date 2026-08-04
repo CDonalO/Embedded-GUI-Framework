@@ -1,6 +1,7 @@
 #include "GUI_Grid.h"
 
 #include <cmath>
+#include <cstdarg>
 
 GUI_Grid::GUI_Grid(GRID_TYPE type, uint16_t border_padding, uint16_t element_padding, uint8_t grid_attributes, uint16_t columns) : GUI_Element(), columns(columns), grid_type(type), attributes(grid_attributes)
 {
@@ -217,8 +218,8 @@ void GUI_Grid::calculate_sizing(display_driver *display)
         min_height = min(min_height, get_max_height_px());
     }
 
-    set_min_width_px(min_width);
-    set_min_height_px(min_height);
+    set_min_width_px(min_width + get_left_padding() + get_right_padding());
+    set_min_height_px(min_height + get_top_padding() + get_bottom_padding());
 }
 
 uint16_t GUI_Grid::get_column_width(uint16_t col)
@@ -847,6 +848,24 @@ void GUI_Grid::add_element(GUI_Element *element, uint16_t col_span, uint16_t row
 void GUI_Grid::add_element(GUI_Element *element)
 {
     add_element(element, 1, 1);
+}
+
+/**
+ * @brief Add elements to grid
+ *
+ * @param count Count of elements to add to grid
+ */
+void GUI_Grid::add_elements(uint16_t count, ...)
+{
+    va_list args;
+    va_start(args, count);
+
+    for (uint16_t i = 0; i < count; ++i)
+    {
+        GUI_Element *e = va_arg(args, GUI_Element *);
+        add_element(e, 1, 1);
+    }
+    va_end(args);
 }
 
 /**

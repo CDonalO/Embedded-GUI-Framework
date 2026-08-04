@@ -102,6 +102,7 @@ public:
 
     void add_element(GUI_Element *element, uint16_t col_span, uint16_t row_span);
     void add_element(GUI_Element *element);
+    void add_elements(uint16_t count, ...);
     void adjust_elements();
     void apply_colour_scheme();
     uint16_t get_rows();
