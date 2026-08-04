@@ -93,7 +93,7 @@ void GUI_Datepicker::add_day_button(uint8_t day_value, uint8_t month_value, uint
     }
     else
     {
-        l = new GUI_Radio_Button(day_str, radio_group_str);
+        l = new GUI_Radio_Button(day_str, radio_group_str, 3);
         l->set_button_border_radius(3);
     }
 

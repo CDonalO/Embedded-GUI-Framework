@@ -50,12 +50,14 @@ void GUI_Button::draw(display_driver *display)
     uint8_t align_value = get_element_alignment();
     RGB bg_c = get_background_colour();
     RGB trim_c = get_trim_colour();
+    RGB font_c = get_font_colour();
     uint16_t text_x, text_y;
 
     if (is_selected())
     {
         bg_c = get_active_background_colour();
         trim_c = get_active_trim_colour();
+        font_c = get_active_font_colour();
     }
 
     if (is_disabled())
@@ -71,7 +73,7 @@ void GUI_Button::draw(display_driver *display)
     {
         label.set_element_alignment(get_element_alignment());
         label.set_dimensions(get_x(), get_y(), get_width(), get_height());
-        label.set_font_colour(get_font_colour());
+        label.set_font_colour(font_c);
         label.set_font_size(get_font_size());
         label.draw(display);
     }
@@ -415,7 +417,7 @@ void GUI_Button::set_button_border_radius(uint8_t border_radius)
     this->border_radius = border_radius;
 }
 
-GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, 10, click_cb, NULL), Form_Data_Number(default_value)
+GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb, bool default_value) : GUI_Button(BUTTON_NO_STYLE, button_str, border_radius, click_cb, NULL), Form_Data_Number(default_value)
 {
     button_style = style;
     value = default_value;
@@ -599,7 +601,7 @@ void GUI_Toggle_Button::set_toggled_colours(RGB toggled_colour, RGB non_toggled_
     this->toggle_element_colour = toggle_element_colour;
 }
 
-GUI_Radio_Button::GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group) : GUI_Toggle_Button(TOGGLE_BUTTON_NO_STYLE, button_str), group(group)
+GUI_Radio_Button::GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group, uint8_t border_radius) : GUI_Toggle_Button(TOGGLE_BUTTON_NO_STYLE, button_str, border_radius), group(group)
 {
     Form_Data_Register::register_radio_button(group, this);
 }

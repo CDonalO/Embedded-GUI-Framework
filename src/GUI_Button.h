@@ -282,7 +282,7 @@ private:
     Button_Links links;
 
 public:
-    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, click_cb_fun click_cb = NULL, bool default_value = false);
+    GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING button_str, uint8_t border_radius, click_cb_fun click_cb = NULL, bool default_value = false);
     ~GUI_Toggle_Button() {};
 
     void draw(display_driver *display) override;
@@ -306,7 +306,7 @@ private:
     PLATFORM_STRING group;
 
 public:
-    GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group);
+    GUI_Radio_Button(PLATFORM_STRING button_str, PLATFORM_STRING group, uint8_t border_radius);
     ~GUI_Radio_Button() {};
 
     void draw(display_driver *display) override;
