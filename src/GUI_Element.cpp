@@ -898,8 +898,8 @@ void GUI_Element::print_element()
     {
         PLATFORM_PRINTF("Element\n");
     }
-    PLATFORM_PRINTF("X: %d, X offset: %d\n", x, container_x_offset);
-    PLATFORM_PRINTF("Y: %d, Y offset: %d\n", y, container_y_offset);
+    PLATFORM_PRINTF("X: %d, X offset: %d\n", coords.get_x(), container_x_offset);
+    PLATFORM_PRINTF("Y: %d, Y offset: %d\n", coords.get_y(), container_y_offset);
     PLATFORM_PRINTF("Width: %d, Height: %d\n", width, height);
 }
 #else

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <format>
 #include "GUI_Label.h"
 #include "Form_Data.h"
 

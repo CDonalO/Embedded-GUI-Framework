@@ -1,6 +1,9 @@
 #include "GUI_Slider.h"
 
 #include <cmath>
+#ifndef ARDUINO
+#include <format>
+#endif
 
 GUI_Slider::GUI_Slider(int16_t min_val, int16_t max_val, int16_t default_val) : GUI_Element(), min_val(min_val), max_val(max_val), default_val(default_val), Form_Data_Number()
 {
@@ -21,10 +24,17 @@ GUI_Slider::GUI_Slider(int16_t min_val, int16_t max_val, int16_t default_val) : 
     bar_padding = 20;
     slider_h = bar_h * 4;
 
+#ifdef ARDUINO
+    String value_string = String(min_val);
+    min_value_label.set_label(value_string);
+    value_string = String(max_val);
+    max_value_label.set_label(value_string);
+#else
     string value_string = format("{}", min_val);
     min_value_label.set_label(value_string);
     value_string = format("{}", max_val);
     max_value_label.set_label(value_string);
+#endif
 
     set_interactable(true);
 }
@@ -35,7 +45,11 @@ GUI_Slider::~GUI_Slider()
 
 void GUI_Slider::normalize_value()
 {
+#ifdef ARDUINO
+    String value_string = String(val);
+#else
     string value_string = format("{}", val);
+#endif
 
     norm_val = val - min_val;
     Form_Data_Number::set_data(val);
