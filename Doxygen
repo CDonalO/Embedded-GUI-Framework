@@ -1,0 +1,6 @@
+PROJECT_NAME = "Embedded GUI Framework"
+INPUT = src include README.md
+RECURSIVE = YES
+EXTRACT_ALL = YES # document everything, even undocumented items
+USE_MDFILE_AS_MAINPAGE = README.md
+GENERATE_LATEX = NO
