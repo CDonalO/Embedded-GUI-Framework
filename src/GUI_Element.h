@@ -83,8 +83,14 @@ public:
 
     bool operator==(const GUI_Element &element) const;
 
+    /// @brief Get X value of element
+    /// @return X value of element
     int16_t get_x() const;
+
+    /// @brief Get Y value of element
+    /// @return Y value of element
     int16_t get_y() const;
+
     uint16_t get_x_offset() const;
     uint16_t get_y_offset() const;
     uint8_t get_element_alignment();
