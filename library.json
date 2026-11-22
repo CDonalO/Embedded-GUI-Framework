@@ -1,10 +1,10 @@
 {
   "name": "Embedded GUI Framework",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A simple framework to create GUIs with Adafruit GFX displays",
   "keywords": "GUI, adafruit, arduino",
   "export": {
-    "include": ["include/GUI.h"]
+    "include": ["include/GUI.h", "src/GUI_Definitions.h"]
   },
   "repository": {
     "type": "git",
