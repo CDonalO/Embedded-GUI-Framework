@@ -4,7 +4,7 @@
   "description": "A simple framework to create GUIs with Adafruit GFX displays",
   "keywords": "GUI, adafruit, arduino",
   "export": {
-    "include": ["include/GUI.h", "src/GUI_Definitions.h"]
+    "include": ["include/GUI.h", "src/GUI_Definitions.h", "src/platform.h"]
   },
   "repository": {
     "type": "git",
