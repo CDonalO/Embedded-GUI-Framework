@@ -42,19 +42,23 @@ public:
 
     /// @brief Get red value
     /// @return Red value
-    uint8_t get_red();
+    uint8_t get_red() const;
 
     /// @brief Get green value
     /// @return Green value
-    uint8_t get_green();
+    uint8_t get_green() const;
 
     /// @brief Get blue value
     /// @return Blue value
-    uint8_t get_blue();
+    uint8_t get_blue() const;
 
     /// @brief Get alpha value
     /// @return Alpha value
-    uint8_t get_alpha();
+    uint8_t get_alpha() const;
+
+    /// @brief Get RGB565 value
+    /// @return RGB565 value
+    uint16_t get_rgb565() const;
 };
 
 /// @brief Class for storing an elements colour scheme

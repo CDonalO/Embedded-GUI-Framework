@@ -57,7 +57,7 @@ RGB RGB::operator=(const RGB &c)
  *
  * @return Red value
  */
-uint8_t RGB::get_red()
+uint8_t RGB::get_red() const
 {
     return r;
 }
@@ -67,7 +67,7 @@ uint8_t RGB::get_red()
  *
  * @return Green value
  */
-uint8_t RGB::get_green()
+uint8_t RGB::get_green() const
 {
     return g;
 }
@@ -77,7 +77,7 @@ uint8_t RGB::get_green()
  *
  * @return Blue value
  */
-uint8_t RGB::get_blue()
+uint8_t RGB::get_blue() const
 {
     return b;
 }
@@ -87,9 +87,19 @@ uint8_t RGB::get_blue()
  *
  * @return Alpha value
  */
-uint8_t RGB::get_alpha()
+uint8_t RGB::get_alpha() const
 {
     return a;
+}
+
+/**
+ * @brief Get RGB565 value
+ *
+ * @return RGB565 value
+ */
+uint16_t RGB::get_rgb565() const
+{
+    return ((r >> 3) << 11) | ((g >> 2) << 5) | (b >> 3);
 }
 
 GUI_Colour_Scheme::GUI_Colour_Scheme(RGB background_colour)
