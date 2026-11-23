@@ -1,6 +1,6 @@
 {
   "name": "Embedded GUI Framework",
-  "version": "1.0.54",
+  "version": "1.0.55",
   "description": "A simple framework to create GUIs with Adafruit GFX displays",
   "keywords": "GUI, adafruit, arduino",
   "export": {
