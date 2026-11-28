@@ -424,6 +424,7 @@ GUI_Toggle_Button::GUI_Toggle_Button(TOGGLE_BUTTON_STYLE style, PLATFORM_STRING 
     toggled_colour = GREEN;
     non_toggled_colour = BLACK;
     toggle_element_colour = WHITE;
+    Form_Data_Number::set_data(value);
 }
 
 /**
